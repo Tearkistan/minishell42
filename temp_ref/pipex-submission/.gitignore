@@ -1,0 +1,12 @@
+*.out
+*.o
+*.pdf
+*.a
+*.dSYM
+test_*.txt
+
+.DS_Store
+pipex
+libft.a
+
+*.txt
