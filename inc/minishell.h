@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/12 13:40:52 by twatson          ###   ########.fr       */
+/*   Updated: 2026/01/12 14:05:44 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,20 @@
 # define FALSE 0
 # define TRUE 1
 
-/* looped linked list */
+/* linked list? if so NULL terminated please */
 typedef struct s_cmd //
 {
 	char	*arg;
-	void	*PLACE_HOLDER; // + looped linked list fields
+	void	*PLACE_HOLDER; // + linked list fields
 }	t_cmd;
 
-/* looped linked list? */
+/* linked list? if so NULL terminated please */
 typedef struct s_redirects
 {	
 	int		type;
 	char	*target;
 	int		quote_delim; // for heredoc only
-	void 	*PLACE_HOLDER; // + looped linked list fields
+	void 	*PLACE_HOLDER; // + linked list fields
 }	t_redirects;
 
 /* pipe per command with relevant args and redirects */
