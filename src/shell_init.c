@@ -1,31 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   shell_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/09 14:41:17 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/12 13:25:55 by twatson          ###   ########.fr       */
+/*   Created: 2026/01/12 12:42:22 by twatson           #+#    #+#             */
+/*   Updated: 2026/01/12 13:40:25 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+# include "minishell.h"
 
-int clean_up(void)
+int shell_init(char **envp)
 {
-	return (0);
-	// free env structures
+	(void) envp;
+	return (0); 
+	// setup shell state (envp copy, last exit status...)
+	// set signal handlers for prompt mode
 }
-
-int	main(int argc, char **argv, char **envp)
-{
-	(void) argc;
-	(void) argv;
-	if (shell_init(envp))
-		perror_exit("shell initialization error");
-	if (shell_loop(envp))
-		perror_exit("shell loop error"); // possibly unnecessary
-	clean_up();
-	return (0);
-}	

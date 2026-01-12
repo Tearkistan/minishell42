@@ -1,31 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   errors_main.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/09 14:41:17 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/12 13:25:55 by twatson          ###   ########.fr       */
+/*   Created: 2026/01/12 13:02:18 by twatson           #+#    #+#             */
+/*   Updated: 2026/01/12 13:06:55 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int clean_up(void)
+void	perror_exit(const char *label)
 {
-	return (0);
-	// free env structures
+	perror(label);
+	exit(1);
 }
-
-int	main(int argc, char **argv, char **envp)
-{
-	(void) argc;
-	(void) argv;
-	if (shell_init(envp))
-		perror_exit("shell initialization error");
-	if (shell_loop(envp))
-		perror_exit("shell loop error"); // possibly unnecessary
-	clean_up();
-	return (0);
-}	

@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/06 14:59:55 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/01/12 13:40:52 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,56 @@
 
 # include "libft.h"
 
-/* PARSING */
+# define PROMPT "MINIsHELL$> "
 
-/* EXECUTION */
+/* For redirect type */
+# define IN	0
+# define HEREDOC 1
+# define OUT 2
+# define APPEND 3
+# define FALSE 0
+# define TRUE 1
+
+/* looped linked list */
+typedef struct s_cmd //
+{
+	char	*arg;
+	void	*PLACE_HOLDER; // + looped linked list fields
+}	t_cmd;
+
+/* looped linked list? */
+typedef struct s_redirects
+{	
+	int		type;
+	char	*target;
+	int		quote_delim; // for heredoc only
+	void 	*PLACE_HOLDER; // + looped linked list fields
+}	t_redirects;
+
+/* pipe per command with relevant args and redirects */
+typedef struct s_pipe 
+{
+	t_cmd		cmd; // command composed of args / tokens
+	t_redirects	redirects;
+	int			first; // true / false
+	int			last; // ture / false
+}	t_pipe;
+
+
+/* PARSING - Lexing + Parsing + Struct / Linked List Creation */
+
+
+/* EXECUTION - Main + Execution + Signalling */
+/* main.c */
+int		clean_up(void);
+
+/* errors_main */
+void	perror_exit(const char *label);
+
+/* shell_init.c */
+int 	shell_init(char **envp); //additional parameters TBD
+
+/* shell_loop.c */
+int		shell_loop(char **envp); // addtonal parameters TBD
 
 #endif

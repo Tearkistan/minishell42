@@ -7,11 +7,12 @@ OBJ_DIR=obj
 LIBFT_DIR=libft
 
 LIBFT=$(LIBFT_DIR)/libft.a
+READLINE_LIBS = -lreadline -lhistory -lncurses
 
 CC=cc
 CFLAGS=-Wall -Wextra -Werror -I$(LIBFT_DIR) -I$(INC_DIR) 
 
-SRC=
+SRC=main.c errors_main.c shell_init.c shell_loop.c
 
 SRCS= $(addprefix $(SRC_DIR)/,$(SRC))
 
@@ -21,7 +22,7 @@ all: $(LIBFT) $(NAME)
 
 $(NAME): $(OBJS)
 	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(READLINE_LIBS) -o $(NAME)
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
