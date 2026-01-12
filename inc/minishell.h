@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/12 14:05:44 by twatson          ###   ########.fr       */
+/*   Updated: 2026/01/12 14:12:16 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # define TRUE 1
 
 /* linked list? if so NULL terminated please */
+/* in this case a char **cmd would probably simplier */
 typedef struct s_cmd //
 {
 	char	*arg;
@@ -53,7 +54,7 @@ typedef struct s_redirects
 /* pipe per command with relevant args and redirects */
 typedef struct s_pipe 
 {
-	t_cmd		cmd; // command composed of args / tokens
+	t_cmd		cmd; // char** probably simpler command composed of args / tokens
 	t_redirects	redirects;
 	int			first; // true / false
 	int			last; // ture / false
