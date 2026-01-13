@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 12:42:22 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/13 17:23:41 by twatson          ###   ########.fr       */
+/*   Updated: 2026/01/13 17:43:52 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ static void	copy_envp(t_shell *shell, char **envp)
 void	shell_init(t_shell *shell, char **envp)
 {
 	copy_envp(shell, envp);
+	shell->last_status = 0;
+	shell->running = 1;
+	set_signals_prompt_mode();
 	return ; 
-	// setup shell state (envp copy, last exit status...)
-	// set signal handlers for prompt mode
 }

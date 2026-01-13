@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/13 17:18:21 by twatson          ###   ########.fr       */
+/*   Updated: 2026/01/13 17:46:47 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,6 @@ void	shell_loop(t_shell *shell); // addtonal parameters TBD
 /* execute.c */
 void	execute_line(t_pipeline *pipeline, t_shell *shell);
 
+/* signals.c */
+void	set_signals_prompt_mode(void);
 #endif

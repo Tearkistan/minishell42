@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 15:16:57 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/13 15:43:33 by twatson          ###   ########.fr       */
+/*   Updated: 2026/01/13 17:45:32 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@ volatile sig_atomic_t	g_ready = 0;
 	Heredoc Mode - ctrl-C abort heredoc, not shell
 */
 
-
+void	set_signals_prompt_mode(void)
+{
+	// handle SIGNINT, ignore SIGQUIT
+	return ;
+}
 
 
