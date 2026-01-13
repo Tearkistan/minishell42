@@ -37,10 +37,10 @@
 /* NULL terminated linked list please */
 typedef struct s_redirects
 {	
-	int		type;
-	char	*target;
-	int		quote_delim; // for heredoc only
-	void 	*PLACE_HOLDER; // + linked list fields
+	int					type;
+	char				*target;
+	int					quote_delim; // for heredoc only
+	struct s_redirects	*next;
 }	t_redirects;
 
 /* per command with relevant args and redirects */
@@ -53,8 +53,8 @@ typedef struct s_cmd
 /* Null terminated Linked list please - pipeline per line with instance per pipe */
 typedef struct s_pipeline
 {
-	t_cmd		cmd;
-	void		*PLACE_HOLDER; // + linked list fields
+	t_cmd					cmd;
+	struct s_pipeline		*next;
 }	t_pipeline;
 
 /* PARSING - Lexing + Parsing + Struct / Linked List Creation */
