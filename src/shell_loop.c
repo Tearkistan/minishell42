@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 12:42:59 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/12 15:14:27 by twatson          ###   ########.fr       */
+/*   Updated: 2026/01/13 17:24:18 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	printable_exists(char *str)
 	return (0);
 }	
 
-int shell_loop(char **envp)
+void shell_loop(t_shell *shell)
 {
 	char		*line;
 	t_pipeline	pipeline;
@@ -33,18 +33,17 @@ int shell_loop(char **envp)
 	while (1)
 	{
 		line = readline(PROMPT);
-		if (line == NULL)
-			clean_up();
+		if (!line)
+			clean_up(shell, NULL, "readline error");
 		else if (line[0] == '\0' || printable_exists(line))
 		{
 			free(line);
 			continue ;
 		}
-		(void) envp;
 		// add_history (if non-empty)
-		parse_line(&pipeline, line, envp);
-		execute_line(&pipeline, envp);
+		parse_line(&pipeline, line, shell);
+		execute_line(&pipeline, shell);
 		// free line + per-iteration structs
 	}
-	return (0);
+	return ;
 }

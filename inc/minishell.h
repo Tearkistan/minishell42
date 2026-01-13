@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/12 15:24:50 by twatson          ###   ########.fr       */
+/*   Updated: 2026/01/13 17:18:21 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,24 +57,32 @@ typedef struct s_pipeline
 	struct s_pipeline		*next;
 }	t_pipeline;
 
+/* Shell struct w/ envp, last status, running */
+typedef struct s_shell
+{
+	char	**envp;
+	int		last_status;
+	int		running;
+}	t_shell;
+
 /* PARSING - Lexing + Parsing + Struct / Linked List Creation */
 /* parse.c */
-void	parse_line(t_pipeline *pipeline, char *line, char **envp);
+void	parse_line(t_pipeline *pipeline, char *line, t_shell *shell);
 
 /* EXECUTION - Main + Execution + Signalling */
 /* main.c */
-int		clean_up(void);
+void	clean_up(t_shell *shell, t_pipeline *pipeline, char *error_msg);
 
 /* errors_main */
 void	perror_exit(const char *label);
 
 /* shell_init.c */
-int 	shell_init(char **envp); //additional parameters TBD
+void	shell_init(t_shell *shell, char **envp); //additional parameters TBD
 
 /* shell_loop.c */
-int		shell_loop(char **envp); // addtonal parameters TBD
+void	shell_loop(t_shell *shell); // addtonal parameters TBD
 
 /* execute.c */
-void	execute_line(t_pipeline *pipeline, char **envp);
+void	execute_line(t_pipeline *pipeline, t_shell *shell);
 
 #endif

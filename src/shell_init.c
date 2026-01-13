@@ -6,16 +6,49 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 12:42:22 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/12 13:40:25 by twatson          ###   ########.fr       */
+/*   Updated: 2026/01/13 17:23:41 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "minishell.h"
 
-int shell_init(char **envp)
+static void	allocate_matrix(t_shell *shell, char **envp)
 {
-	(void) envp;
-	return (0); 
+	int	size;
+
+	size = 0;
+	while (envp[size] != NULL)
+		size++;
+	shell->envp = (char **)malloc(sizeof(char *) * (size + 1));
+	if (!shell->envp)
+		perror_exit("envp copy array allocation failed");
+	return ;
+}
+
+
+static void	copy_envp(t_shell *shell, char **envp)
+{
+	int	i;
+
+	allocate_matrix(shell, envp);
+	i = 0;
+	while (envp[i] != NULL)
+	{
+		shell->envp[i] = ft_strdup(envp[i]);
+		if (!shell->envp[i])
+		{
+			free(shell->envp);
+			perror_exit("envp variable failed to copy");
+		}
+		i++;
+	}
+	return ;
+}
+
+void	shell_init(t_shell *shell, char **envp)
+{
+	copy_envp(shell, envp);
+	return ; 
 	// setup shell state (envp copy, last exit status...)
 	// set signal handlers for prompt mode
 }

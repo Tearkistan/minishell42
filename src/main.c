@@ -6,26 +6,41 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 14:41:17 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/12 13:25:55 by twatson          ###   ########.fr       */
+/*   Updated: 2026/01/13 17:23:09 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int clean_up(void)
+static void	free_pipeline(t_pipeline *pipeline)
 {
-	return (0);
-	// free env structures
+	(void) pipeline;
+	// WIP - free pipeline of cmds - with nested arrays, strs and structs
+	return ;
+}
+
+void	clean_up(t_shell *shell, t_pipeline *pipeline, char *error_msg)
+{
+	while (*shell->envp)
+	{
+		free(*shell->envp);
+		shell->envp++;
+	}
+	free(shell->envp);
+	free_pipeline(pipeline);
+	if (error_msg)
+		perror_exit(error_msg);
+	return ;
 }
 
 int	main(int argc, char **argv, char **envp)
 {
+	t_shell	shell;
+
 	(void) argc;
 	(void) argv;
-	if (shell_init(envp))
-		perror_exit("shell initialization error");
-	if (shell_loop(envp))
-		perror_exit("shell loop error"); // possibly unnecessary
-	clean_up();
+	shell_init(&shell, envp);
+	shell_loop(&shell);
+	clean_up(&shell, NULL, NULL);
 	return (0);
 }	
