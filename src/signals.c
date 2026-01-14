@@ -33,7 +33,7 @@ static void signint_prompt(int signo)
 {
 	(void)signo;
 	g_sig = 1;
-	write(1, "\n", 1);
+	write(1, "\nMINIsHELL$> ", 13);
 }
 
 /* Signal can have 3 dipositions:
