@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/13 17:46:47 by twatson          ###   ########.fr       */
+/*   Updated: 2026/01/14 14:33:38 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,17 @@ typedef struct s_shell
 	int		last_status;
 	int		running;
 }	t_shell;
+
+/* Pipex struct for execution */
+typedef struct s_pipex
+{
+	int		infile;
+	int		outfile;
+	int 	prev_fd;
+	int 	pipe_fd[2]
+	int		cmd_count; 
+	pid_t	last_pid;
+}	t_pipex;
 
 /* PARSING - Lexing + Parsing + Struct / Linked List Creation */
 /* parse.c */

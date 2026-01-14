@@ -1,40 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute.c                                          :+:      :+:    :+:   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/12 15:19:50 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/14 15:03:24 by twatson          ###   ########.fr       */
+/*   Created: 2026/01/14 14:18:48 by twatson           #+#    #+#             */
+/*   Updated: 2026/01/14 14:37:49 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	init_redirects(t_redirects *redir, t_shell *shell, t_pipex *pipex)
+void	heredoc_read(t_redirects *redir, t_pipex *pipex)
 {
-	t_redirects	*curr;
+	char	*line;
 
-	curr = redir
-	while (curr)
+	if (pipe(pipex->pipe_fd) == -1)
+		perror_exit("here_doc pipe");
+	while (1)
 	{
-		if (curr->type == HEREDOC)
-			init_heredoc_mode(pipex, redir);
-		else
-			init_norm_mode(pipex, redir);
-			
-
-
-
-}
-
-int execute_line(t_pipeline *pipeline, t_shell *shell)
-{
-	t_pipex	pipex;
-
-	while (pipeline->cmd)
-	{
-		init_redirects(pipeline->cmd->redirects, shell, &pipex);
-	return (0);
+		ft_printf("> ");
+		line = get_next_line(STDIN_FILENO);
+		if (!line || ft_strncmp(line, redir->stop, ft_strlen(redir->stop)) == 0)
+		{
+			free(line);
+			break ;
+		}
+		write(pipex->pipe_fd[1], line, ft_strlen(line));
+		free(line);
+	}
+	close(pipex->pipe_fd[1]);
 }
