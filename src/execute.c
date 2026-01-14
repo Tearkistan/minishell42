@@ -12,9 +12,9 @@
 
 #include "minishell.h"
 
-void execute_line(t_pipeline *pipeline, t_shell *shell)
+int execute_line(t_pipeline *pipeline, t_shell *shell)
 {
 	(void) pipeline;
 	(void) shell;
-	return ;
+	return (0);
 }

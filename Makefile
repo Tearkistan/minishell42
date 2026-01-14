@@ -12,7 +12,7 @@ READLINE_LIBS = -lreadline -lhistory -lncurses
 CC=cc -g # -g flag needs to be removed for submission!
 CFLAGS=-Wall -Wextra -Werror -I$(LIBFT_DIR) -I$(INC_DIR) 
 
-SRC=main.c errors_main.c shell_init.c shell_loop.c parse.c execute.c \
+SRC=main.c errors_main.c shell_init.c shell_loop.c clean.c parse.c execute.c \
 signals.c
 
 SRCS= $(addprefix $(SRC_DIR)/,$(SRC))

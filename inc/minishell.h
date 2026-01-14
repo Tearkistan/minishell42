@@ -67,11 +67,9 @@ typedef struct s_shell
 
 /* PARSING - Lexing + Parsing + Struct / Linked List Creation */
 /* parse.c */
-void	parse_line(t_pipeline *pipeline, char *line, t_shell *shell);
+int		parse_line(t_pipeline *pipeline, char *line, t_shell *shell);
 
 /* EXECUTION - Main + Execution + Signalling */
-/* main.c */
-void	clean_up(t_shell *shell, t_pipeline *pipeline, char *error_msg);
 
 /* errors_main */
 void	perror_exit(const char *label);
@@ -82,8 +80,11 @@ void	shell_init(t_shell *shell, char **envp); //additional parameters TBD
 /* shell_loop.c */
 void	shell_loop(t_shell *shell); // addtonal parameters TBD
 
+/* clean.c */
+void	clean_up(t_shell *shell, t_pipeline *pipeline, char *line, char *error_msg);
+
 /* execute.c */
-void	execute_line(t_pipeline *pipeline, t_shell *shell);
+int		execute_line(t_pipeline *pipeline, t_shell *shell);
 
 /* signals.c */
 void	set_signals_prompt_mode(void);

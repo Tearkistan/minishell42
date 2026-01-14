@@ -34,7 +34,7 @@ void shell_loop(t_shell *shell)
 	{
 		line = readline(PROMPT);
 		if (!line)
-			clean_up(shell, NULL, "exit");
+			clean_up(shell, NULL, NULL, "exit");
 		else if (line[0] == '\0' || printable_exists(line))
 		{
 			free(line);
@@ -43,8 +43,7 @@ void shell_loop(t_shell *shell)
 		add_history(line);
 		parse_line(&pipeline, line, shell);
 		execute_line(&pipeline, shell);
-		free(line);
-		clean_up(shell, &pipeline, NULL);
+		clean_up(NULL, &pipeline, line, NULL);
 	}
 	return ;
 }
