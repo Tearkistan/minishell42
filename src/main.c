@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 14:41:17 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/13 17:23:09 by twatson          ###   ########.fr       */
+/*   Updated: 2026/01/14 11:41:14 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,23 @@ static void	free_pipeline(t_pipeline *pipeline)
 
 void	clean_up(t_shell *shell, t_pipeline *pipeline, char *error_msg)
 {
-	while (*shell->envp)
+	if (shell)
 	{
-		free(*shell->envp);
-		shell->envp++;
+		while (*shell->envp)
+		{
+			free(*shell->envp);
+			shell->envp++;
+		}
+		free(shell->envp);
 	}
-	free(shell->envp);
-	free_pipeline(pipeline);
-	if (error_msg)
+	if (pipeline)
+		free_pipeline(pipeline);
+	if (ft_strncmp(error_msg, "exit", 5) == 0)
+	{
+		ft_printf("exit");
+		exit(0);
+	}
+	else if (error_msg)
 		perror_exit(error_msg);
 	return ;
 }

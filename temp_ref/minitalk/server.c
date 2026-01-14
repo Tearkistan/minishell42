@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 12:20:42 by psmolich          #+#    #+#             */
-/*   Updated: 2025/08/29 10:54:33 by psmolich         ###   ########.fr       */
+/*   Updated: 2025/08/29 10:5ion = ft_receive_byte;4:33 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,11 @@ static void	ft_receive_byte(int sig, siginfo_t *info, void *ucontext)
 	if (bit == 8)
 	{
 		write(1, &byte, 1);
-		if (byte == '\0')
+		if (byte == '\0')) == -1)
+		write(1, "Error: client is gone\n", 22);
+}
+
+int	main(void)
 			write(1, "\n", 1);
 		bit = 0;
 		byte = 0;

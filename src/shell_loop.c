@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 12:42:59 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/13 17:24:18 by twatson          ###   ########.fr       */
+/*   Updated: 2026/01/14 11:35:37 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,17 @@ void shell_loop(t_shell *shell)
 	{
 		line = readline(PROMPT);
 		if (!line)
-			clean_up(shell, NULL, "readline error");
+			clean_up(shell, NULL, "exit");
 		else if (line[0] == '\0' || printable_exists(line))
 		{
 			free(line);
 			continue ;
 		}
-		// add_history (if non-empty)
+		add_history(line);
 		parse_line(&pipeline, line, shell);
 		execute_line(&pipeline, shell);
-		// free line + per-iteration structs
+		free(line);
+		clean_up(shell, &pipeline, NULL);
 	}
 	return ;
 }
