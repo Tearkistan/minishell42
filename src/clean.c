@@ -33,20 +33,20 @@ static void free_shell(t_shell *shell)
 	return ;
 }
 
-void	clean_up(t_shell *shell, t_pipeline *pipeline, char *line, char *error_msg)
+void	clean_up(t_shell *sh, t_pipeline *pipeline, char *line, char *err_msg)
 {
-	if (shell)
-		free_shell(shell);
+	if (sh)
+		free_shell(sh);
 	if (pipeline)
 		free_pipeline(pipeline);
-	if (ft_strncmp(error_msg, "exit", 5) == 0)
+	if (ft_strncmp(err_msg, "exit", 5) == 0)
 	{
 		ft_printf("exit\n");
 		exit(0);
 	}
 	if (line)
 		free(line);
-	else if (error_msg)
-		perror_exit(error_msg);
+	else if (err_msg)
+		perror_exit(err_msg);
 	return ;
 }

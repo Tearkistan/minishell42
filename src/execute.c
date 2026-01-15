@@ -12,9 +12,9 @@
 
 #include "minishell.h"
 
-static int	init_heredoc_mode(t_pipex *pipex, t_redirects *redir)
+static int	init_heredoc_mode(t_pipex *pipex, t_redirects *redir, t_shell *sh)
 {
-	heredoc_read(redir, pipex);
+	heredoc_read(redir, pipex, sh);
 	pipex->infile = pipex->pipe_fd[0];
 	pipex->prev_fd = pipex->infile;
 	return (0);
@@ -46,7 +46,6 @@ static int	init_norm_mode(t_pipex *pipex, t_redirects *redir)
 	return (0);
 }
 
-
 static int	init_redirects(t_redirects *redir, t_shell *shell, t_pipex *pipex)
 {
 	t_redirects	*curr;
@@ -55,7 +54,7 @@ static int	init_redirects(t_redirects *redir, t_shell *shell, t_pipex *pipex)
 	while (curr)
 	{
 		if (curr->type == HEREDOC)
-			init_heredoc_mode(pipex, curr);
+			init_heredoc_mode(pipex, curr, shell);
 		else
 			init_norm_mode(pipex, curr);
 		curr = curr->next;

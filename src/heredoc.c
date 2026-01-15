@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	heredoc_read(t_redirects *redir, t_pipex *pipex)
+void	heredoc_read(t_redirects *redir, t_pipex *pipex, t_shell *shell)
 {
 	char	*line;
 
@@ -27,6 +27,8 @@ void	heredoc_read(t_redirects *redir, t_pipex *pipex)
 			free(line);
 			break ;
 		}
+		if (redir->quote_delim == 1)
+			/* INSERT */ (void)shell, ft_printf("INSERT parser environment variable expansion function here");
 		write(pipex->pipe_fd[1], line, ft_strlen(line));
 		free(line);
 	}
