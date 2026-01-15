@@ -71,7 +71,7 @@ typedef struct s_pipex
 	int		infile;
 	int		outfile;
 	int 	prev_fd;
-	int 	pipe_fd[2]
+	int 	pipe_fd[2];
 	int		cmd_count; 
 	pid_t	last_pid;
 }	t_pipex;
@@ -96,6 +96,9 @@ void	clean_up(t_shell *shell, t_pipeline *pipeline, char *line, char *error_msg)
 
 /* execute.c */
 int		execute_line(t_pipeline *pipeline, t_shell *shell);
+
+/* heredoc.c */
+void	heredoc_read(t_redirects *redir, t_pipex *pipex);
 
 /* signals.c */
 void	set_signals_prompt_mode(void);

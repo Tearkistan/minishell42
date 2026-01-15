@@ -22,7 +22,7 @@ void	heredoc_read(t_redirects *redir, t_pipex *pipex)
 	{
 		ft_printf("> ");
 		line = get_next_line(STDIN_FILENO);
-		if (!line || ft_strncmp(line, redir->stop, ft_strlen(redir->stop)) == 0)
+		if (!line || ft_strncmp(line, redir->target, ft_strlen(redir->target)) == 0)
 		{
 			free(line);
 			break ;
