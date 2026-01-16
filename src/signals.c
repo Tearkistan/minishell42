@@ -32,7 +32,7 @@ volatile sig_atomic_t	g_sig = 0;
 static void signint_prompt(int signo)
 {
 	(void)signo;
-	g_sig = 1;
+	g_sig = SIGINT;
 	write(1, "\nMINIsHELL$> ", 13);
 }
 
@@ -53,4 +53,22 @@ void	set_signals_prompt_mode(void)
 	return ;
 }
 
+void	set_signals_child(void)
+{	
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+}
+
+void	set_signals_parent_running(void)
+{
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	signint_heredoc(int signo)
+{
+	(void)signo;
+	g_sig = SIGINT;
+	write(1, "\nMINIsHELL$> ", 13);
+}
 

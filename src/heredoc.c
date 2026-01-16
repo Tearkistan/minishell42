@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	heredoc_read(t_redirects *redir, t_pipex *pipex, t_shell *shell)
+int	heredoc_read(t_redirects *redir, t_pipex *pipex, t_shell *shell)
 {
 	char	*line;
 
@@ -21,6 +21,11 @@ void	heredoc_read(t_redirects *redir, t_pipex *pipex, t_shell *shell)
 	while (1)
 	{
 		ft_printf("> ");
+		if (g_sig == SIGINT)
+		{
+			resolve_heredoc_sigint(line, shell, pipex);
+			return (1);
+		}
 		line = get_next_line(STDIN_FILENO);
 		if (!line || ft_strncmp(line, redir->target, ft_strlen(redir->target)) == 0)
 		{
@@ -33,4 +38,5 @@ void	heredoc_read(t_redirects *redir, t_pipex *pipex, t_shell *shell)
 		free(line);
 	}
 	close(pipex->pipe_fd[1]);
+	return (0);
 }

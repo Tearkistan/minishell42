@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/14 14:33:38 by twatson          ###   ########.fr       */
+/*   Updated: 2026/01/16 18:34:32 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ typedef struct s_shell
 {
 	char	**envp;
 	int		last_status;
-	int		running;
 }	t_shell;
 
 /* Pipex struct for execution */
@@ -75,6 +74,8 @@ typedef struct s_pipex
 	int		cmd_count; 
 	pid_t	last_pid;
 }	t_pipex;
+
+extern volatile sig_atomic_t	g_sig;
 
 /* PARSING - Lexing + Parsing + Struct / Linked List Creation */
 /* parse.c */
@@ -98,8 +99,17 @@ void	clean_up(t_shell *sh, t_pipeline *pipeline, char *line, char *err_msg);
 int		execute_line(t_pipeline *pipeline, t_shell *shell);
 
 /* heredoc.c */
-void	heredoc_read(t_redirects *redir, t_pipex *pipex, t_shell *shell);
+int		heredoc_read(t_redirects *redir, t_pipex *pipex, t_shell *shell);
 
 /* signals.c */
 void	set_signals_prompt_mode(void);
+void	set_signals_child(void);
+void	set_signals_parent_running(void);
+void	signint_heredoc(int signo);
+
+/* signals_utils.c */
+void	set_signals_heredoc(void);
+void	resolve_prompt_sigint(t_shell *shell);
+void	resolve_heredoc_sigint(char *line, t_shell *shell, t_pipex *pipex);
+
 #endif

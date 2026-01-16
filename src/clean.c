@@ -39,7 +39,7 @@ void	clean_up(t_shell *sh, t_pipeline *pipeline, char *line, char *err_msg)
 		free_shell(sh);
 	if (pipeline)
 		free_pipeline(pipeline);
-	if (ft_strncmp(err_msg, "exit", 5) == 0)
+	if (err_msg && ft_strncmp(err_msg, "exit", 5) == 0)
 	{
 		ft_printf("exit\n");
 		exit(0);

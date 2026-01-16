@@ -14,7 +14,8 @@
 
 static int	init_heredoc_mode(t_pipex *pipex, t_redirects *redir, t_shell *sh)
 {
-	heredoc_read(redir, pipex, sh);
+	if (heredoc_read(redir, pipex, sh) == 1)
+		return (1);
 	pipex->infile = pipex->pipe_fd[0];
 	pipex->prev_fd = pipex->infile;
 	return (0);
@@ -54,12 +55,22 @@ static int	init_redirects(t_redirects *redir, t_shell *shell, t_pipex *pipex)
 	while (curr)
 	{
 		if (curr->type == HEREDOC)
-			init_heredoc_mode(pipex, curr, shell);
+		{
+			if (init_heredoc_mode(pipex, curr, shell) == 1)
+				return (1);
+		}
 		else
 			init_norm_mode(pipex, curr);
 		curr = curr->next;
 	}
+	return (0);
+}
+
+static int	execute_cmd(char **args, t_shell *shell, t_pipex *pipex)
+{
+	(void)args;
 	(void)shell;
+	(void)pipex;
 	return (0);
 }
 
@@ -68,10 +79,15 @@ int execute_line(t_pipeline *pipeline, t_shell *shell)
 	t_pipex		pipex;
 	t_pipeline	*curr;
 	
+	return (0);
 	curr = pipeline;
+	pipex.last_pid = -1;
+	set_signals_parent_running();
 	while (curr)
 	{
-		init_redirects(&curr->cmd.redirects, shell, &pipex);
+		if (init_redirects(&curr->cmd.redirects, shell, &pipex) == 1)
+			return (0);
+		execute_cmd(curr->cmd.args, shell, &pipex);
 		curr = curr->next;
 	}
 	return (0);
