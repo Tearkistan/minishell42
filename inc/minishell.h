@@ -21,6 +21,7 @@
 # include <string.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <signal.h>
 
 # include "libft.h"
 
@@ -53,8 +54,8 @@ typedef struct s_cmd
 /* Null terminated Linked list please - pipeline per line with instance per pipe */
 typedef struct s_pipeline
 {
-	t_cmd					cmd;
-	struct s_pipeline		*next;
+	t_cmd				cmd;
+	struct s_pipeline	*next;
 }	t_pipeline;
 
 /* Shell struct w/ envp, last status, running */
@@ -97,6 +98,14 @@ void	clean_up(t_shell *sh, t_pipeline *pipeline, char *line, char *err_msg);
 
 /* execute.c */
 int		execute_line(t_pipeline *pipeline, t_shell *shell);
+int		execute_cmd(t_pipeline *pipeline, t_shell *shell, t_pipex *pipex);
+int		init_redirects(t_redirects *redir, t_shell *shell, t_pipex *pipex);
+
+/* exec_stateful.c */
+int		exec_stateful_builtin(t_pipeline *pline, t_shell *sh, t_pipex *pipex);
+
+/* exec_pipeline.c */
+int		exec_pipeline(t_pipeline *s_pipeline, t_shell *sh, t_pipex *pipex);
 
 /* heredoc.c */
 int		heredoc_read(t_redirects *redir, t_pipex *pipex, t_shell *shell);

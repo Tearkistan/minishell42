@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 15:19:50 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/15 17:09:32 by twatson          ###   ########.fr       */
+/*   Updated: 2026/01/19 13:19:24 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	init_norm_mode(t_pipex *pipex, t_redirects *redir)
 	return (0);
 }
 
-static int	init_redirects(t_redirects *redir, t_shell *shell, t_pipex *pipex)
+int	init_redirects(t_redirects *redir, t_shell *shell, t_pipex *pipex)
 {
 	t_redirects	*curr;
 
@@ -66,29 +66,36 @@ static int	init_redirects(t_redirects *redir, t_shell *shell, t_pipex *pipex)
 	return (0);
 }
 
-static int	execute_cmd(char **args, t_shell *shell, t_pipex *pipex)
+int	execute_cmd(t_pipeline *pipeline, t_shell *shell, t_pipex *pipex)
 {
-	(void)args;
+	(void)pipeline;
 	(void)shell;
 	(void)pipex;
+	return (0);
+}
+
+static int	is_stateful(char *c)
+{
+	if (ft_strlen(c) >= 2 && ft_strncmp(c, "cd", 3))
+		return (1);
+	if (ft_strlen(c) >= 4 && ft_strncmp(c, "exit", 5))
+		return (1);
+	if (ft_strlen(c) >= 5 && ft_strncmp(c, "unset", 6))
+		return (1);
+	if (ft_strlen(c) >= 6 && ft_strncmp(c, "export", 7))
+		return (1);
 	return (0);
 }
 
 int execute_line(t_pipeline *pipeline, t_shell *shell)
 {
 	t_pipex		pipex;
-	t_pipeline	*curr;
-	
-	return (0);
-	curr = pipeline;
+
+	return (0); // remove to actually test excution
 	pipex.last_pid = -1;
-	set_signals_parent_running();
-	while (curr)
-	{
-		if (init_redirects(&curr->cmd.redirects, shell, &pipex) == 1)
-			return (0);
-		execute_cmd(curr->cmd.args, shell, &pipex);
-		curr = curr->next;
-	}
+	if (!pipeline->next && is_stateful(pipeline->cmd.args[0]))
+		exec_stateful_builtin(pipeline, shell, &pipex);
+	else
+		exec_pipeline(pipeline, shell, &pipex);
 	return (0);
 }
