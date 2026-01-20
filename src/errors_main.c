@@ -17,3 +17,9 @@ void	perror_exit(const char *label)
 	perror(label);
 	exit(1);
 }
+
+void	msg_exit(char *msg)
+{
+	ft_putendl_fd(msg, 2);
+	exit(1);
+}

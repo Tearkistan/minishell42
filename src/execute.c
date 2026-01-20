@@ -6,72 +6,37 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 15:19:50 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/19 13:19:24 by twatson          ###   ########.fr       */
+/*   Updated: 2026/01/20 19:02:51 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	init_heredoc_mode(t_pipex *pipex, t_redirects *redir, t_shell *sh)
+void	exec_cmd(char **cmd_args, char **envp)
 {
-	if (heredoc_read(redir, pipex, sh) == 1)
-		return (1);
-	pipex->infile = pipex->pipe_fd[0];
-	pipex->prev_fd = pipex->infile;
-	return (0);
+	char	*path;
+
+	path = find_path(cmd_args, cmd_args[0], envp);
+	if (!path)
+		not_found_exit(cmd_args);
+	if (execve(path, cmd_args, envp) == -1)
+	{
+		free(path);
+		free_matrix(cmd_args);
+		perror_exit("execve");
+	}
+	free(path);
 }
 
-static int	init_norm_mode(t_pipex *pipex, t_redirects *redir)
+void infile_guard(t_pipe *pipex)
 {
-	if (redir->type == IN)
-	{
-		pipex->infile = open(redir->target, O_RDONLY);
-		if (pipex->infile < 0)
-			perror("norm infile");
-		pipex->prev_fd = pipex->infile;
-	}		
-	else if (redir->type == OUT)
-	{
-		pipex->outfile = open(redir->target, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		if (pipex->outfile < 0)
-			perror_exit("norm outfile");
-	}
-	else if (redir->type == APPEND)
-	{
-		pipex->outfile = open(redir->target, O_CREAT | O_WRONLY | O_APPEND, 0644);
-		if (pipex->outfile < 0)
-			perror_exit("norm outfile");	
-	}
-	else
-		return (perror("norm mode redir parsing error"), 1);
-	return (0);
-}
-
-int	init_redirects(t_redirects *redir, t_shell *shell, t_pipex *pipex)
-{
-	t_redirects	*curr;
-
-	curr = redir;
-	while (curr)
-	{
-		if (curr->type == HEREDOC)
-		{
-			if (init_heredoc_mode(pipex, curr, shell) == 1)
-				return (1);
-		}
-		else
-			init_norm_mode(pipex, curr);
-		curr = curr->next;
-	}
-	return (0);
-}
-
-int	execute_cmd(t_pipeline *pipeline, t_shell *shell, t_pipex *pipex)
-{
-	(void)pipeline;
-	(void)shell;
-	(void)pipex;
-	return (0);
+	if (pipex->cmd_count != 1)
+		return ;
+	if (pipex->prev_fd >= 0)
+		return ;
+	pipex->prev_fd = open("/dev/null", O_RDONLY);
+	if (pipex->prev_fd < 0)
+		perror_exit("open /dev/null");
 }
 
 static int	is_stateful(char *c)
@@ -87,12 +52,33 @@ static int	is_stateful(char *c)
 	return (0);
 }
 
+static int	pipeline_size(t_pipeline *p)
+{
+	int	i;
+
+	i = 0;
+	while (p)
+	{
+		i++;
+		p = p->next;
+	}
+	return (i);
+}
+
 int execute_line(t_pipeline *pipeline, t_shell *shell)
 {
-	t_pipex		pipex;
+	t_pipe		pipex;
 
 	return (0); // remove to actually test excution
 	pipex.last_pid = -1;
+	pipex.prev_fd = STDIN_FILENO;
+	pipex.pipe_fd[0] = -1;
+	pipex.pipe_fd[1] = -1;
+	pipex.cmd_count = pipeline_size(pipeline);
+	pipex.n_spawned = 0;
+	pipex.pids = (int *)malloc(sizeof(int) * (pipex.cmd_count));
+	if (!pipex.pids)
+		clean_up(shell, pipeline, NULL, "pids array - memory allocation fail");
 	if (!pipeline->next && is_stateful(pipeline->cmd.args[0]))
 		exec_stateful_builtin(pipeline, shell, &pipex);
 	else

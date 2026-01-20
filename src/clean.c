@@ -12,6 +12,19 @@
 
 #include "minishell.h"
 
+void	free_matrix(char **dir)
+{
+	int	i;
+
+	i = 0;
+	while (dir[i] != NULL)
+	{
+		free(dir[i]);
+		i++;
+	}
+	free(dir);
+}
+
 static void	free_pipeline(t_pipeline *pipeline)
 {
 	(void) pipeline;

@@ -30,10 +30,19 @@ void	resolve_prompt_sigint(t_shell *shell)
 	return ;
 }
 
-void	resolve_heredoc_sigint(char *line, t_shell *shell, t_pipex *pipex)
+void	resolve_heredoc_sigint(char *line, t_shell *shell, t_pipe *pipex)
 {
 	g_sig = 0;
 	free(line);
 	close(pipex->pipe_fd[1]);
 	shell->last_status = 130;
+}
+
+int	status_to_exitcode(int status)
+{
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	if (WIFSIGNALED(status))
+		return (128 + WTERMSIG(status));
+	return (1);
 }

@@ -66,15 +66,17 @@ typedef struct s_shell
 }	t_shell;
 
 /* Pipex struct for execution */
-typedef struct s_pipex
+typedef struct s_pipe
 {
 	int		infile;
 	int		outfile;
 	int 	prev_fd;
 	int 	pipe_fd[2];
-	int		cmd_count; 
+	int		cmd_count;
+	int		n_spawned;
 	pid_t	last_pid;
-}	t_pipex;
+	int		*pids;
+}	t_pipe;
 
 extern volatile sig_atomic_t	g_sig;
 
@@ -86,6 +88,7 @@ int		parse_line(t_pipeline *pipeline, char *line, t_shell *shell);
 
 /* errors_main */
 void	perror_exit(const char *label);
+void	msg_exit(char *msg);
 
 /* shell_init.c */
 void	shell_init(t_shell *shell, char **envp); //additional parameters TBD
@@ -94,21 +97,36 @@ void	shell_init(t_shell *shell, char **envp); //additional parameters TBD
 void	shell_loop(t_shell *shell); // addtonal parameters TBD
 
 /* clean.c */
+void	free_matrix(char **dir);
 void	clean_up(t_shell *sh, t_pipeline *pipeline, char *line, char *err_msg);
 
 /* execute.c */
+void	exec_cmd(char **cmd_args, char **envp);
+void	infile_guard(t_pipe *pipex);
 int		execute_line(t_pipeline *pipeline, t_shell *shell);
-int		execute_cmd(t_pipeline *pipeline, t_shell *shell, t_pipex *pipex);
-int		init_redirects(t_redirects *redir, t_shell *shell, t_pipex *pipex);
 
 /* exec_stateful.c */
-int		exec_stateful_builtin(t_pipeline *pline, t_shell *sh, t_pipex *pipex);
+int		exec_stateful_builtin(t_pipeline *pline, t_shell *sh, t_pipe *pipex);
 
 /* exec_pipeline.c */
-int		exec_pipeline(t_pipeline *s_pipeline, t_shell *sh, t_pipex *pipex);
+int		exec_pipeline(t_pipeline *s_pipeline, t_shell *sh, t_pipe *pipex);
 
-/* heredoc.c */
-int		heredoc_read(t_redirects *redir, t_pipex *pipex, t_shell *shell);
+/* exec_errors.c */
+void	permission_denied_exit(char **cmd_args);
+void	not_found_exit(char **cmd_args);
+int		abort_pipeline_parent(t_pipe *pipex, t_shell *shell, int status_code);
+
+/* redirects.c */
+int		init_heredoc_mode(t_pipe *pipex, t_redirects *redir, t_shell *shell);
+int		init_redirects(t_redirects *redir, t_shell *shell, t_pipe *pipex);
+int		init_norm_mode(t_pipe *pipex, t_redirects *redir);
+int		heredoc_read(t_redirects *redir, t_pipe *pipex, t_shell *shell);
+
+/* path.c */
+char	*find_path(char **cmds, char *cmd, char **envp);
+char	*find_cmd(char **dirs, char **cmd_args, char *arg);
+char	*get_env_path(char **envp);
+char	*join_paths(char *dir, char *cmd);
 
 /* signals.c */
 void	set_signals_prompt_mode(void);
@@ -119,6 +137,6 @@ void	signint_heredoc(int signo);
 /* signals_utils.c */
 void	set_signals_heredoc(void);
 void	resolve_prompt_sigint(t_shell *shell);
-void	resolve_heredoc_sigint(char *line, t_shell *shell, t_pipex *pipex);
-
+void	resolve_heredoc_sigint(char *line, t_shell *shell, t_pipe *pipex);
+int		status_to_exitcode(int status);
 #endif

@@ -13,7 +13,8 @@ CC=cc -g # -g flag needs to be removed for submission!
 CFLAGS=-Wall -Wextra -Werror -I$(LIBFT_DIR) -I$(INC_DIR) 
 
 SRC=main.c errors_main.c shell_init.c shell_loop.c clean.c parse.c execute.c \
-exec_stateful.c exec_pipeline.c heredoc.c signals.c signals_utils.c
+exec_stateful.c exec_pipeline.c redirects.c path.c signals.c signals_utils.c \
+exec_errors.c
 
 SRCS= $(addprefix $(SRC_DIR)/,$(SRC))
 
