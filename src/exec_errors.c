@@ -26,6 +26,12 @@ void	not_found_exit(char **cmd_args)
 	exit(127);
 }
 
+int	perror_int(char *err_msg, int n)
+{
+	perror(err_msg);
+	return (-1);
+}
+
 int	abort_pipeline_parent(t_pipe *pipex, t_shell *shell, int status_code)
 {
 	int	i;
@@ -45,4 +51,11 @@ int	abort_pipeline_parent(t_pipe *pipex, t_shell *shell, int status_code)
 	}
 	shell->last_status = status_code;
 	return (-1);
+}
+
+int	write_pipe_exit(int pipe[2], char *s, int n)
+{
+	close(pipe[0]);
+	close(pipe[1]);
+	return (perror_int(s, n));
 }

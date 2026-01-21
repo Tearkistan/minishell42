@@ -36,6 +36,7 @@ static void	child(t_pipeline *pline, t_shell *sh, t_pipe *pipex)
 
 static void	parent(t_pipeline *pline, t_shell *sh, t_pipe *pipex, pid_t pid)
 {
+	pipex->pids[pipex->n_spawned - 1] = pid;
 	if (pline->next)
 	{
 		close(pipex->pipe_fd[1]);
@@ -54,6 +55,11 @@ static int	cmd_stage(t_pipeline *pipeline, t_shell *shell, t_pipe *pipex)
 {
 	pid_t	pid;
 
+	if (includes_heredoc(&pipeline->cmd.redirects, shell, pipex))
+	{
+		if (init_heredoc_mode(pipex, &pipeline->cmd.redirects, shell) == -1);
+			return (abort_pipeline_parent(pipex, shell, 1));
+	}
 	if (pipeline->next && (pipe(pipex->pipe_fd) == -1))
 	{
 		perror("pipe");
@@ -69,10 +75,7 @@ static int	cmd_stage(t_pipeline *pipeline, t_shell *shell, t_pipe *pipex)
 	if (pid == 0)
 		child(pipeline, shell, pipex);
 	if (pid > 0)
-	{	
-		pipex->pids[pipex->n_spawned - 1] = pid;
 		parent(pipeline, shell, pipex, pid);
-	}
 	return (0);
 }
 
@@ -99,8 +102,22 @@ int	exec_pipeline(t_pipeline *pipeline, t_shell *shell, t_pipe *pipex)
 		i++;
 	}
 	shell->last_status = status_to_exitcode(status);
+	free(pipex->pids);
 	return (0);
-}	
+}
+
+int	pipeline_size(t_pipeline *p)
+{
+	int	i;
+
+	i = 0;
+	while (p)
+	{
+		i++;
+		p = p->next;
+	}
+	return (i);
+}
 /*		
 		if (init_redirects(&curr->cmd.redirects, shell, pipex) == 1)
 			return (0);

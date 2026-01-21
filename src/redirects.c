@@ -12,12 +12,39 @@
 
 #include "minishell.h"
 
+int	count_heredocs(t_redirects *redir)
+{
+	int			count;
+	t_redirects	*curr;
+
+	curr = redir;
+	count = 0;
+	while (curr)
+	{
+		if (curr->type == HEREDOC)
+			count++;
+		curr = curr->next;
+	}
+	return (count);
+}
+
 int	init_heredoc_mode(t_pipe *pipex, t_redirects *redir, t_shell *shell)
 {
-	if (heredoc_read(redir, pipex, shell) == 1)
-		return (1);
-	pipex->infile = pipex->pipe_fd[0];
-	pipex->prev_fd = pipex->infile;
+	t_redirects	*curr;
+
+	curr = redir;
+	while (curr)
+	{
+		if (curr->type == HEREDOC)
+		{
+			if (pipe(pipex->hd_pipe) == -1)
+				return (perror_int("here_doc pipe", -1));
+			if (heredoc_read(curr, pipex, shell) == -1)			
+				return (-1);
+			pipex->hd_fd = pipex->hd_pipe[0];
+		}
+		curr = curr->next;
+	}
 	return (0);
 }
 
@@ -25,10 +52,10 @@ int	init_norm_mode(t_pipe *pipex, t_redirects *redir)
 {
 	if (redir->type == IN)
 	{
-		pipex->infile = open(redir->target, O_RDONLY);
-		if (pipex->infile < 0)
-			perror("norm infile");
-		pipex->prev_fd = pipex->infile;
+		pipex->in_fd = open(redir->target, O_RDONLY);
+		if (pipex->in_fd < 0)
+			perror("norm in_fd");
+		pipex->prev_fd = pipex->in_fd;
 	}		
 	else if (redir->type == OUT)
 	{
@@ -56,8 +83,8 @@ int	init_redirects(t_redirects *redir, t_shell *shell, t_pipe *pipex)
 	{
 		if (curr->type == HEREDOC)
 		{
-			if (init_heredoc_mode(pipex, curr, shell) == 1)
-				return (1);
+			if (init_heredoc_mode(pipex, curr, shell) == -1)
+				return (-1);
 		}
 		else
 			init_norm_mode(pipex, curr);
@@ -70,27 +97,27 @@ int	heredoc_read(t_redirects *redir, t_pipe *pipex, t_shell *shell)
 {
 	char	*line;
 
-	if (pipe(pipex->pipe_fd) == -1)
-		perror_exit("here_doc pipe");
 	while (1)
 	{
-		ft_printf("> ");
 		if (g_sig == SIGINT)
 		{
 			resolve_heredoc_sigint(line, shell, pipex);
-			return (1);
+			return (-1);
 		}
-		line = get_next_line(STDIN_FILENO);
-		if (!line || ft_strncmp(line, redir->target, ft_strlen(redir->target)) == 0)
+		line = readline("> ");
+		if (!line)
+			return (perror_int("heredoc line allocation fail", -1));
+		if (ft_strncmp(line, redir->target, ft_strlen(redir->target)) == 0)
 		{
 			free(line);
 			break ;
 		}
 		if (redir->quote_delim == 1)
 			/* INSERT */ (void)shell, ft_printf("INSERT parser environment variable expansion function here");
-		write(pipex->pipe_fd[1], line, ft_strlen(line));
+		if (write(pipex->hd_pipe[1], line, ft_strlen(line)) == -1);
+			return (write_pipe_exit(pipex->hd_pipe, "write heredoc fail", -1));
 		free(line);
 	}
-	close(pipex->pipe_fd[1]);
+	close(pipex->hd_pipe[1]);
 	return (0);
 }

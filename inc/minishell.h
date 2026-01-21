@@ -68,7 +68,9 @@ typedef struct s_shell
 /* Pipex struct for execution */
 typedef struct s_pipe
 {
-	int		infile;
+	int		hd_fd;
+	int		hd_pipe[2];
+	int		in_fd;
 	int		outfile;
 	int 	prev_fd;
 	int 	pipe_fd[2];
@@ -110,13 +112,17 @@ int		exec_stateful_builtin(t_pipeline *pline, t_shell *sh, t_pipe *pipex);
 
 /* exec_pipeline.c */
 int		exec_pipeline(t_pipeline *s_pipeline, t_shell *sh, t_pipe *pipex);
+int		pipeline_size(t_pipeline *p);
 
 /* exec_errors.c */
 void	permission_denied_exit(char **cmd_args);
 void	not_found_exit(char **cmd_args);
+int		perror_int(char *err_msg, int n);
 int		abort_pipeline_parent(t_pipe *pipex, t_shell *shell, int status_code);
 
+
 /* redirects.c */
+int		count_heredocs(t_redirects *redir);
 int		init_heredoc_mode(t_pipe *pipex, t_redirects *redir, t_shell *shell);
 int		init_redirects(t_redirects *redir, t_shell *shell, t_pipe *pipex);
 int		init_norm_mode(t_pipe *pipex, t_redirects *redir);

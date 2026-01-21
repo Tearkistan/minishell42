@@ -52,18 +52,7 @@ static int	is_stateful(char *c)
 	return (0);
 }
 
-static int	pipeline_size(t_pipeline *p)
-{
-	int	i;
 
-	i = 0;
-	while (p)
-	{
-		i++;
-		p = p->next;
-	}
-	return (i);
-}
 
 int execute_line(t_pipeline *pipeline, t_shell *shell)
 {
