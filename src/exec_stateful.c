@@ -16,8 +16,7 @@ int	exec_stateful_builtin(t_pipeline *pline, t_shell *sh, t_pipe *pipex)
 {
 	/* still needs to be refactor for updated pipeline order */
     set_signals_parent_running();
-	if (init_redirects(&pline->cmd.redirects, sh, pipex) == 1)
-		return (0);
+	(void)pipex;
 	exec_cmd(pline->cmd.args, sh->envp);
 	return (0);
 }

@@ -1,123 +1,90 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc.c                                          :+:      :+:    :+:   */
+/*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/14 14:18:48 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/14 14:37:49 by twatson          ###   ########.fr       */
+/*   Created: 2026/01/22 10:56:08 by twatson           #+#    #+#             */
+/*   Updated: 2026/01/22 12:18:01 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	count_heredocs(t_redirects *redir)
-{
-	int			count;
-	t_redirects	*curr;
-
-	curr = redir;
-	count = 0;
-	while (curr)
-	{
-		if (curr->type == HEREDOC)
-			count++;
-		curr = curr->next;
-	}
-	return (count);
-}
-
-int	init_heredoc_mode(t_pipe *pipex, t_redirects *redir, t_shell *shell)
+void    set_in_fd(t_redirects *redir, t_pipe *pipex)
 {
 	t_redirects	*curr;
 
-	curr = redir;
+	pipex->in_fd = pipex->prev_read_fd;
+    curr = redir;
 	while (curr)
 	{
-		if (curr->type == HEREDOC)
+		if (curr->type == IN)
 		{
-			if (pipe(pipex->hd_pipe) == -1)
-				return (perror_int("here_doc pipe", -1));
-			if (heredoc_read(curr, pipex, shell) == -1)			
-				return (-1);
-			pipex->hd_fd = pipex->hd_pipe[0];
-		}
+			if (pipex->in_fd != STDIN_FILENO)
+                close(pipex->in_fd);
+            pipex->in_fd = open(curr->target, O_RDONLY);
+			if (pipex->in_fd < 0)
+				perror("setting IN in_fd");
+        }
+		else if (curr->type == HEREDOC)
+        {
+            if (pipex->in_fd != STDIN_FILENO)
+                close(pipex->in_fd);
+            pipex->in_fd = pipex->hd_fd;
+        }
 		curr = curr->next;
 	}
-	return (0);
+	infile_guard(pipex);
+	return ;
 }
 
-int	init_norm_mode(t_pipe *pipex, t_redirects *redir)
+static void set_default_out_fd(t_pipe *pipex)
 {
-	if (redir->type == IN)
-	{
-		pipex->in_fd = open(redir->target, O_RDONLY);
-		if (pipex->in_fd < 0)
-			perror("norm in_fd");
-		pipex->prev_fd = pipex->in_fd;
-	}		
-	else if (redir->type == OUT)
-	{
-		pipex->outfile = open(redir->target, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		if (pipex->outfile < 0)
-			perror_exit("norm outfile");
-	}
-	else if (redir->type == APPEND)
-	{
-		pipex->outfile = open(redir->target, O_CREAT | O_WRONLY | O_APPEND, 0644);
-		if (pipex->outfile < 0)
-			perror_exit("norm outfile");	
-	}
-	else
-		return (perror("norm mode redir parsing error"), 1);
-	return (0);
+    if (pipex->n_spawned == pipex->cmd_count)
+        pipex->out_fd = STDOUT_FILENO;
+    else
+        pipex->out_fd = pipex->pipe_fd[1];
+    return ;
 }
 
-int	init_redirects(t_redirects *redir, t_shell *shell, t_pipe *pipex)
+void    set_out_fd(t_redirects *redir, t_pipe *pipex)
 {
 	t_redirects	*curr;
 
-	curr = redir;
+	set_default_out_fd(pipex);
+    curr = redir;
 	while (curr)
 	{
-		if (curr->type == HEREDOC)
+		if (redir->type == OUT)
 		{
-			if (init_heredoc_mode(pipex, curr, shell) == -1)
-				return (-1);
+			if (pipex->out_fd != STDOUT_FILENO)
+                close(pipex->out_fd);
+            pipex->out_fd = open(redir->target, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+			if (pipex->out_fd < 0)
+				perror_exit("openning OUT out_fd");
 		}
-		else
-			init_norm_mode(pipex, curr);
-		curr = curr->next;
+		else if (redir->type == APPEND)
+		{
+            if (pipex->out_fd != STDOUT_FILENO)
+                close(pipex->out_fd);
+            pipex->out_fd = open(redir->target, O_CREAT | O_WRONLY | O_APPEND, 0644);
+			if (pipex->out_fd < 0)
+				perror_exit("openning APPEND out_fd");
+		}
+	 	curr = curr->next;
 	}
-	return (0);
+	return ;
 }
 
-int	heredoc_read(t_redirects *redir, t_pipe *pipex, t_shell *shell)
+void infile_guard(t_pipe *pipex)
 {
-	char	*line;
-
-	while (1)
-	{
-		if (g_sig == SIGINT)
-		{
-			resolve_heredoc_sigint(line, shell, pipex);
-			return (-1);
-		}
-		line = readline("> ");
-		if (!line)
-			return (perror_int("heredoc line allocation fail", -1));
-		if (ft_strncmp(line, redir->target, ft_strlen(redir->target)) == 0)
-		{
-			free(line);
-			break ;
-		}
-		if (redir->quote_delim == 1)
-			/* INSERT */ (void)shell, ft_printf("INSERT parser environment variable expansion function here");
-		if (write(pipex->hd_pipe[1], line, ft_strlen(line)) == -1);
-			return (write_pipe_exit(pipex->hd_pipe, "write heredoc fail", -1));
-		free(line);
-	}
-	close(pipex->hd_pipe[1]);
-	return (0);
+	if (pipex->cmd_count != 1)
+		return ;
+	if (pipex->prev_read_fd >= 0)
+		return ;
+	pipex->prev_read_fd = open("/dev/null", O_RDONLY);
+	if (pipex->prev_read_fd < 0)
+		perror_exit("open /dev/null");
 }

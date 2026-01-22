@@ -28,17 +28,6 @@ void	exec_cmd(char **cmd_args, char **envp)
 	free(path);
 }
 
-void infile_guard(t_pipe *pipex)
-{
-	if (pipex->cmd_count != 1)
-		return ;
-	if (pipex->prev_fd >= 0)
-		return ;
-	pipex->prev_fd = open("/dev/null", O_RDONLY);
-	if (pipex->prev_fd < 0)
-		perror_exit("open /dev/null");
-}
-
 static int	is_stateful(char *c)
 {
 	if (ft_strlen(c) >= 2 && ft_strncmp(c, "cd", 3))
@@ -52,22 +41,26 @@ static int	is_stateful(char *c)
 	return (0);
 }
 
-
+static void	init_pipex(t_pipe *pipex, t_pipeline *pipeline, t_shell *shell)
+{
+	pipex->last_pid = -1;
+	pipex->prev_read_fd = STDIN_FILENO;
+	pipex->pipe_fd[0] = -1;
+	pipex->pipe_fd[1] = -1;
+	pipex->cmd_count = pipeline_size(pipeline);
+	pipex->n_spawned = 0;
+	pipex->pids = (int *)malloc(sizeof(int) * (pipex->cmd_count));
+	if (!pipex->pids)
+		clean_up(shell, pipeline, NULL, "pids array - memory allocation fail");
+	return ;
+}
 
 int execute_line(t_pipeline *pipeline, t_shell *shell)
 {
 	t_pipe		pipex;
 
 	return (0); // remove to actually test excution
-	pipex.last_pid = -1;
-	pipex.prev_fd = STDIN_FILENO;
-	pipex.pipe_fd[0] = -1;
-	pipex.pipe_fd[1] = -1;
-	pipex.cmd_count = pipeline_size(pipeline);
-	pipex.n_spawned = 0;
-	pipex.pids = (int *)malloc(sizeof(int) * (pipex.cmd_count));
-	if (!pipex.pids)
-		clean_up(shell, pipeline, NULL, "pids array - memory allocation fail");
+	init_pipex(&pipex, pipeline, shell);
 	if (!pipeline->next && is_stateful(pipeline->cmd.args[0]))
 		exec_stateful_builtin(pipeline, shell, &pipex);
 	else

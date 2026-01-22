@@ -71,8 +71,8 @@ typedef struct s_pipe
 	int		hd_fd;
 	int		hd_pipe[2];
 	int		in_fd;
-	int		outfile;
-	int 	prev_fd;
+	int		out_fd;
+	int 	prev_read_fd;
 	int 	pipe_fd[2];
 	int		cmd_count;
 	int		n_spawned;
@@ -104,7 +104,6 @@ void	clean_up(t_shell *sh, t_pipeline *pipeline, char *line, char *err_msg);
 
 /* execute.c */
 void	exec_cmd(char **cmd_args, char **envp);
-void	infile_guard(t_pipe *pipex);
 int		execute_line(t_pipeline *pipeline, t_shell *shell);
 
 /* exec_stateful.c */
@@ -119,14 +118,17 @@ void	permission_denied_exit(char **cmd_args);
 void	not_found_exit(char **cmd_args);
 int		perror_int(char *err_msg, int n);
 int		abort_pipeline_parent(t_pipe *pipex, t_shell *shell, int status_code);
+int		write_pipe_exit(int pipe[2], char *s, int n);
 
+/* heredoc */
+int		count_heredoc(t_redirects *redir);
+int		init_heredoc_mode(t_pipe *pipex, t_redirects *redir, t_shell *shell);
+int		heredoc_read(t_redirects *redir, t_pipe *pipex, t_shell *shell);
 
 /* redirects.c */
-int		count_heredocs(t_redirects *redir);
-int		init_heredoc_mode(t_pipe *pipex, t_redirects *redir, t_shell *shell);
-int		init_redirects(t_redirects *redir, t_shell *shell, t_pipe *pipex);
-int		init_norm_mode(t_pipe *pipex, t_redirects *redir);
-int		heredoc_read(t_redirects *redir, t_pipe *pipex, t_shell *shell);
+void    set_in_fd(t_redirects *redir, t_pipe *pipex);
+void    set_out_fd(t_redirects *redir, t_pipe *pipex);
+void	infile_guard(t_pipe *pipex);
 
 /* path.c */
 char	*find_path(char **cmds, char *cmd, char **envp);
@@ -145,4 +147,5 @@ void	set_signals_heredoc(void);
 void	resolve_prompt_sigint(t_shell *shell);
 void	resolve_heredoc_sigint(char *line, t_shell *shell, t_pipe *pipex);
 int		status_to_exitcode(int status);
+
 #endif

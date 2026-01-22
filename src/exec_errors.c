@@ -29,7 +29,7 @@ void	not_found_exit(char **cmd_args)
 int	perror_int(char *err_msg, int n)
 {
 	perror(err_msg);
-	return (-1);
+	return (n);
 }
 
 int	abort_pipeline_parent(t_pipe *pipex, t_shell *shell, int status_code)
@@ -40,8 +40,8 @@ int	abort_pipeline_parent(t_pipe *pipex, t_shell *shell, int status_code)
 		close(pipex->pipe_fd[0]);
 	if (pipex->pipe_fd[1] >= 0)
 		close(pipex->pipe_fd[1]);
-	if (pipex->prev_fd >= 0 && pipex->prev_fd != STDIN_FILENO)
-		close(pipex->prev_fd);
+	if (pipex->prev_read_fd >= 0 && pipex->prev_read_fd != STDIN_FILENO)
+		close(pipex->prev_read_fd);
 	i = 0;
 	while (i < pipex->n_spawned)
 	{

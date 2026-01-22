@@ -14,10 +14,12 @@
 
 static void	child(t_pipeline *pline, t_shell *sh, t_pipe *pipex)
 {
-	infile_guard(pipex);
-	if (dup2(pipex->prev_fd, 0) == -1)
-		perror_exit("dup2 prev_fd->stdin");
-	close(pipex->prev_fd);
+	
+	set_in_fd(&pline->cmd.redirects, pipex);
+	set_out_fd(&pline->cmd.redirects, pipex);
+	if (dup2(pipex->prev_read_fd, 0) == -1)
+		perror_exit("dup2 prev_read_fd->stdin");
+	close(pipex->prev_read_fd);
 	if (pline->next)
 	{
 		if (dup2(pipex->pipe_fd[1], 1) == -1)
@@ -27,9 +29,9 @@ static void	child(t_pipeline *pline, t_shell *sh, t_pipe *pipex)
 	}
 	else
 	{
-		if (dup2(pipex->outfile, 1) == -1)
-			perror_exit("dup2 outfile->stdout");
-		close(pipex->outfile);
+		if (dup2(pipex->out_fd, 1) == -1)
+			perror_exit("dup2 out_fd->stdout");
+		close(pipex->out_fd);
 	}
 	exec_cmd(pline->cmd.args, sh->envp);
 }
@@ -40,13 +42,13 @@ static void	parent(t_pipeline *pline, t_shell *sh, t_pipe *pipex, pid_t pid)
 	if (pline->next)
 	{
 		close(pipex->pipe_fd[1]);
-		close(pipex->prev_fd);
-		pipex->prev_fd = pipex->pipe_fd[0];
+		close(pipex->prev_read_fd);
+		pipex->prev_read_fd = pipex->pipe_fd[0];
 	}
 	else
 	{
 		pipex->last_pid = pid;
-		close(pipex->prev_fd);
+		close(pipex->prev_read_fd);
 	}
 	(void)sh;
 }
@@ -55,9 +57,9 @@ static int	cmd_stage(t_pipeline *pipeline, t_shell *shell, t_pipe *pipex)
 {
 	pid_t	pid;
 
-	if (includes_heredoc(&pipeline->cmd.redirects, shell, pipex))
+	if (count_heredoc(&pipeline->cmd.redirects))
 	{
-		if (init_heredoc_mode(pipex, &pipeline->cmd.redirects, shell) == -1);
+		if (init_heredoc_mode(pipex, &pipeline->cmd.redirects, shell) == -1)
 			return (abort_pipeline_parent(pipex, shell, 1));
 	}
 	if (pipeline->next && (pipe(pipex->pipe_fd) == -1))
@@ -72,6 +74,7 @@ static int	cmd_stage(t_pipeline *pipeline, t_shell *shell, t_pipe *pipex)
 		return (abort_pipeline_parent(pipex, shell, 1));
 	}
 	pipex->n_spawned++;
+	set_signals_child();
 	if (pid == 0)
 		child(pipeline, shell, pipex);
 	if (pid > 0)
@@ -96,7 +99,7 @@ int	exec_pipeline(t_pipeline *pipeline, t_shell *shell, t_pipe *pipex)
 		curr = curr->next;
 	}
 	waitpid(pipex->last_pid, &status, 0);
-	while (i < pipex->cmd_count)
+	while (i < pipex->n_spawned)
 	{
 		wait(NULL);
 		i++;
