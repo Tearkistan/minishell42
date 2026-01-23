@@ -48,7 +48,7 @@ typedef struct s_redirects
 typedef struct s_cmd 
 {
 	char		**args;
-	t_redirects	redirects;
+	t_redirects	*redirects;
 }	t_cmd;
 
 /* Null terminated Linked list please - pipeline per line with instance per pipe */

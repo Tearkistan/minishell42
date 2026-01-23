@@ -17,20 +17,18 @@ static void	child(t_pipeline *pline, t_shell *sh, t_pipe *pipex)
 	
 	set_in_fd(&pline->cmd.redirects, pipex);
 	set_out_fd(&pline->cmd.redirects, pipex);
-	if (dup2(pipex->prev_read_fd, 0) == -1)
-		perror_exit("dup2 prev_read_fd->stdin");
-	close(pipex->prev_read_fd);
+	if (dup2(pipex->in_fd, 0) == -1)
+		perror_exit("dup2 in_fd->stdin");
+	close(pipex->in_fd);
+	if (dup2(pipex->out_fd, 1) == -1)
+		perror_exit("dup2 out_fd->stdout");
 	if (pline->next)
 	{
-		if (dup2(pipex->pipe_fd[1], 1) == -1)
-			perror_exit("dup2 pipe->stdout");
 		close(pipex->pipe_fd[0]);
 		close(pipex->pipe_fd[1]);
 	}
 	else
 	{
-		if (dup2(pipex->out_fd, 1) == -1)
-			perror_exit("dup2 out_fd->stdout");
 		close(pipex->out_fd);
 	}
 	exec_cmd(pline->cmd.args, sh->envp);
