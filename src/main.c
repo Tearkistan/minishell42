@@ -3,24 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 14:41:17 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/14 13:43:16 by twatson          ###   ########.fr       */
+/*   Updated: 2026/01/23 11:51:48 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* static void	print_shell_envp(t_shell *shell) // comment out for main branch - for visual testing only
-{
-	int i;
+// static void	print_shell_envp(t_shell *shell) // comment out for main branch - for visual testing only
+// {
+// 	int i;
 
-	i = 0;
-	while (shell->envp[i])
-		printf("%s\n", shell->envp[i++]);
-	return ;
-} */
+// 	i = 0;
+// 	while (shell->envp[i])
+// 		printf("%s\n", shell->envp[i++]);
+// 	return ;
+// }
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -33,4 +33,4 @@ int	main(int argc, char **argv, char **envp)
 	shell_loop(&shell);
 	clean_up(&shell, NULL, NULL, NULL);
 	return (0);
-}	
+}

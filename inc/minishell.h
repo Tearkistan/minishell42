@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/16 18:34:32 by twatson          ###   ########.fr       */
+/*   Updated: 2026/01/23 13:47:00 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,17 +26,26 @@
 
 # define PROMPT "MINIsHELL$> "
 
+# define WORD 0
+# define PIPE 1
+# define REDIR 2
+
 /* For redirect type */
 # define IN	0
 # define HEREDOC 1
 # define OUT 2
 # define APPEND 3
+
+# define NORMAL 0
+# define SQ 1
+# define DQ 2
+
 # define FALSE 0
 # define TRUE 1
 
 /* NULL terminated linked list please */
 typedef struct s_redirects
-{	
+{
 	int					type;
 	char				*target;
 	int					quote_delim; // for heredoc only
@@ -56,6 +65,15 @@ typedef struct s_pipeline
 	t_cmd					cmd;
 	struct s_pipeline		*next;
 }	t_pipeline;
+
+typedef struct s_token
+{
+	int				type;
+	char			*value;
+	int				state;
+	int				join;
+	struct s_token	*next;
+}	t_token;
 
 /* Shell struct w/ envp, last status, running */
 typedef struct s_shell

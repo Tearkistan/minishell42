@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_loop.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 12:42:59 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/16 18:35:16 by twatson          ###   ########.fr       */
+/*   Updated: 2026/01/23 11:49:30 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,16 @@ static int	print_exists(char *str)
 		str++;
 	}
 	return (0);
-}	
+}
 
-void shell_loop(t_shell *shell)
+void	shell_loop(t_shell *shell)
 {
 	char		*line;
 	t_pipeline	pipeline;
 
-	while (1)
+	while (TRUE)
 	{
+		ft_memset(&pipeline, 0, sizeof(t_pipeline));
 		line = readline(PROMPT);
 		if (!line)
 			clean_up(shell, NULL, NULL, "exit");
