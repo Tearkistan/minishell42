@@ -110,6 +110,8 @@ int		execute_line(t_pipeline *pipeline, t_shell *shell);
 int		exec_stateful_builtin(t_pipeline *pline, t_shell *sh, t_pipe *pipex);
 
 /* exec_pipeline.c */
+int		is_stateful(char *cmd);
+int		is_nonstateful(char *cmd);
 int		exec_pipeline(t_pipeline *s_pipeline, t_shell *sh, t_pipe *pipex);
 int		pipeline_size(t_pipeline *p);
 
@@ -135,6 +137,21 @@ char	*find_path(char **cmds, char *cmd, char **envp);
 char	*find_cmd(char **dirs, char **cmd_args, char *arg);
 char	*get_env_path(char **envp);
 char	*join_paths(char *dir, char *cmd);
+
+/* builtin.c */
+int		is_builtin(char *cmd);
+void	builtin_exec(char **cmd_args, char **envp);
+
+/* builtin_stateful.c */
+void	exec_cd(char **cmd_args, char **envp);
+void	exec_exit(char **cmd_args, char **envp);
+void	exec_unset(char **cmd_args, char **envp);
+void	exec_export(char **cmd_args, char **envp);
+
+/* builtin_nonstateful.c */
+void	exec_pwd(char **cmd_args, char **envp);
+void	exec_envp(char **cmd_args, char **envp);
+void	exec_echo(char **cmd_args, char **envp);
 
 /* signals.c */
 void	set_signals_prompt_mode(void);

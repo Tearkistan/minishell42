@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 14:24:43 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/19 15:21:38 by twatson          ###   ########.fr       */
+/*   Updated: 2026/01/26 16:50:05 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 static void	child(t_pipeline *pline, t_shell *sh, t_pipe *pipex)
 {
 	
-	set_in_fd(&pline->cmd.redirects, pipex);
-	set_out_fd(&pline->cmd.redirects, pipex);
+	set_in_fd(pline->cmd.redirects, pipex);
+	set_out_fd(pline->cmd.redirects, pipex);
 	if (dup2(pipex->in_fd, 0) == -1)
 		perror_exit("dup2 in_fd->stdin");
 	close(pipex->in_fd);
@@ -31,10 +31,13 @@ static void	child(t_pipeline *pline, t_shell *sh, t_pipe *pipex)
 	{
 		close(pipex->out_fd);
 	}
-	exec_cmd(pline->cmd.args, sh->envp);
+	if (is_builtin(pline->cmd.args[0]))
+		builtin_exec(pline->cmd.args, sh->envp);
+	else
+		exec_cmd(pline->cmd.args, sh->envp);
 }
 
-static void	parent(t_pipeline *pline, t_shell *sh, t_pipe *pipex, pid_t pid)
+static void	parent(t_pipeline *pline, t_pipe *pipex, pid_t pid)
 {
 	pipex->pids[pipex->n_spawned - 1] = pid;
 	if (pline->next)
@@ -48,16 +51,15 @@ static void	parent(t_pipeline *pline, t_shell *sh, t_pipe *pipex, pid_t pid)
 		pipex->last_pid = pid;
 		close(pipex->prev_read_fd);
 	}
-	(void)sh;
 }
 
 static int	cmd_stage(t_pipeline *pipeline, t_shell *shell, t_pipe *pipex)
 {
 	pid_t	pid;
 
-	if (count_heredoc(&pipeline->cmd.redirects))
+	if (count_heredoc(pipeline->cmd.redirects))
 	{
-		if (init_heredoc_mode(pipex, &pipeline->cmd.redirects, shell) == -1)
+		if (init_heredoc_mode(pipex, pipeline->cmd.redirects, shell) == -1)
 			return (abort_pipeline_parent(pipex, shell, 1));
 	}
 	if (pipeline->next && (pipe(pipex->pipe_fd) == -1))
@@ -76,7 +78,7 @@ static int	cmd_stage(t_pipeline *pipeline, t_shell *shell, t_pipe *pipex)
 	if (pid == 0)
 		child(pipeline, shell, pipex);
 	if (pid > 0)
-		parent(pipeline, shell, pipex, pid);
+		parent(pipeline, pipex, pid);
 	return (0);
 }
 
@@ -119,12 +121,3 @@ int	pipeline_size(t_pipeline *p)
 	}
 	return (i);
 }
-/*		
-		if (init_redirects(&curr->cmd.redirects, shell, pipex) == 1)
-			return (0);
-		execute_cmd(curr, shell, pipex);
-		
-	}
-	return (0);
-}
-*/

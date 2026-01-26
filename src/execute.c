@@ -28,15 +28,26 @@ void	exec_cmd(char **cmd_args, char **envp)
 	free(path);
 }
 
-static int	is_stateful(char *c)
+int	is_stateful(char *cmd)
 {
-	if (ft_strlen(c) >= 2 && ft_strncmp(c, "cd", 3))
+	if (ft_strlen(cmd) >= 2 && ft_strncmp(cmd, "cd", 3))
 		return (1);
-	if (ft_strlen(c) >= 4 && ft_strncmp(c, "exit", 5))
+	if (ft_strlen(cmd) >= 4 && ft_strncmp(cmd, "exit", 5))
 		return (1);
-	if (ft_strlen(c) >= 5 && ft_strncmp(c, "unset", 6))
+	if (ft_strlen(cmd) >= 5 && ft_strncmp(cmd, "unset", 6))
 		return (1);
-	if (ft_strlen(c) >= 6 && ft_strncmp(c, "export", 7))
+	if (ft_strlen(cmd) >= 6 && ft_strncmp(cmd, "export", 7))
+		return (1);
+	return (0);
+}
+
+int	is_nonstateful(char *cmd)
+{
+	if (ft_strlen(cmd) >= 3 && ft_strncmp(cmd, "pwd", 4))
+		return (1);
+	if (ft_strlen(cmd) >= 4 && ft_strncmp(cmd, "envp", 5))
+		return (1);
+	if (ft_strlen(cmd) >= 4 && ft_strncmp(cmd, "echo", 5))
 		return (1);
 	return (0);
 }
