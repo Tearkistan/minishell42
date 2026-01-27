@@ -12,6 +12,23 @@
 
 #include "minishell.h"
 
-void	exec_pwd(char **cmd_args, char **envp);
-void	exec_envp(char **cmd_args, char **envp);
-void	exec_echo(char **cmd_args, char **envp);
+void	exec_pwd(char **cmd_args, char **envp)
+{
+    (void)cmd_args;
+    (void)envp;
+    return ;
+}
+
+void	exec_envp(char **cmd_args, char **envp)
+{
+    (void)cmd_args;
+    (void)envp;
+    return ;
+}
+
+void	exec_echo(char **cmd_args, char **envp)
+{
+    (void)cmd_args;
+    (void)envp;
+    return ;
+}
