@@ -140,18 +140,18 @@ char	*join_paths(char *dir, char *cmd);
 
 /* builtin.c */
 int		is_builtin(char *cmd);
-void	builtin_exec(char **cmd_args, char **envp);
+int		builtin_exec(t_pipe *pipex, char **cmd_args, char **envp);
 
 /* builtin_stateful.c */
-void	exec_cd(char **cmd_args, char **envp);
-void	exec_exit(char **cmd_args, char **envp);
-void	exec_unset(char **cmd_args, char **envp);
-void	exec_export(char **cmd_args, char **envp);
+int		exec_cd(t_pipe *pipex, char **cmd_args, char **envp);
+int		exec_exit(char **cmd_args, char **envp);
+int		exec_unset(char **cmd_args, char **envp);
+int		exec_export(char **cmd_args, char **envp);
 
 /* builtin_nonstateful.c */
-void	exec_pwd(char **cmd_args, char **envp);
-void	exec_envp(char **cmd_args, char **envp);
-void	exec_echo(char **cmd_args, char **envp);
+int		exec_pwd(char **cmd_args, char **envp);
+int		exec_envp(char **cmd_args, char **envp);
+int		exec_echo(char **cmd_args, char **envp);
 
 /* signals.c */
 void	set_signals_prompt_mode(void);
