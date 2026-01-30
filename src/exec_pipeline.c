@@ -32,7 +32,7 @@ static void	child(t_pipeline *pline, t_shell *sh, t_pipe *pipex)
 		close(pipex->out_fd);
 	}
 	if (is_builtin(pline->cmd.args[0]))
-		builtin_exec(pipex, pline->cmd.args, sh->envp);
+		builtin_exec(pipex, pline->cmd.args, sh);
 	else
 		exec_cmd(pline->cmd.args, sh->envp);
 }

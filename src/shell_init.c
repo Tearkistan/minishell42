@@ -12,42 +12,44 @@
 
 # include "minishell.h"
 
-static void	allocate_matrix(t_shell *shell, char **envp)
+static void	allocate_matrix(char **copy, char **original)
 {
 	int	size;
 
 	size = 0;
-	while (envp[size] != NULL)
+	while (original[size] != NULL)
 		size++;
-	shell->envp = (char **)malloc(sizeof(char *) * (size + 1));
-	if (!shell->envp)
+	copy = (char **)malloc(sizeof(char *) * (size + 1));
+	if (!copy)
 		perror_exit("envp copy array allocation failed");
 	return ;
 }
 
 
-static void	copy_envp(t_shell *shell, char **envp)
+void	copy_envp(char **copy, char **original, int allocate)
 {
 	int	i;
 
-	allocate_matrix(shell, envp);
+	if (allocate)
+		allocate_matrix(copy, original);
 	i = 0;
-	while (envp[i] != NULL)
+	while (original[i] != NULL)
 	{
-		shell->envp[i] = ft_strdup(envp[i]);
-		if (!shell->envp[i])
+		copy[i] = ft_strdup(original[i]);
+		if (!copy[i])
 		{
-			free(shell->envp);
+			free(copy);
 			perror_exit("envp variable failed to copy");
 		}
 		i++;
 	}
+	copy[i] = NULL;
 	return ;
 }
 
 void	shell_init(t_shell *shell, char **envp)
 {
-	copy_envp(shell, envp);
+	copy_envp(shell->envp, envp, 1);
 	shell->last_status = 0;
 	set_signals_prompt_mode();
 	return ; 

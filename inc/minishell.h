@@ -93,6 +93,7 @@ void	perror_exit(const char *label);
 void	msg_exit(char *msg);
 
 /* shell_init.c */
+void	copy_envp(char **copy, char **original, int allocate);
 void	shell_init(t_shell *shell, char **envp); //additional parameters TBD
 
 /* shell_loop.c */
@@ -140,6 +141,7 @@ char	*join_paths(char *dir, char *cmd);
 
 /* builtin.c */
 int		is_builtin(char *cmd);
+void    append_shell_envp(t_shell *shell, int old_len, char *new_line);
 int		builtin_exec(t_pipe *pipex, char **cmd_args, char **envp);
 
 /* builtin_stateful.c */

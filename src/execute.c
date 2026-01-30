@@ -76,5 +76,6 @@ int execute_line(t_pipeline *pipeline, t_shell *shell)
 		exec_stateful_builtin(pipeline, shell, &pipex);
 	else
 		exec_pipeline(pipeline, shell, &pipex);
+	set_signals_prompt_mode();
 	return (0);
 }
