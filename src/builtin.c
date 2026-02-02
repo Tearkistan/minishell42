@@ -21,24 +21,23 @@ int	is_builtin(char *cmd)
 	return (0);
 }
 
-void	append_shell_envp(t_shell *shell, int old_len, char *new_line)
+int	append_shell_envp(t_shell *sh, int old_len, char *new_line, char **new_envp)
 {
-	char	**new_envp;
-	
 	new_envp = (char **)malloc(sizeof(char *) * (old_len + 1));
 	if (!new_envp)
-		perror_exit("append_envp allocation fail");
-	copy_envp(new_envp, shell->envp, 0);
+		return (1);
+	copy_envp(new_envp, sh->envp, 0);
 	new_envp[old_len] = new_line;
 	new_envp[old_len + 1] = NULL;
-	free(shell->envp);
-	shell->envp = new_envp;
+	free(sh->envp);
+	sh->envp = new_envp;
+	return (0);
 }
 
 int	builtin_exec(t_pipe *pipex, char **cmd_args, t_shell *shell)
 {
 	if (ft_strlen(cmd_args[0]) >= 2 && ft_strncmp(cmd_args[0], "cd", 3))
-		return (exec_cd(pipex, cmd_args, shell));
+		return (exec_cd_ctrl(pipex, cmd_args, shell));
 	else if (ft_strlen(cmd_args[0]) >= 4 && ft_strncmp(cmd_args[0], "exit", 5))
 		return (exec_exit(cmd_args, shell->envp));
 	else if (ft_strlen(cmd_args[0]) >= 5 && ft_strncmp(cmd_args[0], "unset", 6))

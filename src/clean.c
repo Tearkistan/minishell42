@@ -48,7 +48,7 @@ static void free_shell(t_shell *shell)
 
 void	clean_up(t_shell *sh, t_pipeline *pipeline, char *line, char *err_msg)
 {
-	if (sh)
+	if (sh->running == 0)
 		free_shell(sh);
 	if (pipeline)
 		free_pipeline(pipeline);

@@ -51,6 +51,7 @@ void	shell_init(t_shell *shell, char **envp)
 {
 	copy_envp(shell->envp, envp, 1);
 	shell->last_status = 0;
+	shell->running = 1;
 	set_signals_prompt_mode();
 	return ; 
 }

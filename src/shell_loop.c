@@ -30,7 +30,7 @@ void shell_loop(t_shell *shell)
 	char		*line;
 	t_pipeline	pipeline;
 
-	while (1)
+	while (shell->running)
 	{
 		line = readline(PROMPT);
 		if (!line)
@@ -45,7 +45,7 @@ void shell_loop(t_shell *shell)
 		add_history(line);
 		if (parse_line(&pipeline, line, shell) == 0)
 			execute_line(&pipeline, shell);
-		clean_up(NULL, &pipeline, line, NULL);
+		clean_up(shell, &pipeline, line, NULL);
 	}
 	return ;
 }

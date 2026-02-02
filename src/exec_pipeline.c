@@ -12,9 +12,8 @@
 
 #include "minishell.h"
 
-static void	child(t_pipeline *pline, t_shell *sh, t_pipe *pipex)
+static void	child(t_pipeline *pline, t_shell *shell, t_pipe *pipex)
 {
-	
 	set_in_fd(pline->cmd.redirects, pipex);
 	set_out_fd(pline->cmd.redirects, pipex);
 	if (dup2(pipex->in_fd, 0) == -1)
@@ -32,9 +31,9 @@ static void	child(t_pipeline *pline, t_shell *sh, t_pipe *pipex)
 		close(pipex->out_fd);
 	}
 	if (is_builtin(pline->cmd.args[0]))
-		builtin_exec(pipex, pline->cmd.args, sh);
+		builtin_exec(pipex, pline->cmd.args, shell);
 	else
-		exec_cmd(pline->cmd.args, sh->envp);
+		exec_cmd(pline->cmd.args, shell->envp);
 }
 
 static void	parent(t_pipeline *pline, t_pipe *pipex, pid_t pid)

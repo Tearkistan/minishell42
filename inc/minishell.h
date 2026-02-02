@@ -63,6 +63,7 @@ typedef struct s_shell
 {
 	char	**envp;
 	int		last_status;
+	int		running;
 }	t_shell;
 
 /* Pipex struct for execution */
@@ -141,13 +142,19 @@ char	*join_paths(char *dir, char *cmd);
 
 /* builtin.c */
 int		is_builtin(char *cmd);
-void    append_shell_envp(t_shell *shell, int old_len, char *new_line);
-int		builtin_exec(t_pipe *pipex, char **cmd_args, char **envp);
+int		append_shell_envp(t_shell *sh, int old_len, char *nl, char **new_envp);
+int		builtin_exec(t_pipe *pipex, char **cmd_args, t_shell *shell);
 
-/* builtin_stateful.c */
-int		exec_cd(t_pipe *pipex, char **cmd_args, char **envp);
+/* cd.c */
+int		exec_cd_ctrl(t_pipe *pipex, char **cmd_args, t_shell *shell);
+
+/* exit.c */
 int		exec_exit(char **cmd_args, char **envp);
+
+/* unset.c */
 int		exec_unset(char **cmd_args, char **envp);
+
+/* export.c */
 int		exec_export(char **cmd_args, char **envp);
 
 /* builtin_nonstateful.c */
