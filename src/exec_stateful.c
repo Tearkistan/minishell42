@@ -12,11 +12,14 @@
 
 #include "minishell.h"
 
+/* exits shell if exit as single command */
+
 int	exec_stateful_builtin(t_pipeline *pline, t_shell *sh, t_pipe *pipex)
 {
-	/* still needs to be refactor for updated pipeline order */
-    set_signals_parent_running();
-	(void)pipex;
-	exec_cmd(pline->cmd.args, sh->envp);
+    (void)pipex;
+	set_signals_parent_running();
+	builtin_exec(pline->cmd.args, sh);
+	if (ft_strncmp(pline->cmd.args[0], "exit", 5) == 0)
+		sh->running = 0;
 	return (0);
 }

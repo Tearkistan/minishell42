@@ -21,10 +21,10 @@ typedef struct	s_cd
 {
 	char	*old_pwd;
 	char	*new_pwd;
-	int		cmd_count;
+	int		arg_count;
 }	t_cd;
 
-static int	perror_cd(char *error_msg, t_cd *cd, t_shell *shell, int running)
+static void	perror_cd(char *error_msg, t_cd *cd, t_shell *shell, int running)
 {
 	if (cd->old_pwd)
 		free(cd->old_pwd);
@@ -32,10 +32,10 @@ static int	perror_cd(char *error_msg, t_cd *cd, t_shell *shell, int running)
 		free(cd->new_pwd);
 	perror(error_msg);
 	shell->running = running;
-	return (1);
+	exit(1);
 }
 
-static int	update_old_pwd(t_cd *cd, t_shell *shell)
+static void	update_old_pwd(t_cd *cd, t_shell *shell)
 {
 	int	i;
 	char	**new_envp;
@@ -57,12 +57,12 @@ static int	update_old_pwd(t_cd *cd, t_shell *shell)
 			i++;
         append_shell_envp(shell, i, cd->old_pwd, new_envp);
 		if (!new_envp)
-			return (perror_cd("cd new_envp allocation fail", cd, shell, 0));
+			perror_cd("cd new_envp allocation fail", cd, shell, 0);
 	}
-	return (0);
+	return ;
 }
 
-static int	update_new_pwd(t_cd *cd, t_shell *shell)
+static void	update_new_pwd(t_cd *cd, t_shell *shell)
 {
 	int	i;
 	char	**new_envp;
@@ -76,7 +76,7 @@ static int	update_new_pwd(t_cd *cd, t_shell *shell)
 		free(shell->envp[i]);
         shell->envp[i] = ft_strjoin("PWD=", cd->new_pwd);
 		if (!shell->envp[i])
-			return(perror_cd("cd: memory allocation fail", cd, shell, 0));
+			perror_cd("cd: memory allocation fail", cd, shell, 0);
 	}
 	if (shell->envp[i] != NULL)
 	{   
@@ -84,45 +84,44 @@ static int	update_new_pwd(t_cd *cd, t_shell *shell)
 			i++;
         append_shell_envp(shell, i, cd->new_pwd, new_envp);
 		if (!new_envp)
-			return(perror_cd("cd new_envp allocation fail", cd, shell, 0));
+			perror_cd("cd new_envp allocation fail", cd, shell, 0);
 	}
-	return (0);
+	return ;
 }
 
-static int	exec_cd(char **cmd_args, t_shell *shell, t_cd *cd)
+static void	exec_cd(char **cmd_args, t_shell *shell, t_cd *cd)
 {
 	char    *target;
 
-	if (cd->cmd_count > 2)
-		return (perror_cd("cd: too many arguments", cd, shell, 1));
-	else if (cd->cmd_count == 1)
+	if (cd->arg_count > 2)
+		perror_cd("cd: too many arguments", cd, shell, 1);
+	else if (cd->arg_count == 1)
 	{
 		if (!(target = getenv("HOME")))
-			return (perror_cd("cd: no HOME found", cd, shell, 1));
+			perror_cd("cd: no HOME found", cd, shell, 1);
 	}
-	else if (cd->cmd_count == 2)
+	else if (cd->arg_count == 2)
 		target = cmd_args[1];
 	if (getenv("PWD"))
         	cd->old_pwd = ft_strdup(getenv("PWD"));
 	if (chdir(target) == -1)
-		return (perror_cd("cd", cd, shell, 1));
+		perror_cd("cd", cd, shell, 1);
 	cd->new_pwd = getcwd(NULL, 0);
-	if (update_old_pwd(cd, shell))
-		return (1);
-	if (update_new_pwd(cd, shell))
-		return (1);
-	return (0);
+	update_old_pwd(cd, shell);
+	update_new_pwd(cd, shell);
+	return ;
 }
 
-int	exec_cd_ctrl(t_pipe *pipex, char **cmd_args, t_shell *shell)
+int	exec_cd_ctrl(char **cmd_args, t_shell *shell)
 {
 	t_cd	cd;
 
 	cd.old_pwd = NULL;
 	cd.new_pwd = NULL;
-	cd.cmd_count = pipex->cmd_count;
-	if (exec_cd(cmd_args, shell, &cd))
-		return (1);
+	cd.arg_count = 0;
+	while (cmd_args[cd.arg_count] != NULL)
+		cd.arg_count++;
+	exec_cd(cmd_args, shell, &cd);
 	free(cd.old_pwd);
 	free(cd.new_pwd);
 	return (0);
