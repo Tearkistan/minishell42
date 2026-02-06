@@ -28,7 +28,7 @@ static int	numeric_check(char *code)
 	return (1);
 }
 
-static void exit_check(t_shell shell, int code, int parent)
+static void exit_check(t_shell *shell, int code, int parent)
 {
 	if (parent)
 	{

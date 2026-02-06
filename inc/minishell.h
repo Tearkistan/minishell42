@@ -109,7 +109,7 @@ void	exec_cmd(char **cmd_args, char **envp);
 int		execute_line(t_pipeline *pipeline, t_shell *shell);
 
 /* exec_stateful.c */
-int		exec_stateful_builtin(t_pipeline *pline, t_shell *sh, t_pipe *pipex);
+int		exec_stateful_builtin(t_pipeline *pline, t_shell *sh);
 
 /* exec_pipeline.c */
 int		is_stateful(char *cmd);
@@ -149,7 +149,7 @@ int		builtin_exec(char **cmd_args, t_shell *shell, int parent);
 int		exec_cd_ctrl(char **cmd_args, t_shell *shell, int parent);
 
 /* exit.c */
-int		exec_exit(char **cmd_args, t_shell *shell);
+int		exec_exit(char **cmd_args, t_shell *shell, int parent);
 
 /* unset.c */
 int		exec_unset(char **cmd_args, char **envp);

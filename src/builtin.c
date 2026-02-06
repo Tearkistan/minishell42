@@ -39,7 +39,7 @@ int	builtin_exec(char **args, t_shell *shell, int parent)
 	if (ft_strlen(args[0]) >= 2 && ft_strncmp(args[0], "cd", 3))
 		return (exec_cd_ctrl(args, shell, parent));
 	else if (ft_strlen(args[0]) >= 4 && ft_strncmp(args[0], "exit", 5))
-		return (exec_exit(args, shell));
+		return (exec_exit(args, shell, parent));
 	else if (ft_strlen(args[0]) >= 5 && ft_strncmp(args[0], "unset", 6))
 		return (exec_unset(args, shell->envp));
 	else if (ft_strlen(args[0]) >= 6 && ft_strncmp(args[0], "export", 7))

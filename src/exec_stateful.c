@@ -19,6 +19,6 @@ int	exec_stateful_builtin(t_pipeline *pline, t_shell *sh)
 	set_signals_parent_running();
 	builtin_exec(pline->cmd.args, sh, 1);
 	if (ft_strncmp(pline->cmd.args[0], "exit", 5) == 0)
-		cleanup(sh, pline, NULL, "42");
+		clean_up(sh, pline, NULL, "42");
 	return (0);
 }
