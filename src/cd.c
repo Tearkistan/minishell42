@@ -22,6 +22,7 @@ typedef struct	s_cd
 	char	*old_pwd;
 	char	*new_pwd;
 	int		arg_count;
+	int		parent;
 }	t_cd;
 
 static void	perror_cd(char *error_msg, t_cd *cd, t_shell *shell, int running)
@@ -31,7 +32,8 @@ static void	perror_cd(char *error_msg, t_cd *cd, t_shell *shell, int running)
 	if (cd->new_pwd)
 		free(cd->new_pwd);
 	perror(error_msg);
-	shell->running = running;
+	if (cd->parent)
+		shell->running = running;
 	exit(1);
 }
 
@@ -112,13 +114,14 @@ static void	exec_cd(char **cmd_args, t_shell *shell, t_cd *cd)
 	return ;
 }
 
-int	exec_cd_ctrl(char **cmd_args, t_shell *shell)
+int	exec_cd_ctrl(char **cmd_args, t_shell *shell, int parent)
 {
 	t_cd	cd;
 
 	cd.old_pwd = NULL;
 	cd.new_pwd = NULL;
 	cd.arg_count = 0;
+	cd.parent = parent;
 	while (cmd_args[cd.arg_count] != NULL)
 		cd.arg_count++;
 	exec_cd(cmd_args, shell, &cd);

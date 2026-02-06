@@ -143,10 +143,10 @@ char	*join_paths(char *dir, char *cmd);
 /* builtin.c */
 int		is_builtin(char *cmd);
 int		append_shell_envp(t_shell *sh, int old_len, char *nl, char **new_envp);
-int		builtin_exec(char **cmd_args, t_shell *shell);
+int		builtin_exec(char **cmd_args, t_shell *shell, int parent);
 
 /* cd.c */
-int		exec_cd_ctrl(char **cmd_args, t_shell *shell);
+int		exec_cd_ctrl(char **cmd_args, t_shell *shell, int parent);
 
 /* exit.c */
 int		exec_exit(char **cmd_args, t_shell *shell);

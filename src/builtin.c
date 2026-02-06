@@ -34,10 +34,10 @@ int	append_shell_envp(t_shell *sh, int old_len, char *new_line, char **new_envp)
 	return (0);
 }
 
-int	builtin_exec(char **cmd_args, t_shell *shell)
+int	builtin_exec(char **cmd_args, t_shell *shell, int parent)
 {
 	if (ft_strlen(cmd_args[0]) >= 2 && ft_strncmp(cmd_args[0], "cd", 3))
-		return (exec_cd_ctrl(cmd_args, shell));
+		return (exec_cd_ctrl(cmd_args, shell, parent));
 	else if (ft_strlen(cmd_args[0]) >= 4 && ft_strncmp(cmd_args[0], "exit", 5))
 		return (exec_exit(cmd_args, shell));
 	else if (ft_strlen(cmd_args[0]) >= 5 && ft_strncmp(cmd_args[0], "unset", 6))

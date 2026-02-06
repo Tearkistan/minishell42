@@ -12,6 +12,22 @@
 
 #include "minishell.h"
 
+static int	numeric_check(char *code)
+{
+	int	check;
+
+	check = 0;
+	if (code[check] == '-' || code[check] == '+')
+		check++;
+	while (code[check] != '\0')
+	{
+		if (ft_isdigit(code[check]) == 0)
+			return (0);
+		check++;
+	}
+	return (1);
+}
+
 int	exec_exit(char **cmd_args, t_shell *shell)
 {
 	int	arg_count;
@@ -22,9 +38,9 @@ int	exec_exit(char **cmd_args, t_shell *shell)
 		arg_count++;
 	if (arg_count == 1)
 		exit(shell->last_status);
-	else if (arg_count == 2 && ft_isalldigits(cmd_args[1]))
+	else if (arg_count == 2 && numeric_check(cmd_args[1]))
 		exit(ft_atoi(cmd_args[1]));
-	else if (ft_isalldigits(cmd_args[1]) == 0)
+	else if (numeric_check(cmd_args[1]) == 0)
 	{
 		perror("exit: numeric argument required");
 		exit(2);
