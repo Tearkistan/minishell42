@@ -46,19 +46,27 @@ static void free_shell(t_shell *shell)
 	return ;
 }
 
+/* leveraged for ctrl-d and exit on parent (single command) call */
+
 void	clean_up(t_shell *sh, t_pipeline *pipeline, char *line, char *err_msg)
 {
+	int	code;
+
+	code = sh->last_status;
+	rl_clear_history();
 	if (sh->running == 0)
 		free_shell(sh);
 	if (pipeline)
 		free_pipeline(pipeline);
+	if (line) // ideally remove parameter if not used by parsing
+		free(line);
 	if (err_msg && ft_strncmp(err_msg, "exit", 5) == 0)
 	{
 		ft_printf("exit\n");
 		exit(0);
 	}
-	if (line)
-		free(line);
+	if (err_msg && ft_strncmp(err_msg, "42", 3) == 0)
+		exit (code);
 	else if (err_msg)
 		perror_exit(err_msg);
 	return ;

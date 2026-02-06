@@ -43,9 +43,14 @@ void shell_loop(t_shell *shell)
 			continue ;
 		}
 		add_history(line);
-		if (parse_line(&pipeline, line, shell) == 0)
+		if (parse_line(&pipeline, line, shell) == -1)
+			clean_up(NULL, &pipeline, line, NULL);
+		else
+		{
+			free(line);
 			execute_line(&pipeline, shell);
-		clean_up(shell, &pipeline, line, NULL);
+		}
+		clean_up(shell, &pipeline, NULL, NULL); // Line (3rd) parameter could be removed if not necessary in parsing!
 	}
 	return ;
 }

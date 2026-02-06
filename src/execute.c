@@ -22,7 +22,6 @@ void	exec_cmd(char **cmd_args, char **envp)
 	if (execve(path, cmd_args, envp) == -1)
 	{
 		free(path);
-		free_matrix(cmd_args);
 		perror_exit("execve");
 	}
 	free(path);
@@ -71,11 +70,13 @@ int execute_line(t_pipeline *pipeline, t_shell *shell)
 	t_pipe		pipex;
 
 	return (0); // remove to actually test excution
-	init_pipex(&pipex, pipeline, shell);
 	if (!pipeline->next && is_stateful(pipeline->cmd.args[0]))
-		exec_stateful_builtin(pipeline, shell, &pipex);
+		exec_stateful_builtin(pipeline, shell);
 	else
+	{
+		init_pipex(&pipex, pipeline, shell);
 		exec_pipeline(pipeline, shell, &pipex);
+	}
 	set_signals_prompt_mode();
 	return (0);
 }
