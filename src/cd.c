@@ -33,8 +33,12 @@ static void	perror_cd(char *error_msg, t_cd *cd, t_shell *shell, int running)
 		free(cd->new_pwd);
 	perror(error_msg);
 	if (cd->parent)
+	{
 		shell->running = running;
-	exit(1);
+		shell->last_status = 1;
+	}
+	else
+		exit(1);
 }
 
 static void	update_old_pwd(t_cd *cd, t_shell *shell)
