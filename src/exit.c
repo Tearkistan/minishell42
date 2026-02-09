@@ -12,6 +12,10 @@
 
 #include "minishell.h"
 
+/* if 1st argument cmd_args[1] determines if cmd_args > 2 returns must be numeric 
+or too many arguments error when. When exit occurs in parent, actually exits shell, 
+else only exits the child */
+
 static int	numeric_check(char *code)
 {
 	int	check;

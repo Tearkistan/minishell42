@@ -122,7 +122,7 @@ int	exec_cd_ctrl(char **cmd_args, t_shell *shell, int parent)
 	cd.new_pwd = NULL;
 	cd.arg_count = 0;
 	cd.parent = parent;
-	while (cmd_args[cd.arg_count] != NULL)
+	while (cmd_args[cd.arg_count])
 		cd.arg_count++;
 	exec_cd(cmd_args, shell, &cd);
 	free(cd.old_pwd);

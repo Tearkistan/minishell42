@@ -41,11 +41,11 @@ int	builtin_exec(char **args, t_shell *shell, int parent)
 	else if (ft_strlen(args[0]) >= 4 && ft_strncmp(args[0], "exit", 5))
 		return (exec_exit(args, shell, parent));
 	else if (ft_strlen(args[0]) >= 5 && ft_strncmp(args[0], "unset", 6))
-		return (exec_unset(args, shell->envp));
+		return (exec_unset_ctrl(args, shell, parent));
 	else if (ft_strlen(args[0]) >= 6 && ft_strncmp(args[0], "export", 7))
-		return (exec_export(args, shell->envp));
+		return (exec_export_ctrl(args, shell, parent));
 	else if (ft_strlen(args[0]) >= 2 && ft_strncmp(args[0], "pwd", 4))
-		return (exec_export(args, shell->envp));
+		return (exec_pwd(args, shell->envp));
 	else if (ft_strlen(args[0]) >= 4 && ft_strncmp(args[0], "envp", 5))
 		return (exec_envp(args, shell->envp));
 	else if (ft_strlen(args[0]) >= 5 && ft_strncmp(args[0], "echo", 5))

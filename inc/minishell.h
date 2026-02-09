@@ -152,10 +152,10 @@ int		exec_cd_ctrl(char **cmd_args, t_shell *shell, int parent);
 int		exec_exit(char **cmd_args, t_shell *shell, int parent);
 
 /* unset.c */
-int		exec_unset(char **cmd_args, char **envp);
+int		exec_unset_ctrl(char **cmd_args, t_shell *shell, int parent);
 
 /* export.c */
-int		exec_export(char **cmd_args, char **envp);
+int		exec_export_ctrl(char **cmd_args, t_shell *shell, int parent);
 
 /* builtin_nonstateful.c */
 int		exec_pwd(char **cmd_args, char **envp);

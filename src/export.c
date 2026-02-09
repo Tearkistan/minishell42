@@ -12,9 +12,10 @@
 
 #include "minishell.h"
 
-int	exec_export(char **cmd_args, char **envp)
+int	exec_export_ctrl(char **cmd_args, t_shell *shell, int parent)
 {
 	(void)cmd_args;
-	(void)envp;
+	(void)shell;
+	(void)parent;
 	return (0);
 }
