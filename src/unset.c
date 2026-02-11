@@ -22,54 +22,80 @@ typedef struct	s_unset
 	char	**valid_args;
 	int		arg_count;
 	int		valid_count;
-	int		env_count;
 	int		parent;
 	int		exit;
 }	t_unset;
 
-static void	exit_unset(t_unset *unset, t_shell *shell)
+static void	exit_unset(t_unset *unset, t_shell *shell, int alloc_fail)
 {
 	if (unset->new_envp)
-		free(unset->new_envp);
+		free_matrix(unset->new_envp);
 	if (unset->valid_args)
-		free(unset->valid_args);
-	if (unset->parent)
+		free_matrix(unset->valid_args);
+	if (unset->parent && alloc_fail)
 	{
 		shell->running = 0;
 		shell->last_status = 1;
 	}
-	else
+	else if (alloc_fail)
 		exit(1);
 }
 
-static int arg_check_unset(char **cmd_args, t_shell *shell, t_unset unset)
+static int	unset_arg_error(char **cmd_args)
+{
+
+}
+
+static int remove_valid_args(char **cmd_args, t_shell *shell, t_unset unset)
 {
 	int	i;
+	int	j;
 
 	i = 1;
+	j = 0;
 	while (cmd_args[i])
 	{
-		if (arg_error(cmd_args[i]))
-			unset->exit = 1;
 		if (getenv(cmd_args[i]))
-			unset->valid_count++;
+		{
+			unset->valid_args[j] = cmd_args[i];
+			j++
+		}
+		i++;
+	}
+	i = 0;
+	while (shell->envp[i])
+	{
+		if (strncmp(shell->envp, str))
 	}
 }
 
 static void	exec_unset(char **cmd_args, t_shell *shell, t_unset *unset)
 {
 	int	size;
+	int	i;
 
-	arg_check_unset(cmd_args, shell, unset);
+	i = 1;
+	while (cmd_args[i])
+	{
+		if (unset_arg_error(cmd_args[i]))
+			shell->last_status = 1;
+		if (getenv(cmd_args[i]))
+			unset->valid_count++;
+		i++;
+	}
 	if (unset->valid_count = 0 && unset->exit = 0);
 		return ;
 	size = unset->env_count - unset->valid_args + 1;
 	unset->new_envp = (char **)malloc(sizeof(char *) * size);
+	if (!unset->new_envp)
+		exit_unset(unset, shell);
+	size = unset->valid_count + 1
+	unset->valid_args = (char **)malloc(sizeof(char *) * size)
+	if (!unset->valid_args)
+		exit_unset(unset, shell);
+	remove_valid_args(cmd_args, unset, shell)
 	if (unset->exit)
 		exit_unset(unset, shell);
-	(void)cmd_args;
-	(void)shell;
-	(void)unset;
 }
 
 int	exec_unset_ctrl(char **cmd_args, t_shell *shell, int parent)
@@ -78,13 +104,10 @@ int	exec_unset_ctrl(char **cmd_args, t_shell *shell, int parent)
 
 	unset.new_envp= NULL;
 	unset.valid_args = NULL;
-	unset.env_count = 0;
 	unset.arg_count = 0;
 	unset.valid_count = 0;
 	unset.parent = parent;
 	unset.exit = 0;
-	while (shell->envp[unset->env_count])
-		env_count;
 	while (cmd_args[unset.arg_count])
 		unset.arg_count++;
 	if (unset.arg_count == 1)

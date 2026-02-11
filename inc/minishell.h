@@ -64,6 +64,7 @@ typedef struct s_shell
 	char	**envp;
 	int		last_status;
 	int		running;
+	int		envp_len;
 }	t_shell;
 
 /* Pipex struct for execution */
