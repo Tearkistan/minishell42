@@ -95,7 +95,7 @@ void	perror_exit(const char *label);
 void	msg_exit(char *msg);
 
 /* shell_init.c */
-void	copy_envp(char **copy, char **original, int allocate);
+char	**copy_envp(char **copy, char **original, int allocate);
 void	shell_init(t_shell *shell, char **envp); //additional parameters TBD
 
 /* shell_loop.c */
@@ -143,7 +143,7 @@ char	*join_paths(char *dir, char *cmd);
 
 /* builtin.c */
 int		is_builtin(char *cmd);
-int		append_shell_envp(t_shell *sh, int old_len, char *nl, char **new_envp);
+int		append_shell_envp(t_shell *shell, char *nl, char **new_envp);
 int		ft_strncmp_set(char *str, char **set);
 int		builtin_exec(char **cmd_args, t_shell *shell, int parent);
 
@@ -174,6 +174,6 @@ void	signint_heredoc(int signo);
 void	set_signals_heredoc(void);
 void	resolve_prompt_sigint(t_shell *shell);
 void	resolve_heredoc_sigint(char *line, t_shell *shell, t_pipe *pipex);
-int		status_to_exitcode(int status);
+int		status_to_exitcode(int status);int		ft_strncmp_set(char *str, char **set);
 
 #endif

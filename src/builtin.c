@@ -21,12 +21,12 @@ int	is_builtin(char *cmd)
 	return (0);
 }
 
-int	append_shell_envp(t_shell *shell, int old_len, char *new_line, char **new_envp)
+int	append_shell_envp(t_shell *shell, char *new_line, char **new_envp)
 {
 	new_envp = (char **)malloc(sizeof(char *) * (shell->envp_len + 1));
 	if (!new_envp)
 		return (1);
-	copy_envp(new_envp, shell->envp, 0);
+	new_envp = copy_envp(new_envp, shell->envp, 0);
 	new_envp[shell->envp_len] = new_line;
 	new_envp[shell->envp_len + 1] = NULL;
 	shell->envp_len++;
@@ -44,7 +44,7 @@ int		ft_strncmp_set(char *str, char **set)
 	while (set[i])
 	{
 		len = ft_strlen(set[i]);
-		if (ft_strncmp(str, set[i], len) == 0);
+		if (ft_strncmp(str, set[i], len) == 0)
 			return (0);
 		i++;		
 	}
