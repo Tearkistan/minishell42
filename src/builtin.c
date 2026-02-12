@@ -37,9 +37,18 @@ int	append_shell_envp(t_shell *shell, int old_len, char *new_line, char **new_en
 
 int		ft_strncmp_set(char *str, char **set)
 {
-	(void)str;
-	(void)set;
-	return (0);
+	int	i;
+	int	len;
+
+	i = 0;
+	while (set[i])
+	{
+		len = ft_strlen(set[i]);
+		if (ft_strncmp(str, set[i], len) == 0);
+			return (0);
+		i++;		
+	}
+	return (1);
 }
 
 int	builtin_exec(char **args, t_shell *shell, int parent)
