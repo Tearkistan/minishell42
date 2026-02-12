@@ -41,9 +41,22 @@ static void	exit_unset(t_unset *unset, t_shell *shell, int alloc_fail)
 		exit(1);
 }
 
-static int	unset_arg_error(char **cmd_args)
+static int	unset_arg_error(char *cmd_args)
 {
+	int	i;
+	int	j;
 
+	i = 0;
+	if (cmd_arg[i] != '_' || !(ft_isalpha(cmd_arg[i])))
+		return (1);
+	i++;
+	while (cmd_arg[i])
+	{
+		if (cmd_arg[i] != '_' || !(ft_isalnum(cmd_arg[i])))
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 static int remove_valid_args(char **cmd_args, t_shell *shell, t_unset unset)
@@ -63,10 +76,16 @@ static int remove_valid_args(char **cmd_args, t_shell *shell, t_unset unset)
 		i++;
 	}
 	i = 0;
+	j = 0;
 	while (shell->envp[i])
 	{
-		if (strncmp(shell->envp, str))
+		while (ft_strncmp_set(shell->envp[i + j], unset->valid_args) == 0)
+			j++;
+		unset->new_envp[i] = shell->envp[i + j];
+		i++;
 	}
+	free_matrix(shell->envp)
+	shell->envp = unset->new_envp;
 }
 
 static void	exec_unset(char **cmd_args, t_shell *shell, t_unset *unset)
@@ -93,9 +112,7 @@ static void	exec_unset(char **cmd_args, t_shell *shell, t_unset *unset)
 	unset->valid_args = (char **)malloc(sizeof(char *) * size)
 	if (!unset->valid_args)
 		exit_unset(unset, shell);
-	remove_valid_args(cmd_args, unset, shell)
-	if (unset->exit)
-		exit_unset(unset, shell);
+	remove_valid_args(cmd_args, unset, shell);
 }
 
 int	exec_unset_ctrl(char **cmd_args, t_shell *shell, int parent)

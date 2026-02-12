@@ -35,6 +35,13 @@ int	append_shell_envp(t_shell *shell, int old_len, char *new_line, char **new_en
 	return (0);
 }
 
+int		ft_strncmp_set(char *str, char **set)
+{
+	(void)str;
+	(void)set;
+	return (0);
+}
+
 int	builtin_exec(char **args, t_shell *shell, int parent)
 {
 	if (ft_strlen(args[0]) >= 2 && ft_strncmp(args[0], "cd", 3))

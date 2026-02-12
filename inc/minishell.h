@@ -144,6 +144,7 @@ char	*join_paths(char *dir, char *cmd);
 /* builtin.c */
 int		is_builtin(char *cmd);
 int		append_shell_envp(t_shell *sh, int old_len, char *nl, char **new_envp);
+int		ft_strncmp_set(char *str, char **set);
 int		builtin_exec(char **cmd_args, t_shell *shell, int parent);
 
 /* cd.c */
