@@ -19,7 +19,7 @@ int		is_no_eq(char *var, char **no_eq)
 	i = 0;
 	while (no_eq[i])
 	{
-		if (ft_strcmp(var, no_ep[i]) == 0)
+		if (ft_strcmp(var, no_eq[i]) == 0)
 			return (1);
 		i++;
 	}
@@ -40,25 +40,25 @@ void	add_no_equal_key(t_export *export, t_shell *shell)
 
 void	finish_export_arg(t_shell *shell, t_export *export, int index)
 {
-	if (index = -1)
+	if (index == -1)
 	{
 		if (append_shell_envp(shell, export->new_line))
 			return (exit_export(export, shell, 1));
 	}
 	else if (export->append == 0 && export->eq)
 	{
-		free(shell->envp[index])
-		shell->envp[index] == export->new_line;
+		free(shell->envp[index]);
+		shell->envp[index] = export->new_line;
 	}
 	else if (export->append)
 	{
 		free(export->new_line);
 		export->new_line = ft_strjoin(shell->envp[index], export->value);
-		(!export->new_line)
+		if (!export->new_line)
 			return (exit_export(export, shell, 1));
 		export->value = NULL;
 		free(shell->envp[index]);
 		shell->envp[index] = export->new_line;
 	}
-	export->newline = NULL;
+	export->new_line = NULL;
 }

@@ -55,7 +55,7 @@ void	shell_init(t_shell *shell, char **envp)
 	while (shell->envp[shell->envp_len])
 		shell->envp_len++;
 	shell->no_eq = (char **)malloc(sizeof(char *) * (shell->envp_len + 420));
-	shell->no_eq[0] == NULL;
+	shell->no_eq[0] = NULL;
 	set_signals_prompt_mode();
 	return ; 
 }

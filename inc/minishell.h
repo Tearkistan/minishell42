@@ -86,7 +86,7 @@ typedef struct s_pipe
 typedef struct	s_export
 {
 	char	**temp_envp;
-	char	*temp_line;
+	char	*new_line;
 	char	*key;
 	char	*value;
 	int		arg_count;
@@ -171,13 +171,14 @@ int		exec_exit(char **cmd_args, t_shell *shell, int parent);
 int		exec_unset_ctrl(char **cmd_args, t_shell *shell, int parent);
 
 /* export.c */
+void	exit_export(t_export *export, t_shell *shell, int alloc_fail);
 int		exec_export_ctrl(char **cmd_args, t_shell *shell, int parent);
 
 /* export_utils.c */
 void	print_export(char **envp, char **no_eq);
-int		export_arg_error(char *cmd_arg);
+int		export_arg_error(char *cmd_arg, t_export *export);
 int 	find_var_in_env(char **envp, char *key);
-char    *create_line(char *key, int equal, char *value);
+char    *create_line(char *key, char *value);
 void    alloc_key_value(char *arg, t_export *export, t_shell *shell);
 
 /* export_utils_plus.c */

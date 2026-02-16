@@ -23,13 +23,13 @@ void    print_export(char **envp, char **no_eq)
 		j = 0;
 		ft_printf("declare - x ");
 		while (envp[i][j] != '=' && envp[i][j])
-			write(1, envp[i][j++], 1);
+			write(1, &envp[i][j++], 1);
 		if (is_no_eq(envp[i], no_eq) == 0)
         {
 		    ft_printf("=\"");
 		    j++;
 		    while (envp[i][j] != '\0')
-			    write(1, envp[i][j++], 1);
+			    write(1, &envp[i][j++], 1);
 			ft_printf("\"");
         }
 		ft_printf("\n");
@@ -37,24 +37,25 @@ void    print_export(char **envp, char **no_eq)
 	}
 }
 
-int	export_arg_error(char *cmd_arg)
+int	export_arg_error(char *cmd_arg, t_export *export)
 {
 	int	i;
 
 	i = 0;
-	if (cmd_args[i] != '_' || !(ft_isalpha(cmd_arg[i])))
+	if (cmd_arg[i] != '_' || !(ft_isalpha(cmd_arg[i])))
 		return (1);
 	i++;
-	while (cmd_args[i] != '+' && cmd_args[i] != '=' && cmd_args[i] != '\0')
+	while (cmd_arg[i] != '+' && cmd_arg[i] != '=' && cmd_arg[i] != '\0')
 	{
 		if (cmd_arg[i] != '_' || !(ft_isalnum(cmd_arg[i])))
 			return (1);
 		i++;
 	}
-	if (cmd_arg[i] = '+')
+	if (cmd_arg[i] == '+')
 	{
 		if (cmd_arg[i + 1] != '=')
 			return (1);
+        export->append = 1;
 	}
 	return (0);
 }
@@ -67,10 +68,10 @@ int find_var_in_env(char **envp, char *key)
 	i = 0;
  	while (envp[i])
 	{
-		len = ft_strlen(envp[i])
-		if (ft_strncmp(envp[i], key, len) = 0)
+		len = ft_strlen(envp[i]);
+		if (ft_strncmp(envp[i], key, len) == 0)
 		{
-			if (envp[len] = '=' || '/0')
+			if (envp[i][len] == '=' || envp[i][len] == '\0')
 				return (i);
 		}
         i++;
@@ -78,7 +79,7 @@ int find_var_in_env(char **envp, char *key)
     return (-1);
 }
 
-char    *create_line(char *key, int equal, char *value)
+char    *create_line(char *key, char *value)
 {
     char    *new_line;
     char    *temp;
@@ -97,16 +98,19 @@ char    *create_line(char *key, int equal, char *value)
 
 /* dirty allocation and premptive check for = sign presence to ensure NULL for value if
 no = sign present; already separate check for early exit if incorrect format / order */
+
 void    alloc_key_value(char *arg, t_export *export, t_shell *shell)
 {
     int size;
     int equal_check;
+    int i;
 
     size = ft_strlen(arg) + 1;
     export->key = (char *)malloc(sizeof(char) * size);
-    (!export->key)
+    if (!export->key)
         exit_export(export, shell, 1);
     equal_check = 0;
+    i = 0;
     while (arg[i])
     {
         if (arg[i] == '=')
@@ -119,7 +123,7 @@ void    alloc_key_value(char *arg, t_export *export, t_shell *shell)
     if (equal_check)
     {
         export->value = (char *)malloc(sizeof(char) * size);
-        (!export->value)
+        if (!export->value)
             exit_export(export, shell, 1);
     }
 }
