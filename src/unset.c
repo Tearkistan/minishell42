@@ -23,7 +23,6 @@ typedef struct	s_unset
 	int		arg_count;
 	int		valid_count;
 	int		parent;
-	int		exit;
 }	t_unset;
 
 static void	exit_unset(t_unset *unset, t_shell *shell, int alloc_fail)
@@ -41,17 +40,17 @@ static void	exit_unset(t_unset *unset, t_shell *shell, int alloc_fail)
 		exit(1);
 }
 
-static int	unset_arg_error(char *cmd_args)
+static int	unset_arg_error(char *cmd_arg)
 {
 	int	i;
 
 	i = 0;
-	if (cmd_args[i] != '_' || !(ft_isalpha(cmd_args[i])))
+	if (cmd_arg[i] != '_' || !(ft_isalpha(cmd_arg[i])))
 		return (1);
 	i++;
-	while (cmd_args[i])
+	while (cmd_arg[i])
 	{
-		if (cmd_args[i] != '_' || !(ft_isalnum(cmd_args[i])))
+		if (cmd_arg[i] != '_' || !(ft_isalnum(cmd_arg[i])))
 			return (1);
 		i++;
 	}
@@ -102,16 +101,16 @@ static void	exec_unset(char **cmd_args, t_shell *shell, t_unset *unset)
 			unset->valid_count++;
 		i++;
 	}
-	if (unset->valid_count == 0 && unset->exit == 0)
+	if (unset->valid_count == 0)
 		return ;
 	size = shell->envp_len - unset->valid_count + 1;
 	unset->new_envp = (char **)malloc(sizeof(char *) * size);
 	if (!unset->new_envp)
-		exit_unset(unset, shell, 1);
+		return (exit_unset(unset, shell, 1));
 	size = unset->valid_count + 1;
 	unset->valid_args = (char **)malloc(sizeof(char *) * size);
 	if (!unset->valid_args)
-		exit_unset(unset, shell, 1);
+		return (exit_unset(unset, shell, 1));
 	remove_valid_args(cmd_args, shell, unset);
 }
 
@@ -124,15 +123,14 @@ int	exec_unset_ctrl(char **cmd_args, t_shell *shell, int parent)
 	unset.arg_count = 0;
 	unset.valid_count = 0;
 	unset.parent = parent;
-	unset.exit = 0;
 	while (cmd_args[unset.arg_count])
 		unset.arg_count++;
 	if (unset.arg_count == 1)
 		return (0);
 	exec_unset(cmd_args, shell, &unset);
 	if (unset.new_envp)
-		free(unset.new_envp);
+		free_matrix(unset.new_envp);
 	if (unset.valid_args)
-		free(unset.valid_args);
+		free_matrix(unset.valid_args);
 	return (0);
 }

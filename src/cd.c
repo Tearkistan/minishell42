@@ -71,7 +71,6 @@ static void	update_old_pwd(t_cd *cd, t_shell *shell)
 static void	update_new_pwd(t_cd *cd, t_shell *shell)
 {
 	int	i;
-	char	**new_envp;
 
 	i = 0;
 	new_envp = NULL;
@@ -84,7 +83,7 @@ static void	update_new_pwd(t_cd *cd, t_shell *shell)
 		if (!shell->envp[i])
 			perror_cd("cd: memory allocation fail", cd, shell, 0);
 	}
-    append_shell_envp(shell, cd->new_pwd, new_envp);
+    append_shell_envp(shell, cd->new_pwd);
 	if (!new_envp)
 			perror_cd("cd new_envp allocation fail", cd, shell, 0);
 	return ;

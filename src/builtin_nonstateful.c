@@ -19,7 +19,7 @@ int	exec_pwd(char **cmd_args, char **envp)
 	return (0);
 }
 
-int	exec_envp(char **cmd_args, char **envp)
+int	exec_env(char **cmd_args, char **envp)
 {
 	(void)cmd_args;
 	(void)envp;

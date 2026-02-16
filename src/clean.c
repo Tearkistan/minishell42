@@ -43,6 +43,12 @@ static void free_shell(t_shell *shell)
 		i++;
 	}
 	free(shell->envp);
+	i = 0;
+	while (shell->no_eq[i])
+	{
+		free(shell->no_eq[i]);
+		i++;
+	}
 	return ;
 }
 

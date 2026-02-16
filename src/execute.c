@@ -44,7 +44,7 @@ int	is_nonstateful(char *cmd)
 {
 	if (ft_strlen(cmd) >= 3 && ft_strncmp(cmd, "pwd", 4))
 		return (1);
-	if (ft_strlen(cmd) >= 4 && ft_strncmp(cmd, "envp", 5))
+	if (ft_strlen(cmd) >= 4 && ft_strncmp(cmd, "env", 4))
 		return (1);
 	if (ft_strlen(cmd) >= 4 && ft_strncmp(cmd, "echo", 5))
 		return (1);
