@@ -1,15 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_nonstateful.c                              :+:      :+:    :+:   */
+/*   error_msg.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/26 17:09:23 by twatson           #+#    #+#             */
-/*   Updated: 2026/02/16 15:23:30 by psmolich         ###   ########.fr       */
+/*   Created: 2026/02/16 15:26:58 by psmolich          #+#    #+#             */
+/*   Updated: 2026/02/16 15:27:32 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
+void	error_msg(char *message)
+{
+	ft_putstr_fd(message, 2);
+}

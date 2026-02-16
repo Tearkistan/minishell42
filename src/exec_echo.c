@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:01:36 by psmolich          #+#    #+#             */
-/*   Updated: 2026/02/16 14:33:49 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/02/16 15:28:35 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	exec_echo(char **cmd_args, char **envp)
 	if (!cmd_args)
 		return (FAILURE); // should not happen, but just in case
 	if (cmd_args[0] == NULL || ft_strcmp(cmd_args[0], "echo") != 0)
-		return (ft_printf("not the echo command"), FAILURE); // not the echo command
+		return (error_msg("not the echo command"), FAILURE); // not the echo command
 	if (!cmd_args[1])
 		return (ft_putstr_fd("\n", STDOUT_FILENO), SUCCESS); // echo with no arguments should print a newline
 	newline = TRUE;
@@ -62,6 +62,6 @@ int	exec_echo(char **cmd_args, char **envp)
 			ft_putstr_fd(" ", STDOUT_FILENO);
 	}
 	if (newline)
-			ft_putstr_fd("\n", STDOUT_FILENO);
+		ft_putstr_fd("\n", STDOUT_FILENO);
 	return (SUCCESS);
 }
