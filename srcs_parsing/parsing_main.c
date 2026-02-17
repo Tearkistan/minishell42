@@ -48,32 +48,32 @@
 // }
 
 
-int	main(int argc, char **argv, char **envp)
-{
-	t_shell		shell;
-	t_pipeline	*pipeline;
-	char		*line;
+// int	main(int argc, char **argv, char **envp)
+// {
+// 	t_shell		shell;
+// 	t_pipeline	*pipeline;
+// 	char		*line;
 
-	((void)argc, (void)argv);
-	shell.envp = envp;
-	shell.last_status = 0;
-	ft_printf(P "MINIsHELL > " R);
-	line = get_next_line(0);
-	while (line)
-	{
-		if (*line && !ft_isallspaces(line))
-		{
-			pipeline = parse_line(line, shell);
-			if (pipeline)
-			{
-				print_pipeline(pipeline);
-				free_pipeline(pipeline);
-			}
-		}
-		free(line);
-		ft_printf(P "MINIsHELL > " R);
-		line = get_next_line(0);
-	}
-	ft_printf("exit\n");
-	return (0);
-}
+// 	((void)argc, (void)argv);
+// 	shell.envp = envp;
+// 	shell.last_status = 0;
+// 	ft_printf(P "MINIsHELL > " R);
+// 	line = get_next_line(0);
+// 	while (line)
+// 	{
+// 		if (*line && !ft_isallspaces(line))
+// 		{
+// 			pipeline = parse_line(line, shell);
+// 			if (pipeline)
+// 			{
+// 				print_pipeline(pipeline);
+// 				free_pipeline(pipeline);
+// 			}
+// 		}
+// 		free(line);
+// 		ft_printf(P "MINIsHELL > " R);
+// 		line = get_next_line(0);
+// 	}
+// 	ft_printf("exit\n");
+// 	return (0);
+// }

@@ -25,13 +25,6 @@ void	free_matrix(char **dir)
 	free(dir);
 }
 
-static void	free_pipeline(t_pipeline *pipeline)
-{
-	(void) pipeline;
-	// WIP - free pipeline of cmds - with nested arrays, strs and structs
-	return ;
-}
-
 static void free_shell(t_shell *shell)
 {
 	int	i;

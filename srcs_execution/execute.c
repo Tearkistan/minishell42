@@ -31,24 +31,24 @@ void	exec_cmd(char **cmd_args, char **envp)
 
 int	is_stateful(char *cmd)
 {
-	if (ft_strlen(cmd) >= 2 && ft_strncmp(cmd, "cd", 3))
+	if (!ft_strcmp(cmd, "cd"))
 		return (1);
-	if (ft_strlen(cmd) >= 4 && ft_strncmp(cmd, "exit", 5))
+	if (!ft_strcmp(cmd, "exit"))
 		return (1);
-	if (ft_strlen(cmd) >= 5 && ft_strncmp(cmd, "unset", 6))
+	if (!ft_strcmp(cmd, "unset"))
 		return (1);
-	if (ft_strlen(cmd) >= 6 && ft_strncmp(cmd, "export", 7))
+	if (!ft_strcmp(cmd, "export"))
 		return (1);
 	return (0);
 }
 
 int	is_nonstateful(char *cmd)
 {
-	if (ft_strlen(cmd) >= 3 && ft_strncmp(cmd, "pwd", 4))
+	if (!ft_strcmp(cmd, "pwd"))
 		return (1);
-	if (ft_strlen(cmd) >= 4 && ft_strncmp(cmd, "env", 4))
+	if (!ft_strcmp(cmd, "env"))
 		return (1);
-	if (ft_strlen(cmd) >= 4 && ft_strncmp(cmd, "echo", 5))
+	if (!ft_strcmp(cmd, "echo"))
 		return (1);
 	return (0);
 }
@@ -71,7 +71,6 @@ int execute_line(t_pipeline *pipeline, t_shell *shell)
 {
 	t_pipe		pipex;
 
-	return (0); // remove to actually test excution
 	if (!pipeline->next && is_stateful(pipeline->cmd.args[0]))
 		exec_stateful_builtin(pipeline, shell);
 	else

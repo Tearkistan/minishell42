@@ -31,8 +31,8 @@ SRCS_PARSING := 	create_pipeline/add_arg.c \
 					tokenize_line/tokenize_line.c \
 					parse_line.c \
 					free_parsing.c \
-					parsing_main.c \
 					debug-print.c
+# 					parsing_main.c \
 
 SRCS_EXECUTION_DIR := srcs_execution
 
@@ -50,7 +50,6 @@ SRCS_EXECUTION := 	bulitin/builtin.c \
 					clean.c \
 					main.c \
 					error_msg.c \
-					parse.c \
 					errors_main.c \
 					path.c \
 					exec_errors.c \

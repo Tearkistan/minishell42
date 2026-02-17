@@ -55,19 +55,19 @@ int		ft_strncmp_set(char *str, char **set)
 
 int	builtin_exec(char **args, t_shell *shell, int parent)
 {
-	if (ft_strlen(args[0]) >= 2 && ft_strncmp(args[0], "cd", 3))
+	if (!ft_strcmp(args[0], "cd"))
 		return (exec_cd_ctrl(args, shell, parent));
-	else if (ft_strlen(args[0]) >= 4 && ft_strncmp(args[0], "exit", 5))
+	else if (!ft_strcmp(args[0], "exit"))
 		return (exec_exit(args, shell, parent));
-	else if (ft_strlen(args[0]) >= 5 && ft_strncmp(args[0], "unset", 6))
+	else if (!ft_strcmp(args[0], "unset"))
 		return (exec_unset_ctrl(args, shell, parent));
-	else if (ft_strlen(args[0]) >= 6 && ft_strncmp(args[0], "export", 7))
+	else if (!ft_strcmp(args[0], "export"))
 		return (exec_export_ctrl(args, shell, parent));
-	else if (ft_strlen(args[0]) >= 2 && ft_strncmp(args[0], "pwd", 4))
-		return (exec_pwd(args, shell->envp));
-	else if (ft_strlen(args[0]) >= 4 && ft_strncmp(args[0], "env", 4))
+	else if (!ft_strcmp(args[0], "pwd"))
+		return (exec_pwd(args));
+	else if (!ft_strcmp(args[0], "env"))
 		return (exec_env(args, shell->envp));
-	else if (ft_strlen(args[0]) >= 5 && ft_strncmp(args[0], "echo", 5))
-		return (exec_echo(args, shell->envp));
+	else if (!ft_strcmp(args[0], "echo"))
+		return (exec_echo(args));
 	return (perror_int("built_in inflow issue", 1));
 }

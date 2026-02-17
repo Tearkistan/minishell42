@@ -28,7 +28,7 @@ static int	print_exists(char *str)
 void shell_loop(t_shell *shell)
 {
 	char		*line;
-	t_pipeline	pipeline;
+	t_pipeline	*pipeline;
 
 	while (shell->running)
 	{
@@ -43,14 +43,15 @@ void shell_loop(t_shell *shell)
 			continue ;
 		}
 		add_history(line);
-		if (parse_line(&pipeline, line, shell) == -1)
-			clean_up(NULL, &pipeline, line, NULL);
+		pipeline = parse_line(line, *shell);
+		if (!pipeline)
+			clean_up(NULL, pipeline, line, NULL);
 		else
 		{
 			free(line);
-			execute_line(&pipeline, shell);
+			execute_line(pipeline, shell);
 		}
-		clean_up(shell, &pipeline, NULL, NULL); // Line (3rd) parameter could be removed if not necessary in parsing!
+		clean_up(shell, pipeline, NULL, NULL); // Line (3rd) parameter could be removed if not necessary in parsing!
 	}
 	return ;
 }

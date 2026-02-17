@@ -36,12 +36,11 @@ static int	exec_echo_n_opion(char *arg)
 }
 
 // echo - display a line of text
-int	exec_echo(char **cmd_args, char **envp)
+int	exec_echo(char **cmd_args)
 {
 	int	i;
 	int	newline;
 
-	(void)envp;
 	if (!cmd_args)
 		return (FAILURE);
 	if (!cmd_args[0] || ft_strcmp(cmd_args[0], "echo") != 0)

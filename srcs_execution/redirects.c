@@ -20,7 +20,7 @@ void    set_in_fd(t_redirects *redir, t_pipe *pipex)
     curr = redir;
 	while (curr)
 	{
-		if (curr->type == IN)
+		if (curr->type == REDIR_IN)
 		{
 			if (pipex->in_fd != STDIN_FILENO)
                 close(pipex->in_fd);
@@ -57,7 +57,7 @@ void    set_out_fd(t_redirects *redir, t_pipe *pipex)
     curr = redir;
 	while (curr)
 	{
-		if (redir->type == OUT)
+		if (redir->type == REDIR_OUT)
 		{
 			if (pipex->out_fd != STDOUT_FILENO)
                 close(pipex->out_fd);
@@ -65,7 +65,7 @@ void    set_out_fd(t_redirects *redir, t_pipe *pipex)
 			if (pipex->out_fd < 0)
 				perror_exit("openning OUT out_fd");
 		}
-		else if (redir->type == APPEND)
+		else if (redir->type == REDIR_APP)
 		{
             if (pipex->out_fd != STDOUT_FILENO)
                 close(pipex->out_fd);

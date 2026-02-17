@@ -265,7 +265,7 @@ void	finish_export_arg(t_shell *shell, t_export *export, int index);
 
 /* builtin_nonstateful*/
 int		exec_pwd(char **cmd_args);
-int		exec_envp(char **cmd_args, char **envp);
+int		exec_env(char **cmd_args, char **envp);
 int		exec_echo(char **cmd_args);
 
 /* signals.c */

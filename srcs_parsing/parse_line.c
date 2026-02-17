@@ -20,7 +20,7 @@ t_pipeline	*parse_line(char *line, t_shell shell)
 	tokens = tokenize_line(line);
 	if (!tokens)
 		return (NULL);
-	print_tokens(tokens); // Debug print to show the tokens after tokenization
+	// print_tokens(tokens); // Debug print to show the tokens after tokenization
 	if (check_token_syntax(tokens) == FAILURE)
 		return (free_tokens(tokens), NULL);
 	head = create_pipeline_from_tokens(tokens, shell);
