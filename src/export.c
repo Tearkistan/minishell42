@@ -70,7 +70,7 @@ static int	parse_export_arg(char *arg, t_export *export)
 	j = 0;
 	while (arg[i] == '\0')
 		export->value[j++] = arg[i++];
-	export->value = '\0';
+	export->value[j] = '\0';
 	return (0);
 }
 

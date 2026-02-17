@@ -123,6 +123,10 @@ void	clean_up(t_shell *sh, t_pipeline *pipeline, char *line, char *err_msg);
 void	exec_cmd(char **cmd_args, char **envp);
 int		execute_line(t_pipeline *pipeline, t_shell *shell);
 
+/* execute_utils.c */
+int		contains_path(char *cmd);
+void	path_check_to_execute(char **cmd_args, char *cmd, char **envp);
+
 /* exec_stateful.c */
 int		exec_stateful_builtin(t_pipeline *pline, t_shell *sh);
 

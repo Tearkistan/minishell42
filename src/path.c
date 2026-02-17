@@ -18,13 +18,6 @@ char	*find_path(char **cmd_args, char *arg, char **envp)
 	char	*path_value;
 	char	*path;
 
-	if (access(arg, F_OK) == 0)
-	{
-		if (access(arg, X_OK) == 0)
-			return (ft_strdup(arg));
-		else
-			permission_denied_exit(cmd_args);
-	}
 	path_value = get_env_path(envp);
 	dirs = ft_split(path_value, ':');
 	if (!dirs)
