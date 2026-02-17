@@ -65,6 +65,7 @@ typedef struct s_shell
 	int		last_status;
 	int		running;
 	int		envp_len;
+	char	**no_eq;
 }	t_shell;
 
 /* Pipex struct for execution */
@@ -81,6 +82,19 @@ typedef struct s_pipe
 	pid_t	last_pid;
 	int		*pids;
 }	t_pipe;
+
+typedef struct	s_export
+{
+	char	**temp_envp;
+	char	*new_line;
+	char	*key;
+	char	*value;
+	int		arg_count;
+	int 	parent;
+	int		append;
+	int		eq;
+	int		close_quote;
+}	t_export;
 
 extern volatile sig_atomic_t	g_sig;
 
@@ -108,6 +122,10 @@ void	clean_up(t_shell *sh, t_pipeline *pipeline, char *line, char *err_msg);
 /* execute.c */
 void	exec_cmd(char **cmd_args, char **envp);
 int		execute_line(t_pipeline *pipeline, t_shell *shell);
+
+/* execute_utils.c */
+int		contains_path(char *cmd);
+void	path_check_to_execute(char **cmd_args, char *cmd, char **envp);
 
 /* exec_stateful.c */
 int		exec_stateful_builtin(t_pipeline *pline, t_shell *sh);
@@ -143,7 +161,7 @@ char	*join_paths(char *dir, char *cmd);
 
 /* builtin.c */
 int		is_builtin(char *cmd);
-int		append_shell_envp(t_shell *shell, char *nl, char **new_envp);
+int		append_shell_envp(t_shell *shell, char *new_line);
 int		ft_strncmp_set(char *str, char **set);
 int		builtin_exec(char **cmd_args, t_shell *shell, int parent);
 
@@ -157,7 +175,20 @@ int		exec_exit(char **cmd_args, t_shell *shell, int parent);
 int		exec_unset_ctrl(char **cmd_args, t_shell *shell, int parent);
 
 /* export.c */
+void	exit_export(t_export *export, t_shell *shell, int alloc_fail);
 int		exec_export_ctrl(char **cmd_args, t_shell *shell, int parent);
+
+/* export_utils.c */
+void	print_export(char **envp, char **no_eq);
+int		export_arg_error(char *cmd_arg, t_export *export);
+int 	find_var_in_env(char **envp, char *key);
+char    *create_line(char *key, char *value);
+void    alloc_key_value(char *arg, t_export *export, t_shell *shell);
+
+/* export_utils_plus.c */
+int		is_no_eq(char *var, char **no_eq);
+void	add_no_equal_key(t_export *export, t_shell *shell);
+void	finish_export_arg(t_shell *shell, t_export *export, int index);
 
 /* builtin_nonstateful.c */
 int		exec_pwd(char **cmd_args);

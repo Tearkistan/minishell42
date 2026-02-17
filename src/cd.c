@@ -44,10 +44,8 @@ static void	perror_cd(char *error_msg, t_cd *cd, t_shell *shell, int running)
 static void	update_old_pwd(t_cd *cd, t_shell *shell)
 {
 	int	i;
-	char	**new_envp;
 
 	i = 0;
-	new_envp = NULL;
 	if (getenv("OLDPWD"))
 	{
 		while (strncmp(shell->envp[i], "OLDPWD=", 7) != 0)
@@ -61,8 +59,8 @@ static void	update_old_pwd(t_cd *cd, t_shell *shell)
 	{   
 		while (shell->envp[i] != NULL)
 			i++;*/
-    append_shell_envp(shell, cd->old_pwd, new_envp);
-	if (!new_envp)
+    append_shell_envp(shell, cd->old_pwd);
+	if (!shell->envp)
 		perror_cd("cd new_envp allocation fail", cd, shell, 0);
 	/*}*/
 	return ;
@@ -71,10 +69,8 @@ static void	update_old_pwd(t_cd *cd, t_shell *shell)
 static void	update_new_pwd(t_cd *cd, t_shell *shell)
 {
 	int	i;
-	char	**new_envp;
 
 	i = 0;
-	new_envp = NULL;
 	if (getenv("PWD"))
 	{
 		while (strncmp(shell->envp[i], "PWD=", 4) != 0)
@@ -84,8 +80,8 @@ static void	update_new_pwd(t_cd *cd, t_shell *shell)
 		if (!shell->envp[i])
 			perror_cd("cd: memory allocation fail", cd, shell, 0);
 	}
-    append_shell_envp(shell, cd->new_pwd, new_envp);
-	if (!new_envp)
+    append_shell_envp(shell, cd->new_pwd);
+	if (!shell->envp)
 			perror_cd("cd new_envp allocation fail", cd, shell, 0);
 	return ;
 }

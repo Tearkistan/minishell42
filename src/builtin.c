@@ -21,8 +21,10 @@ int	is_builtin(char *cmd)
 	return (0);
 }
 
-int	append_shell_envp(t_shell *shell, char *new_line, char **new_envp)
+int	append_shell_envp(t_shell *shell, char *new_line)
 {
+	char	**new_envp;
+		
 	new_envp = (char **)malloc(sizeof(char *) * (shell->envp_len + 1));
 	if (!new_envp)
 		return (1);
@@ -63,8 +65,8 @@ int	builtin_exec(char **args, t_shell *shell, int parent)
 		return (exec_export_ctrl(args, shell, parent));
 	else if (ft_strlen(args[0]) >= 2 && ft_strncmp(args[0], "pwd", 4))
 		return (exec_pwd(args, shell->envp));
-	else if (ft_strlen(args[0]) >= 4 && ft_strncmp(args[0], "envp", 5))
-		return (exec_envp(args, shell->envp));
+	else if (ft_strlen(args[0]) >= 4 && ft_strncmp(args[0], "env", 4))
+		return (exec_env(args, shell->envp));
 	else if (ft_strlen(args[0]) >= 5 && ft_strncmp(args[0], "echo", 5))
 		return (exec_echo(args, shell->envp));
 	return (perror_int("built_in inflow issue", 1));

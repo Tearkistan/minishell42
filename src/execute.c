@@ -16,6 +16,8 @@ void	exec_cmd(char **cmd_args, char **envp)
 {
 	char	*path;
 
+	if (contains_path(cmd_args[0]))
+		path_check_to_execute(cmd_args, cmd_args[0], envp);
 	path = find_path(cmd_args, cmd_args[0], envp);
 	if (!path)
 		not_found_exit(cmd_args);
@@ -44,7 +46,7 @@ int	is_nonstateful(char *cmd)
 {
 	if (ft_strlen(cmd) >= 3 && ft_strncmp(cmd, "pwd", 4))
 		return (1);
-	if (ft_strlen(cmd) >= 4 && ft_strncmp(cmd, "envp", 5))
+	if (ft_strlen(cmd) >= 4 && ft_strncmp(cmd, "env", 4))
 		return (1);
 	if (ft_strlen(cmd) >= 4 && ft_strncmp(cmd, "echo", 5))
 		return (1);
