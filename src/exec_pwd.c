@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 15:37:27 by psmolich          #+#    #+#             */
-/*   Updated: 2026/02/16 15:38:40 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/02/17 13:52:08 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 // Subject says [pwd with no options]
 // opion 1: just print the current working directory, ignoring any arguments
 // opion 2: print an error message and return failure if there are any arguments
+
+// We picked option 1
 
 int	exec_pwd(char **cmd_args)
 {
