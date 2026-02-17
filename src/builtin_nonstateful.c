@@ -3,32 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_nonstateful.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 17:09:23 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/30 13:36:45 by twatson          ###   ########.fr       */
+/*   Updated: 2026/02/16 15:23:30 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	exec_pwd(char **cmd_args, char **envp)
-{
-	(void)cmd_args;
-	(void)envp;
-	return (0);
-}
 
-int	exec_env(char **cmd_args, char **envp)
-{
-	(void)cmd_args;
-	(void)envp;
-	return (0);
-}
-
-int	exec_echo(char **cmd_args, char **envp)
-{
-	(void)cmd_args;
-	(void)envp;
-	return (0);
-}

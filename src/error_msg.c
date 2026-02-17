@@ -1,25 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors_main.c                                      :+:      :+:    :+:   */
+/*   error_msg.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/12 13:02:18 by twatson           #+#    #+#             */
-/*   Updated: 2026/02/17 13:57:17 by psmolich         ###   ########.fr       */
+/*   Created: 2026/02/16 15:26:58 by psmolich          #+#    #+#             */
+/*   Updated: 2026/02/16 15:27:32 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	perror_exit(const char *label)
+void	error_msg(char *message)
 {
-	perror(label);
-	exit(1);
-}
-
-void	msg_exit(char *msg)
-{
-	ft_putendl_fd(msg, 2);
-	exit(1);
+	ft_putstr_fd(message, 2);
 }

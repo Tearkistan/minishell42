@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/16 18:34:32 by twatson          ###   ########.fr       */
+/*   Updated: 2026/02/16 15:28:13 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,9 +191,11 @@ void	add_no_equal_key(t_export *export, t_shell *shell);
 void	finish_export_arg(t_shell *shell, t_export *export, int index);
 
 /* builtin_nonstateful.c */
-int		exec_pwd(char **cmd_args, char **envp);
-int		exec_env(char **cmd_args, char **envp);
-int		exec_echo(char **cmd_args, char **envp);
+int		exec_pwd(char **cmd_args);
+int		exec_envp(char **cmd_args, char **envp);
+int		exec_echo(char **cmd_args);
+
+void	error_msg(char *message);
 
 /* signals.c */
 void	set_signals_prompt_mode(void);
