@@ -77,7 +77,7 @@ static void remove_valid_args(char **cmd_args, t_shell *shell, t_unset *unset)
 	j = 0;
 	while (shell->envp[i])
 	{
-		while (ft_strncmp_set(shell->envp[i + j], unset->valid_args) == 0)
+		while (ft_strcmp_set(shell->envp[i + j], unset->valid_args) == 0)
 			j++;
 		unset->new_envp[i] = shell->envp[i + j];
 		i++;

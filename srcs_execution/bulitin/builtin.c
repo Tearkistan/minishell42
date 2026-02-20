@@ -37,16 +37,14 @@ int	append_shell_envp(t_shell *shell, char *new_line)
 	return (0);
 }
 
-int		ft_strncmp_set(char *str, char **set)
+int		ft_strcmp_set(char *str, char **set)
 {
 	int	i;
-	int	len;
 
 	i = 0;
 	while (set[i])
 	{
-		len = ft_strlen(set[i]);
-		if (ft_strncmp(str, set[i], len) == 0)
+		if (ft_strcmp(str, set[i]) == 0)
 			return (0);
 		i++;		
 	}
