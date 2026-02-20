@@ -16,19 +16,23 @@ static void	child(t_pipeline *pline, t_shell *shell, t_pipe *pipex)
 {
 	set_in_fd(pline->cmd.redirects, pipex);
 	set_out_fd(pline->cmd.redirects, pipex);
-	if (dup2(pipex->in_fd, 0) == -1)
-		perror_exit("dup2 in_fd->stdin");
-	close(pipex->in_fd);
-	if (dup2(pipex->out_fd, 1) == -1)
-		perror_exit("dup2 out_fd->stdout");
+	if (pipex->in_fd != STDIN_FILENO)
+	{
+		if (dup2(pipex->in_fd, 0) == -1)
+			perror_exit("dup2 in_fd->stdin");
+		close(pipex->in_fd);
+	}
+	if (pipex->out_fd != STDOUT_FILENO)
+	{
+		if (dup2(pipex->out_fd, 1) == -1)
+			perror_exit("dup2 out_fd->stdout");
+		if (!pline->next)
+			close(pipex->out_fd);
+	}
 	if (pline->next)
 	{
 		close(pipex->pipe_fd[0]);
 		close(pipex->pipe_fd[1]);
-	}
-	else
-	{
-		close(pipex->out_fd);
 	}
 	if (is_builtin(pline->cmd.args[0]))
 		builtin_exec(pline->cmd.args, shell, 0);
@@ -42,13 +46,15 @@ static void	parent(t_pipeline *pline, t_pipe *pipex, pid_t pid)
 	if (pline->next)
 	{
 		close(pipex->pipe_fd[1]);
-		close(pipex->prev_read_fd);
+		if (pipex->prev_read_fd >= 0 && pipex->prev_read_fd != STDIN_FILENO)
+			close(pipex->prev_read_fd);
 		pipex->prev_read_fd = pipex->pipe_fd[0];
 	}
 	else
 	{
 		pipex->last_pid = pid;
-		close(pipex->prev_read_fd);
+		if (pipex->prev_read_fd >= 0 && pipex->prev_read_fd != STDIN_FILENO)
+			close(pipex->prev_read_fd);
 	}
 }
 
@@ -92,7 +98,6 @@ int	exec_pipeline(t_pipeline *pipeline, t_shell *shell, t_pipe *pipex)
 	set_signals_parent_running();
 	while (curr)
 	{
-		pipex->cmd_count++;
 		if (cmd_stage(pipeline, shell, pipex) != 0)
 			break;
 		curr = curr->next;
@@ -110,13 +115,15 @@ int	exec_pipeline(t_pipeline *pipeline, t_shell *shell, t_pipe *pipex)
 
 int	pipeline_size(t_pipeline *p)
 {
-	int	i;
+	int			i;
+	t_pipeline *curr;
 
+	curr = p;
 	i = 0;
-	while (p)
+	while (curr)
 	{
 		i++;
-		p = p->next;
+		curr = curr->next;
 	}
 	return (i);
 }

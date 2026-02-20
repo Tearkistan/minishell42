@@ -49,8 +49,11 @@ int	exec_echo(char **cmd_args)
 		return (ft_putstr_fd("\n", STDOUT_FILENO), SUCCESS);
 	newline = TRUE;
 	i = 1;
-	while (exec_echo_n_opion(cmd_args[i++]))
+	while (exec_echo_n_opion(cmd_args[i]))
+	{
 		newline = FALSE;
+		i++;
+	}
 	while (cmd_args[i])
 	{
 		ft_putstr_fd(cmd_args[i++], STDOUT_FILENO);
