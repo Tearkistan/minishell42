@@ -14,6 +14,7 @@
 
 static void	child(t_pipeline *pline, t_shell *shell, t_pipe *pipex)
 {
+	set_signals_child();
 	set_in_fd(pline->cmd.redirects, pipex);
 	set_out_fd(pline->cmd.redirects, pipex);
 	if (pipex->in_fd != STDIN_FILENO)
@@ -79,7 +80,6 @@ static int	cmd_stage(t_pipeline *pipeline, t_shell *shell, t_pipe *pipex)
 		return (abort_pipeline_parent(pipex, shell, 1));
 	}
 	pipex->n_spawned++;
-	set_signals_child();
 	if (pid == 0)
 		child(pipeline, shell, pipex);
 	if (pid > 0)

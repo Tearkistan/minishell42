@@ -42,7 +42,10 @@ int	status_to_exitcode(int status)
 {
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
-	if (WIFSIGNALED(status))
-		return (128 + WTERMSIG(status));
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+	{
+		write(1, "\n", 1);
+		return (130);
+	}
 	return (1);
 }
