@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 12:42:59 by twatson           #+#    #+#             */
-/*   Updated: 2026/02/22 12:32:26 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/02/22 13:02:23 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ static int	print_exists(char *str)
 		str++;
 	}
 	return (0);
-}	
+}
 
-void shell_loop(t_shell *shell)
+void	shell_loop(t_shell *shell)
 {
 	char		*line;
 	t_pipeline	*pipeline;
