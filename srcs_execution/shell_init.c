@@ -46,9 +46,62 @@ char	**copy_envp(char **copy, char **original, int allocate)
 	return (copy) ;
 }
 
+static int	numeric_shlvl_exists(char **envp, int *index)
+{
+	int		n_len;
+	char	*n_str;
+	int		n;
+
+	while (envp[(*index)])
+	{
+		if (ft_strncmp(envp[(*index)], "SHLVL=", 6) == 0)
+		{
+			n_len = ft_strlen(envp[(*index)]) - 6;
+			n_str = ft_substr(envp[(*index)], 6, n_len);
+			if (!n_str)
+				perror_exit("shlvl allocation fail");
+			n = ft_atoi(n_str);
+			if (n)
+				return (n);			
+		}
+		(*index)++;
+	}
+	return (0);
+}
+
+static void	add_shlvl(t_shell *shell)
+{
+	int		shlvl;
+	int		index;
+	char	*n_to_str;
+	char	*new_shlvl;
+
+	index = 0;
+	shlvl = 0;
+	shlvl = numeric_shlvl_exists(shell->envp, &index);
+	if (shlvl++)
+	{
+		n_to_str = ft_itoa(shlvl);
+		if (!n_to_str)
+			perror_exit("shlvl allocation fail");
+		new_shlvl = ft_strjoin("SHLVL=", n_to_str);
+		if (!new_shlvl)
+			perror_exit("shlvl allocation fail");
+		free(n_to_str);
+		free(shell->envp[index]);
+		shell->envp[index] = new_shlvl;
+	}
+	else
+	{
+		if (!(append_shell_envp(shell, "SHLVL=1")))
+			perror_exit("shlvl append fail");
+	}
+}
+
 void	shell_init(t_shell *shell, char **envp)
 {
 	shell->envp = copy_envp(shell->envp, envp, 1);
+	add_shlvl(shell);
 	shell->last_status = 0;
 	shell->running = 1;
 	shell->envp_len = 0;
