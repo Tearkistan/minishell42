@@ -1,0 +1,71 @@
+{
+   readline_reachable_1
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   fun:readline
+}
+
+{
+   readline_reachable_2
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   fun:rl_initialize
+}
+
+{
+   readline_reachable_3
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   fun:rl_set_prompt
+}
+
+{
+   readline_reachable_4
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   fun:rl_expand_prompt
+}
+
+{
+   readline_history_reachable
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   fun:add_history
+}
+
+{
+   readline_history_list
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   fun:history_list
+}
+
+{
+   readline_tinfo_reachable
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   obj:*libtinfo*
+}
+
+{
+   readline_ncurses_reachable
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   obj:*libncurses*
+}
+
+{
+   readline_lib_reachable
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   obj:*libreadline*
+}
