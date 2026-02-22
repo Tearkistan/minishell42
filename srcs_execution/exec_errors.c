@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_errors.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 16:25:36 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/20 19:15:59 by twatson          ###   ########.fr       */
+/*   Updated: 2026/02/22 13:10:47 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void	permission_denied_exit(char **cmd_args)
 {
-	ft_putendl_fd("Permission denied", 2);
+	error_msg("Permission denied");
 	free_matrix(cmd_args);
 	exit(126);
 }
 
 void	not_found_exit(char **cmd_args)
 {
-	ft_putendl_fd("Command not found", 2);
+	error_msg("Command not found");
 	free_matrix(cmd_args);
 	exit(127);
 }
