@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 16:55:01 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/30 14:32:43 by twatson          ###   ########.fr       */
+/*   Updated: 2026/02/22 14:06:57 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	is_builtin(char *cmd)
 int	append_shell_envp(t_shell *shell, char *new_line)
 {
 	char	**new_envp;
-		
+
 	new_envp = (char **)malloc(sizeof(char *) * (shell->envp_len + 1));
 	if (!new_envp)
 		return (1);
@@ -37,7 +37,7 @@ int	append_shell_envp(t_shell *shell, char *new_line)
 	return (0);
 }
 
-int		ft_strcmp_set(char *str, char **set)
+int	ft_strcmp_set(char *str, char **set)
 {
 	int	i;
 
@@ -46,7 +46,7 @@ int		ft_strcmp_set(char *str, char **set)
 	{
 		if (ft_strcmp(str, set[i]) == 0)
 			return (0);
-		i++;		
+		i++;
 	}
 	return (1);
 }

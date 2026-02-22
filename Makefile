@@ -36,16 +36,16 @@ SRCS_PARSING := 	create_pipeline/add_arg.c \
 
 SRCS_EXECUTION_DIR := srcs_execution
 
-SRCS_EXECUTION := 	bulitin/builtin.c \
-					bulitin/cd.c \
-					bulitin/exec_echo.c \
-					bulitin/exec_env.c \
-					bulitin/exec_pwd.c \
-					bulitin/exit.c \
-					bulitin/export.c \
-					bulitin/export_utils.c \
-					bulitin/export_utils_plus.c \
-					bulitin/unset.c \
+SRCS_EXECUTION := 	builtin/builtin.c \
+					builtin/cd.c \
+					builtin/exec_echo.c \
+					builtin/exec_env.c \
+					builtin/exec_pwd.c \
+					builtin/exit.c \
+					builtin/export.c \
+					builtin/export_utils.c \
+					builtin/export_utils_plus.c \
+					builtin/unset.c \
 					heredoc.c \
 					clean.c \
 					main.c \

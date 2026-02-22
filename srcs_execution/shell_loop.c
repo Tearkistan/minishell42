@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_loop.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 12:42:59 by twatson           #+#    #+#             */
-/*   Updated: 2026/02/22 13:02:23 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/02/22 13:33:28 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	shell_loop(t_shell *shell)
 			shell->last_status = 2;
 		else
 			execute_line(pipeline, shell);
-		clean_up(shell, pipeline, NULL, NULL); // Line (3rd) parameter could be removed if not necessary in parsing!
+		free(pipeline);
 	}
-	return ;
 }
