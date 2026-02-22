@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/02/16 15:28:13 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/02/22 12:16:01 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 # define P "\033[95m" // Purple
 # define G "\033[92m" // Green
 # define Y "\033[93m" // Yellow
+# define RD "\033[91m" // Red
 # define R "\033[0m" // Reset color
 
 # define ERR_MEMORY "Error: memory allocation failed\n"

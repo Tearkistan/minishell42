@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_loop.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 12:42:59 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/16 18:35:16 by twatson          ###   ########.fr       */
+/*   Updated: 2026/02/22 12:32:26 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void shell_loop(t_shell *shell)
 
 	while (shell->running)
 	{
-		line = readline(PROMPT);
+		line = readline(RD PROMPT R);
 		if (!line)
 			clean_up(shell, NULL, NULL, "exit");
 		else if (line[0] == '\0' || print_exists(line) == 0 || g_sig == SIGINT)
@@ -44,13 +44,11 @@ void shell_loop(t_shell *shell)
 		}
 		add_history(line);
 		pipeline = parse_line(line, *shell);
+		free(line);
 		if (!pipeline)
-			clean_up(NULL, pipeline, line, NULL);
+			shell->last_status = 2;
 		else
-		{
-			free(line);
 			execute_line(pipeline, shell);
-		}
 		clean_up(shell, pipeline, NULL, NULL); // Line (3rd) parameter could be removed if not necessary in parsing!
 	}
 	return ;

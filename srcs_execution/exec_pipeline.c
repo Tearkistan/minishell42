@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipeline.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 14:24:43 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/26 16:50:05 by twatson          ###   ########.fr       */
+/*   Updated: 2026/02/22 12:17:14 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ int	exec_pipeline(t_pipeline *pipeline, t_shell *shell, t_pipe *pipex)
 	int			i;
 
 	curr = pipeline;
+	status = 0;
 	i = 0;
 	set_signals_parent_running();
 	while (curr)

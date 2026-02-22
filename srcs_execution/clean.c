@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 13:43:32 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/14 13:43:38 by twatson          ###   ########.fr       */
+/*   Updated: 2026/02/22 12:14:45 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void free_shell(t_shell *shell)
 		free(shell->envp[i]);
 		i++;
 	}
-	free(shell->envp);
+	free_matrix(shell->envp);
 	i = 0;
 	while (shell->no_eq[i])
 	{
