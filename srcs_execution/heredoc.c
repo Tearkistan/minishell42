@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:18:48 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/14 14:37:49 by twatson          ###   ########.fr       */
+/*   Updated: 2026/02/26 16:13:05 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	count_heredoc(t_redirects *redir)
 	return (count);
 }
 
-int	init_heredoc_mode(t_pipe *pipex, t_redirects *redir, t_shell *shell)
+int	init_heredoc_mode(t_pipe *pipex, t_redirects *redir, t_shell *sh)
 {
 	t_redirects	*curr;
 
@@ -39,8 +39,14 @@ int	init_heredoc_mode(t_pipe *pipex, t_redirects *redir, t_shell *shell)
 		{
 			if (pipe(pipex->hd_pipe) == -1)
 				return (perror_int("heredoc pipe", -1));
-			if (heredoc_read(curr, pipex, shell) == -1)			
+			if (heredoc_read(curr, pipex, sh) == -1)
+			{
+				close(pipex->hd_pipe[0]);
+				close(pipex->hd_pipe[1]);
 				return (-1);
+			}
+			else
+				close(pipex->hd_pipe[1]);
 			pipex->hd_fd = pipex->hd_pipe[0];
 		}
 		curr = curr->next;
@@ -73,6 +79,5 @@ int	heredoc_read(t_redirects *redir, t_pipe *pipex, t_shell *shell)
 			return (write_pipe_exit(pipex->hd_pipe, "write heredoc fail", -1));
 		free(line);
 	}
-	close(pipex->hd_pipe[1]);
 	return (0);
 }

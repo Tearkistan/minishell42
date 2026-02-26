@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_errors.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 16:25:36 by twatson           #+#    #+#             */
-/*   Updated: 2026/02/22 13:10:47 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/02/26 16:05:32 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,12 @@ int	perror_int(char *err_msg, int n)
 	return (n);
 }
 
-int	abort_pipeline_parent(t_pipe *pipex, t_shell *shell, int status_code)
+int	abort_pipeline_parent(t_pipe *pipex, t_shell *shell, int stat_code)
 {
 	int	i;
 
+	if (pipex->hd_fd >= 0)
+		close(pipex->hd_fd);
 	if (pipex->pipe_fd[0] >= 0)
 		close(pipex->pipe_fd[0]);
 	if (pipex->pipe_fd[1] >= 0)
@@ -49,7 +51,7 @@ int	abort_pipeline_parent(t_pipe *pipex, t_shell *shell, int status_code)
 			waitpid(pipex->pids[i], NULL, 0);
 		i++;
 	}
-	shell->last_status = status_code;
+	shell->last_status = stat_code;
 	return (-1);
 }
 

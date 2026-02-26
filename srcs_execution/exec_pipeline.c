@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipeline.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 14:24:43 by twatson           #+#    #+#             */
-/*   Updated: 2026/02/22 12:17:14 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/02/26 17:19:23 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ static void	child(t_pipeline *pline, t_shell *shell, t_pipe *pipex)
 			close(pipex->out_fd);
 	}
 	if (pline->next)
-	{
-		close(pipex->pipe_fd[0]);
-		close(pipex->pipe_fd[1]);
-	}
+		close_pipe(pipex->pipe_fd);
 	if (is_builtin(pline->cmd.args[0]))
+	{
 		builtin_exec(pline->cmd.args, shell, 0);
+		clean_exit_child(pipex);
+	}
 	else
 		exec_cmd(pline->cmd.args, shell->envp);
 }
@@ -100,7 +100,7 @@ int	exec_pipeline(t_pipeline *pipeline, t_shell *shell, t_pipe *pipex)
 	while (curr)
 	{
 		if (cmd_stage(pipeline, shell, pipex) != 0)
-			break;
+			break ;
 		curr = curr->next;
 	}
 	waitpid(pipex->last_pid, &status, 0);
@@ -117,7 +117,7 @@ int	exec_pipeline(t_pipeline *pipeline, t_shell *shell, t_pipe *pipex)
 int	pipeline_size(t_pipeline *p)
 {
 	int			i;
-	t_pipeline *curr;
+	t_pipeline	*curr;
 
 	curr = p;
 	i = 0;

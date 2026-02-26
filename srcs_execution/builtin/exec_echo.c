@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_echo.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:01:36 by psmolich          #+#    #+#             */
-/*   Updated: 2026/02/17 13:56:09 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/02/26 15:42:59 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ int	exec_echo(char **cmd_args)
 	if (!cmd_args)
 		return (FAILURE);
 	if (!cmd_args[0] || ft_strcmp(cmd_args[0], "echo") != 0)
-		return (error_msg("not the echo command"), FAILURE);
+		return (error_msg("not the echo command"), EXIT_FAILURE);
 	if (!cmd_args[1])
-		return (ft_putstr_fd("\n", STDOUT_FILENO), SUCCESS);
+		return (ft_putstr_fd("\n", STDOUT_FILENO), EXIT_SUCCESS);
 	newline = TRUE;
 	i = 1;
 	while (exec_echo_n_opion(cmd_args[i]))
@@ -62,5 +62,5 @@ int	exec_echo(char **cmd_args)
 	}
 	if (newline)
 		ft_putstr_fd("\n", STDOUT_FILENO);
-	return (SUCCESS);
+	return (EXIT_SUCCESS);
 }

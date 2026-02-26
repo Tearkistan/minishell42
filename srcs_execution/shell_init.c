@@ -6,11 +6,11 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 12:42:22 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/14 12:46:10 by twatson          ###   ########.fr       */
+/*   Updated: 2026/02/26 17:22:08 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "minishell.h"
+#include "minishell.h"
 
 char	**allocate_matrix(char **copy, char **original)
 {
@@ -43,7 +43,7 @@ char	**copy_envp(char **copy, char **original, int allocate)
 		i++;
 	}
 	copy[i] = NULL;
-	return (copy) ;
+	return (copy);
 }
 
 static int	numeric_shlvl_exists(char **envp, int *index)
@@ -61,8 +61,9 @@ static int	numeric_shlvl_exists(char **envp, int *index)
 			if (!n_str)
 				perror_exit("shlvl allocation fail");
 			n = ft_atoi(n_str);
+			free(n_str);
 			if (n)
-				return (n);			
+				return (n);
 		}
 		(*index)++;
 	}
@@ -110,5 +111,5 @@ void	shell_init(t_shell *shell, char **envp)
 	shell->no_eq = (char **)malloc(sizeof(char *) * (shell->envp_len + 420));
 	shell->no_eq[0] = NULL;
 	set_signals_prompt_mode();
-	return ; 
+	return ;
 }
