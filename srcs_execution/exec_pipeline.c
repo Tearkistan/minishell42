@@ -6,17 +6,18 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 14:24:43 by twatson           #+#    #+#             */
-/*   Updated: 2026/02/26 17:19:23 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/11 13:47:01 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	child(t_pipeline *pline, t_shell *shell, t_pipe *pipex)
+static void	child(t_pipeline *curr, t_pipeline *head, t_shell *shell,
+	t_pipe *pipex)
 {
 	set_signals_child();
-	set_in_fd(pline->cmd.redirects, pipex);
-	set_out_fd(pline->cmd.redirects, pipex);
+	set_in_fd(curr->cmd.redirects, pipex);
+	set_out_fd(curr->cmd.redirects, pipex);
 	if (pipex->in_fd != STDIN_FILENO)
 	{
 		if (dup2(pipex->in_fd, 0) == -1)
@@ -27,18 +28,18 @@ static void	child(t_pipeline *pline, t_shell *shell, t_pipe *pipex)
 	{
 		if (dup2(pipex->out_fd, 1) == -1)
 			perror_exit("dup2 out_fd->stdout");
-		if (!pline->next)
+		if (!curr->next)
 			close(pipex->out_fd);
 	}
-	if (pline->next)
+	if (curr->next)
 		close_pipe(pipex->pipe_fd);
-	if (is_builtin(pline->cmd.args[0]))
+	if (is_builtin(curr->cmd.args[0]))
 	{
-		builtin_exec(pline->cmd.args, shell, 0);
-		clean_exit_child(pipex);
+		builtin_exec(curr->cmd.args, shell, 0);
+		clean_exit_child(pipex, head, shell);
 	}
 	else
-		exec_cmd(pline->cmd.args, shell->envp);
+		exec_cmd(curr->cmd.args, shell->envp);
 }
 
 static void	parent(t_pipeline *pline, t_pipe *pipex, pid_t pid)
@@ -59,16 +60,16 @@ static void	parent(t_pipeline *pline, t_pipe *pipex, pid_t pid)
 	}
 }
 
-static int	cmd_stage(t_pipeline *pipeline, t_shell *shell, t_pipe *pipex)
+static int	cmd_stage(t_pipeline *curr, t_pipeline *head, t_shell *shell, t_pipe *pipex)
 {
 	pid_t	pid;
 
-	if (count_heredoc(pipeline->cmd.redirects))
+	if (count_heredoc(curr->cmd.redirects))
 	{
-		if (init_heredoc_mode(pipex, pipeline->cmd.redirects, shell) == -1)
+		if (init_heredoc_mode(pipex, curr->cmd.redirects, shell) == -1)
 			return (abort_pipeline_parent(pipex, shell, 1));
 	}
-	if (pipeline->next && (pipe(pipex->pipe_fd) == -1))
+	if (curr->next && (pipe(pipex->pipe_fd) == -1))
 	{
 		perror("pipe");
 		return (abort_pipeline_parent(pipex, shell, 1));
@@ -81,9 +82,9 @@ static int	cmd_stage(t_pipeline *pipeline, t_shell *shell, t_pipe *pipex)
 	}
 	pipex->n_spawned++;
 	if (pid == 0)
-		child(pipeline, shell, pipex);
+		child(curr, head, shell, pipex);
 	if (pid > 0)
-		parent(pipeline, pipex, pid);
+		parent(curr, pipex, pid);
 	return (0);
 }
 
@@ -99,7 +100,7 @@ int	exec_pipeline(t_pipeline *pipeline, t_shell *shell, t_pipe *pipex)
 	set_signals_parent_running();
 	while (curr)
 	{
-		if (cmd_stage(pipeline, shell, pipex) != 0)
+		if (cmd_stage(curr, pipeline, shell, pipex) != 0)
 			break ;
 		curr = curr->next;
 	}

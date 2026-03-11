@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 15:16:57 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/14 11:36:12 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/11 14:07:48 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void signint_prompt(int signo)
 {
 	(void)signo;
 	g_sig = SIGINT;
-	write(1, "\nMINIsHELL$> ", 13);
+	write(1, "\n", 1);
 }
 
 /* Signal can have 3 dipositions:
@@ -54,7 +54,7 @@ void	set_signals_prompt_mode(void)
 }
 
 void	set_signals_child(void)
-{	
+{
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 }

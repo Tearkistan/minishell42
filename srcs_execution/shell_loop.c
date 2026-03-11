@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 12:42:59 by twatson           #+#    #+#             */
-/*   Updated: 2026/02/22 13:33:28 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/11 14:19:59 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ static int	print_exists(char *str)
 	return (0);
 }
 
+static void	received_ctrld(t_shell *shell)
+{
+	shell->running = 0;
+	clean_up(shell, NULL, NULL, "exit");
+}
+
 void	shell_loop(t_shell *shell)
 {
 	char		*line;
@@ -34,13 +40,14 @@ void	shell_loop(t_shell *shell)
 	{
 		line = readline(RD PROMPT R);
 		if (!line)
-			clean_up(shell, NULL, NULL, "exit");
+			received_ctrld(shell);
 		else if (line[0] == '\0' || print_exists(line) == 0 || g_sig == SIGINT)
 		{
 			free(line);
 			if (g_sig == SIGINT)
 				resolve_prompt_sigint(shell);
-			continue ;
+			line = "";
+			// continue ;
 		}
 		add_history(line);
 		pipeline = parse_line(line, *shell);
@@ -49,6 +56,6 @@ void	shell_loop(t_shell *shell)
 			shell->last_status = 2;
 		else
 			execute_line(pipeline, shell);
-		free(pipeline);
+		free_pipeline(pipeline);
 	}
 }

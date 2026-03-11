@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 13:43:32 by twatson           #+#    #+#             */
-/*   Updated: 2026/02/26 17:29:36 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/11 13:47:59 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,13 @@ void	clean_up(t_shell *sh, t_pipeline *pl, char *line, char *err_msg)
 		perror_exit(err_msg);
 	return ;
 }
-void	clean_exit_child(t_pipe *pipex)
+void	clean_exit_child(t_pipe *pipex, t_pipeline *head, t_shell *shell)
 {
-	free(pipex->pids);
+	if (pipex)
+		free(pipex->pids);
+	if (head)
+		free_pipeline(head);
+	if (shell)
+		free_shell(shell);
 	exit(0);
 }

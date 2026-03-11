@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/02/26 17:15:38 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/11 13:48:03 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,7 @@ void		shell_loop(t_shell *shell);
 /* clean.c */
 void		free_matrix(char **dir);
 void		clean_up(t_shell *sh, t_pipeline *pl, char *line, char *err_msg);
-void		clean_exit_child(t_pipe *pipex);
+void		clean_exit_child(t_pipe *pipex, t_pipeline *head, t_shell *shell);
 
 /* execute.c */
 void		exec_cmd(char **cmd_args, char **envp);
@@ -211,7 +211,7 @@ int			exec_stateful_builtin(t_pipeline *pline, t_shell *sh);
 /* exec_pipeline.c */
 int			is_stateful(char *cmd);
 int			is_nonstateful(char *cmd);
-int			exec_pipeline(t_pipeline *s_pipeline, t_shell *sh, t_pipe *pipex);
+int			exec_pipeline(t_pipeline *pipeline, t_shell *sh, t_pipe *pipex);
 int			pipeline_size(t_pipeline *p);
 
 /* exec_errors.c */
