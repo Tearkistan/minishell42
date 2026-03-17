@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 16:25:36 by twatson           #+#    #+#             */
-/*   Updated: 2026/02/26 16:05:32 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/17 13:40:18 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	permission_denied_exit(char **cmd_args)
 
 void	not_found_exit(char **cmd_args)
 {
-	error_msg("Command not found");
+	error_msg("Command not found\n");
 	free_matrix(cmd_args);
 	exit(127);
 }

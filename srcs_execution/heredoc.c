@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:18:48 by twatson           #+#    #+#             */
-/*   Updated: 2026/02/26 16:13:05 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/17 14:04:32 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ int	init_heredoc_mode(t_pipe *pipex, t_redirects *redir, t_shell *sh)
 	return (0);
 }
 
+//static char	*check_expansion();
+
 int	heredoc_read(t_redirects *redir, t_pipe *pipex, t_shell *shell)
 {
 	char	*line;
@@ -74,7 +76,7 @@ int	heredoc_read(t_redirects *redir, t_pipe *pipex, t_shell *shell)
 			break ;
 		}
 		if (redir->quote_delim == 1)
-			/* INSERT */ (void)shell, ft_printf("INSERT function that utilizes parser environment variable expansion function here");
+			/* INSERT */ (void)shell; /*ft_printf(check_expansion())*/
 		if (write(pipex->hd_pipe[1], line, ft_strlen(line)) == -1)
 			return (write_pipe_exit(pipex->hd_pipe, "write heredoc fail", -1));
 		free(line);

@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/11 13:48:03 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/17 14:23:42 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,23 @@ typedef struct s_export
 	int		close_quote;
 }	t_export;
 
+typedef struct	s_unset
+{
+	char	**new_envp;
+	char	**valid_args;
+	int		arg_count;
+	int		valid_count;
+	int		parent;
+}	t_unset;
+
+typedef struct	s_cd
+{
+	char	*old_pwd;
+	char	*new_pwd;
+	int		arg_count;
+	int		parent;
+}	t_cd;
+
 extern volatile sig_atomic_t	g_sig;
 
 /* PARSING - Lexing + Parsing + Struct / Linked List Creation */
@@ -163,6 +180,7 @@ t_pipeline	*parse_line(char *line, t_shell shell);
 
 // parse_word.c
 char		*parse_word(char *word, t_shell shell, int expand);
+char	    *expand_env(char *line, int *index, t_shell shell);
 
 // tokenize
 t_token		*tokenize_line(char *line);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_line.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 12:40:13 by psmolich          #+#    #+#             */
-/*   Updated: 2026/02/16 11:36:01 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/17 13:58:54 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ t_pipeline	*parse_line(char *line, t_shell shell)
 	tokens = tokenize_line(line);
 	if (!tokens)
 		return (NULL);
-	// print_tokens(tokens); // Debug print to show the tokens after tokenization
 	if (check_token_syntax(tokens) == FAILURE)
 		return (free_tokens(tokens), NULL);
 	head = create_pipeline_from_tokens(tokens, shell);

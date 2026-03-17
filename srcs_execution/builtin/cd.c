@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_stateful.c                                 :+:      :+:    :+:   */
+/*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 17:08:30 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/30 13:48:47 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/17 14:25:00 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,6 @@
 if exist replace
 else append 
 using strncmp, strjoin, free */
-
-typedef struct	s_cd
-{
-	char	*old_pwd;
-	char	*new_pwd;
-	int		arg_count;
-	int		parent;
-}	t_cd;
 
 static void	perror_cd(char *error_msg, t_cd *cd, t_shell *shell, int running)
 {

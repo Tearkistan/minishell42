@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_word.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 13:05:31 by psmolich          #+#    #+#             */
-/*   Updated: 2026/02/16 11:38:26 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/17 14:00:33 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	is_valid_var_char(char c)
 // searches for it in the environment variables,
 // and returns the corresponding value.
 // If the variable is not found, it returns an empty string.
-static char	*expand_env(char *line, int *index, t_shell shell)
+char	*expand_env(char *line, int *index, t_shell shell)
 {
 	char	*var_name;
 	int		i;

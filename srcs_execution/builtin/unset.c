@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:36:30 by twatson           #+#    #+#             */
-/*   Updated: 2026/02/02 16:37:02 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/17 14:24:45 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,6 @@
 /* removes one or more environment variables. Must start with letter or '_' and
 otherwise can only include digits. if any argument is invalid in composition return 1.
 No argument or arguments not exist leads to no change but also no error,  */
-
-typedef struct	s_unset
-{
-	char	**new_envp;
-	char	**valid_args;
-	int		arg_count;
-	int		valid_count;
-	int		parent;
-}	t_unset;
 
 static void	exit_unset(t_unset *unset, t_shell *shell, int alloc_fail)
 {

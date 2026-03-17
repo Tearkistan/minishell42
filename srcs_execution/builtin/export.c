@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_export.c                                      :+:      :+:    :+:   */
+/*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:37:48 by twatson           #+#    #+#             */
-/*   Updated: 2026/02/02 16:38:29 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/17 14:21:34 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ static void sort_to_print(t_shell *shell, t_export *export)
 static int	parse_export_arg(char *arg, t_export *export)
 {
 	int	i;
-	int j;
+	int	j;
 
 	if (export_arg_error(arg, export))
 		return (-1);
 	i = 0;
 	while (arg[i] != '+' || arg[i] != '=' || arg[i] != '\0')
-	{	
+	{
 		export->key[i] = arg[i];
 		i++;
 	}
