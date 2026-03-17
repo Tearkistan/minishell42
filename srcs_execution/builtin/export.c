@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:37:48 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/17 14:21:34 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/17 16:20:37 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,16 @@
 	should be sorted - bubble!
 	*/
 
-static void sort_to_print(t_shell *shell, t_export *export)
+static void	sort_to_print(t_shell *shell, t_export *export)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while (i > shell->envp_len)
+	while (i < shell->envp_len)
 	{
 		j = 0;
-		while (j > shell->envp_len - i - 1)
+		while (j < (shell->envp_len - i - 1))
 		{
 			if (ft_strcmp(export->temp_envp[j], export->temp_envp[j + 1]) > 0)
 			{
@@ -74,7 +74,7 @@ static int	parse_export_arg(char *arg, t_export *export)
 	return (0);
 }
 
-static void exec_export(char **cmd_args, t_shell *shell, t_export *export)
+static void	exec_export(char **cmd_args, t_shell *shell, t_export *export)
 {
 	int		i;
 	int		index;
@@ -124,7 +124,7 @@ void	exit_export(t_export *export, t_shell *shell, int alloc_fail)
 /* generous no_eq allocation */
 int	exec_export_ctrl(char **cmd_args, t_shell *shell, int parent)
 {
-	t_export export;
+	t_export	export;
 
 	export.temp_envp = NULL;
 	export.temp_envp = copy_envp(export.temp_envp, shell->envp, 1);

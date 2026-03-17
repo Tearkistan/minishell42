@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:36:30 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/17 14:24:45 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/17 15:01:57 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	unset_arg_error(char *cmd_arg)
 	return (0);
 }
 
-static void remove_valid_args(char **cmd_args, t_shell *shell, t_unset *unset)
+static void	remove_valid_args(char **cmd_args, t_shell *shell, t_unset *unset)
 {
 	int	i;
 	int	j;
@@ -107,9 +107,9 @@ static void	exec_unset(char **cmd_args, t_shell *shell, t_unset *unset)
 
 int	exec_unset_ctrl(char **cmd_args, t_shell *shell, int parent)
 {
-    t_unset	unset;
+	t_unset	unset;
 
-	unset.new_envp= NULL;
+	unset.new_envp = NULL;
 	unset.valid_args = NULL;
 	unset.arg_count = 0;
 	unset.valid_count = 0;
