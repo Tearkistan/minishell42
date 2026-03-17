@@ -46,6 +46,7 @@ SRCS_EXECUTION := 	builtin/builtin.c \
 					builtin/export_utils.c \
 					builtin/export_utils_plus.c \
 					builtin/unset.c \
+					builtin/unset_utils.c \
 					heredoc.c \
 					clean.c \
 					main.c \

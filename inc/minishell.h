@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/17 14:23:42 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/17 18:27:47 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,16 +133,17 @@ typedef struct s_export
 	int		close_quote;
 }	t_export;
 
-typedef struct	s_unset
+typedef struct s_unset
 {
 	char	**new_envp;
+	int		new_len;
 	char	**valid_args;
 	int		arg_count;
 	int		valid_count;
 	int		parent;
 }	t_unset;
 
-typedef struct	s_cd
+typedef struct s_cd
 {
 	char	*old_pwd;
 	char	*new_pwd;
@@ -180,7 +181,7 @@ t_pipeline	*parse_line(char *line, t_shell shell);
 
 // parse_word.c
 char		*parse_word(char *word, t_shell shell, int expand);
-char	    *expand_env(char *line, int *index, t_shell shell);
+char		*expand_env(char *line, int *index, t_shell shell);
 
 // tokenize
 t_token		*tokenize_line(char *line);
@@ -278,7 +279,12 @@ int			exec_cd_ctrl(char **cmd_args, t_shell *shell, int parent);
 int			exec_exit(char **cmd_args, t_shell *shell, int parent);
 
 /* unset.c */
+void		exit_unset(t_unset *unset, t_shell *shell, int alloc_fail);
+void		get_valid_args(char **cmd_args, t_unset *unset);
 int			exec_unset_ctrl(char **cmd_args, t_shell *shell, int parent);
+
+/* unset_utils.c */
+void		remove_valid_args(char **cmd_args, t_shell *shell, t_unset *unset);
 
 /* export.c */
 void		exit_export(t_export *export, t_shell *shell, int alloc_fail);

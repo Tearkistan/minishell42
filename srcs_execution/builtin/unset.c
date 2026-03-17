@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:36:30 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/17 15:01:57 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/17 18:39:32 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 otherwise can only include digits. if any argument is invalid in composition return 1.
 No argument or arguments not exist leads to no change but also no error,  */
 
-static void	exit_unset(t_unset *unset, t_shell *shell, int alloc_fail)
+void	exit_unset(t_unset *unset, t_shell *shell, int alloc_fail)
 {
 	if (unset->new_envp)
 		free_matrix(unset->new_envp);
@@ -48,7 +48,7 @@ static int	unset_arg_error(char *cmd_arg)
 	return (0);
 }
 
-static void	remove_valid_args(char **cmd_args, t_shell *shell, t_unset *unset)
+void	get_valid_args(char **cmd_args, t_unset *unset)
 {
 	int	i;
 	int	j;
@@ -64,18 +64,7 @@ static void	remove_valid_args(char **cmd_args, t_shell *shell, t_unset *unset)
 		}
 		i++;
 	}
-	i = 0;
-	j = 0;
-	while (shell->envp[i])
-	{
-		while (ft_strcmp_set(shell->envp[i + j], unset->valid_args) == 0)
-			j++;
-		unset->new_envp[i] = shell->envp[i + j];
-		i++;
-	}
-	free_matrix(shell->envp);
-	shell->envp = unset->new_envp;
-	return ;
+	unset->valid_args[j] = NULL;
 }
 
 static void	exec_unset(char **cmd_args, t_shell *shell, t_unset *unset)
@@ -98,6 +87,8 @@ static void	exec_unset(char **cmd_args, t_shell *shell, t_unset *unset)
 	unset->new_envp = (char **)malloc(sizeof(char *) * size);
 	if (!unset->new_envp)
 		return (exit_unset(unset, shell, 1));
+	unset->new_len = size - 1;
+	unset->new_envp[unset->new_len] = NULL;
 	size = unset->valid_count + 1;
 	unset->valid_args = (char **)malloc(sizeof(char *) * size);
 	if (!unset->valid_args)
@@ -110,6 +101,7 @@ int	exec_unset_ctrl(char **cmd_args, t_shell *shell, int parent)
 	t_unset	unset;
 
 	unset.new_envp = NULL;
+	unset.new_len = 0;
 	unset.valid_args = NULL;
 	unset.arg_count = 0;
 	unset.valid_count = 0;
