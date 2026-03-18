@@ -6,11 +6,60 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 16:43:42 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/18 14:03:28 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/18 15:21:11 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	sort_args(t_shell *shell, t_unset *unset)
+{
+	int		i;
+	int		j;
+	char	*temp;
+
+	i = 0;
+	while (i < shell->envp_len)
+	{
+		j = 0;
+		while (j < (shell->envp_len - i - 1))
+		{
+			if (ft_strcmp(unset->sorted_args[j], unset->sorted_args[j + 1]) > 0)
+			{
+				temp = unset->sorted_args[j + 1];
+				unset->sorted_args[j + 1] = unset->sorted_args[j];
+				unset->sorted_args[j] = temp;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
+static int	finalize_valid_args(t_unset *unset)
+{
+	
+	return (1);
+}
+void	resize_unset_envp(t_unset *unset, t_shell *shell)
+{
+	size = shell->envp_len - unset->valid_count + 1;
+	unset->new_envp = (char **)malloc(sizeof(char *) * size);
+	if (!unset->new_envp)
+		return (exit_unset(unset, shell, 1));
+	unset->new_len = size - 1;
+	unset->new_envp[unset->new_len] = NULL;
+}
+
+void	rm_duplicate_args(t_unset *unset, t_shell *shell)
+{
+	unset->sorted_args = copy_array(unset->valid_args);
+	if (!unset->sorted_args)
+		exit_unset(unset, shell, 1);
+	sort_args(unset, shell);
+	if (!finalize_valid_args(unset))
+		exit_unset(unset, shell, 1);
+}
 
 void	remove_valid_args(char **cmd_args, t_shell *shell, t_unset *unset)
 {
@@ -18,6 +67,7 @@ void	remove_valid_args(char **cmd_args, t_shell *shell, t_unset *unset)
 	int	skip;
 
 	get_valid_args(cmd_args, unset, shell);
+	rm_duplicate_args(cmd_args, unset, shell);
 	i = 0;
 	skip = 0;
 	while (shell->envp[i + skip])

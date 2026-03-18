@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/18 13:56:16 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/18 15:17:41 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ typedef struct s_unset
 	char	**new_envp;
 	int		new_len;
 	char	**valid_args;
+	char	**sorted_args;
 	int		arg_count;
 	int		valid_count;
 	int		parent;
@@ -284,6 +285,8 @@ void		get_valid_args(char **cmd_args, t_unset *unset, t_shell *shell);
 int			exec_unset_ctrl(char **cmd_args, t_shell *shell, int parent);
 
 /* unset_utils.c */
+void		resize_unset_envp(t_unset *unset, t_shell *shell);
+void		rm_duplicate_args(t_unset *unset, t_shell *shell);
 void		remove_valid_args(char **cmd_args, t_shell *shell, t_unset *unset);
 
 /* export.c */

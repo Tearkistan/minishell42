@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 16:55:01 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/18 13:49:15 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/18 15:01:09 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,28 @@ int	ft_strncmp_set(char *str, char **set)
 		i++;
 	}
 	return (1);
+}
+
+char	**copy_array(char **set)
+{
+	int		i;
+	char	**copy;
+
+	i = 0;
+	while (set[i])
+		i++;
+	copy = (char **)malloc(sizeof(char *) * (i + 1));
+	if (!copy)
+		return (NULL);
+	copy[i] = NULL;
+	while (set[i])
+	{
+		copy[i] = ft_strdup(set[i];)
+		if (!copy)
+			return (NULL);
+		i++;
+	}
+	return (copy);
 }
 
 int	builtin_exec(char **args, t_shell *shell, int parent)

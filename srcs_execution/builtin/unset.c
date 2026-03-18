@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:36:30 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/18 13:55:58 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/18 14:49:45 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ int	exec_unset_ctrl(char **cmd_args, t_shell *shell, int parent)
 	unset.new_envp = NULL;
 	unset.new_len = 0;
 	unset.valid_args = NULL;
+	unset.sorted_args = NULL;
 	unset.arg_count = 0;
 	unset.valid_count = 0;
 	unset.parent = parent;
@@ -117,5 +118,7 @@ int	exec_unset_ctrl(char **cmd_args, t_shell *shell, int parent)
 		free_matrix(unset.new_envp);
 	if (unset.valid_args)
 		free_matrix(unset.valid_args);
+	if (unset.sorted_args)
+		free_matrix(unset.sorted_args);
 	return (0);
 }
