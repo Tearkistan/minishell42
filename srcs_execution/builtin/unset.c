@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:36:30 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/17 18:39:32 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/18 13:55:58 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	unset_arg_error(char *cmd_arg)
 	return (0);
 }
 
-void	get_valid_args(char **cmd_args, t_unset *unset)
+void	get_valid_args(char **cmd_args, t_unset *unset, t_shell *shell)
 {
 	int	i;
 	int	j;
@@ -59,7 +59,9 @@ void	get_valid_args(char **cmd_args, t_unset *unset)
 	{
 		if (getenv(cmd_args[i]))
 		{
-			unset->valid_args[j] = cmd_args[i];
+			unset->valid_args[j] = ft_strdup(cmd_args[i]);
+			if (!unset->valid_args[j])
+				exit_unset(unset, shell, 1);
 			j++;
 		}
 		i++;

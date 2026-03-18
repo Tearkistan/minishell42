@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 16:55:01 by twatson           #+#    #+#             */
-/*   Updated: 2026/02/22 14:06:57 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/18 13:49:15 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,16 @@ int	append_shell_envp(t_shell *shell, char *new_line)
 	return (0);
 }
 
-int	ft_strcmp_set(char *str, char **set)
+int	ft_strncmp_set(char *str, char **set)
 {
 	int	i;
+	int	n;
 
 	i = 0;
 	while (set[i])
 	{
-		if (ft_strcmp(str, set[i]) == 0)
+		n = ft_strlen(set[i]);
+		if (ft_strncmp(str, set[i], n) == 0)
 			return (0);
 		i++;
 	}

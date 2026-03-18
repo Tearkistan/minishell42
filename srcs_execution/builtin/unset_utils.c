@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 16:43:42 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/17 18:26:39 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/18 14:03:28 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ void	remove_valid_args(char **cmd_args, t_shell *shell, t_unset *unset)
 	int	i;
 	int	skip;
 
-	get_valid_args(cmd_args, unset);
+	get_valid_args(cmd_args, unset, shell);
 	i = 0;
 	skip = 0;
 	while (shell->envp[i + skip])
 	{
-		if (ft_strcmp_set(shell->envp[i + skip], unset->valid_args) == 0)
+		if (ft_strncmp_set(shell->envp[i + skip], unset->valid_args) == 0)
 		{
 			skip++;
 			continue ;

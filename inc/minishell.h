@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/17 18:27:47 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/18 13:56:16 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,7 +260,7 @@ char		*join_paths(char *dir, char *cmd);
 /* builtin.c */
 int			is_builtin(char *cmd);
 int			append_shell_envp(t_shell *shell, char *new_line);
-int			ft_strcmp_set(char *str, char **set);
+int			ft_strncmp_set(char *str, char **set);
 int			builtin_exec(char **cmd_args, t_shell *shell, int parent);
 
 /* exec_echo.c */
@@ -280,7 +280,7 @@ int			exec_exit(char **cmd_args, t_shell *shell, int parent);
 
 /* unset.c */
 void		exit_unset(t_unset *unset, t_shell *shell, int alloc_fail);
-void		get_valid_args(char **cmd_args, t_unset *unset);
+void		get_valid_args(char **cmd_args, t_unset *unset, t_shell *shell);
 int			exec_unset_ctrl(char **cmd_args, t_shell *shell, int parent);
 
 /* unset_utils.c */
