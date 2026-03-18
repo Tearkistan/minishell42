@@ -6,23 +6,23 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 16:43:42 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/18 15:21:11 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/18 20:16:57 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	sort_args(t_shell *shell, t_unset *unset)
+static void	sort_args(t_unset *unset)
 {
 	int		i;
 	int		j;
 	char	*temp;
 
 	i = 0;
-	while (i < shell->envp_len)
+	while (i < unset->valid_count)
 	{
 		j = 0;
-		while (j < (shell->envp_len - i - 1))
+		while (j < (unset->valid_count - i - 1))
 		{
 			if (ft_strcmp(unset->sorted_args[j], unset->sorted_args[j + 1]) > 0)
 			{
@@ -38,11 +38,32 @@ static void	sort_args(t_shell *shell, t_unset *unset)
 
 static int	finalize_valid_args(t_unset *unset)
 {
-	
+	int	i;
+	int	size;
+
+	i = 1;
+	unset->valid_count = 1;
+	while (unset->sorted_args[i])
+	{
+		if (unset->sorted_args[i] != unset->sorted_args[i - 1])
+			unset->valid_count++;
+		i++;
+	}
+	if (i == unset->valid_count)
+		return (1);
+	size = unset->valid_count + 1;
+	free(unset->valid_args);
+	unset->valid_args = (char **)malloc(sizeof(char *) * (size));
+	if (!unset->valid_args)
+		return (0);
+	add_unique_to_array(unset);
 	return (1);
 }
+
 void	resize_unset_envp(t_unset *unset, t_shell *shell)
 {
+	int	size;
+
 	size = shell->envp_len - unset->valid_count + 1;
 	unset->new_envp = (char **)malloc(sizeof(char *) * size);
 	if (!unset->new_envp)
@@ -56,7 +77,7 @@ void	rm_duplicate_args(t_unset *unset, t_shell *shell)
 	unset->sorted_args = copy_array(unset->valid_args);
 	if (!unset->sorted_args)
 		exit_unset(unset, shell, 1);
-	sort_args(unset, shell);
+	sort_args(unset);
 	if (!finalize_valid_args(unset))
 		exit_unset(unset, shell, 1);
 }
@@ -67,7 +88,7 @@ void	remove_valid_args(char **cmd_args, t_shell *shell, t_unset *unset)
 	int	skip;
 
 	get_valid_args(cmd_args, unset, shell);
-	rm_duplicate_args(cmd_args, unset, shell);
+	rm_duplicate_args(unset, shell);
 	i = 0;
 	skip = 0;
 	while (shell->envp[i + skip])
@@ -84,7 +105,7 @@ void	remove_valid_args(char **cmd_args, t_shell *shell, t_unset *unset)
 	}
 	free_matrix(shell->envp);
 	shell->envp = unset->new_envp;
-	shell->envp_len = unset->new_len; 
+	shell->envp_len = unset->new_len;
 	unset->new_envp = NULL;
 }
 

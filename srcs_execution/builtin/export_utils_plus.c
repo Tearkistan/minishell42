@@ -6,13 +6,13 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 21:21:40 by twatson           #+#    #+#             */
-/*   Updated: 2026/02/16 22:47:08 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/18 19:07:02 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		is_no_eq(char *var, char **no_eq)
+int	is_no_eq(char *var, char **no_eq)
 {
 	int	i;
 

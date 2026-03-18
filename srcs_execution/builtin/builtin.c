@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 16:55:01 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/18 15:01:09 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/18 20:06:31 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	**copy_array(char **set)
 	copy[i] = NULL;
 	while (set[i])
 	{
-		copy[i] = ft_strdup(set[i];)
+		copy[i] = ft_strdup(set[i]);
 		if (!copy)
 			return (NULL);
 		i++;
