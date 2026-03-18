@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:36:30 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/18 14:49:45 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/18 15:24:37 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,16 +85,12 @@ static void	exec_unset(char **cmd_args, t_shell *shell, t_unset *unset)
 	}
 	if (unset->valid_count == 0)
 		return ;
-	size = shell->envp_len - unset->valid_count + 1;
-	unset->new_envp = (char **)malloc(sizeof(char *) * size);
-	if (!unset->new_envp)
-		return (exit_unset(unset, shell, 1));
-	unset->new_len = size - 1;
-	unset->new_envp[unset->new_len] = NULL;
 	size = unset->valid_count + 1;
 	unset->valid_args = (char **)malloc(sizeof(char *) * size);
 	if (!unset->valid_args)
 		return (exit_unset(unset, shell, 1));
+	rm_duplicate_args(unset, shell);
+	resize_unset_envp(unset, shell);
 	remove_valid_args(cmd_args, shell, unset);
 }
 
