@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 16:43:42 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/18 20:16:57 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/19 13:46:44 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,14 @@ static int	finalize_valid_args(t_unset *unset)
 	unset->valid_count = 1;
 	while (unset->sorted_args[i])
 	{
-		if (unset->sorted_args[i] != unset->sorted_args[i - 1])
+		if (ft_strcmp(unset->sorted_args[i], unset->sorted_args[i - 1]))
 			unset->valid_count++;
 		i++;
 	}
 	if (i == unset->valid_count)
 		return (1);
 	size = unset->valid_count + 1;
-	free(unset->valid_args);
+	free_matrix(unset->valid_args);
 	unset->valid_args = (char **)malloc(sizeof(char *) * (size));
 	if (!unset->valid_args)
 		return (0);
@@ -82,13 +82,12 @@ void	rm_duplicate_args(t_unset *unset, t_shell *shell)
 		exit_unset(unset, shell, 1);
 }
 
-void	remove_valid_args(char **cmd_args, t_shell *shell, t_unset *unset)
+void	remove_valid_args(t_shell *shell, t_unset *unset)
 {
 	int	i;
 	int	skip;
 
-	get_valid_args(cmd_args, unset, shell);
-	rm_duplicate_args(unset, shell);
+	resize_unset_envp(unset, shell);
 	i = 0;
 	skip = 0;
 	while (shell->envp[i + skip])

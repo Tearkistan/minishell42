@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:36:30 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/18 15:24:37 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/19 12:33:23 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,9 @@ static void	exec_unset(char **cmd_args, t_shell *shell, t_unset *unset)
 	unset->valid_args = (char **)malloc(sizeof(char *) * size);
 	if (!unset->valid_args)
 		return (exit_unset(unset, shell, 1));
+	get_valid_args(cmd_args, unset, shell);
 	rm_duplicate_args(unset, shell);
-	resize_unset_envp(unset, shell);
-	remove_valid_args(cmd_args, shell, unset);
+	remove_valid_args(shell, unset);
 }
 
 int	exec_unset_ctrl(char **cmd_args, t_shell *shell, int parent)

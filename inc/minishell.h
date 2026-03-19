@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/18 20:16:18 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/19 12:32:54 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -288,7 +288,7 @@ int			exec_unset_ctrl(char **cmd_args, t_shell *shell, int parent);
 /* unset_utils.c */
 void		resize_unset_envp(t_unset *unset, t_shell *shell);
 void		rm_duplicate_args(t_unset *unset, t_shell *shell);
-void		remove_valid_args(char **cmd_args, t_shell *shell, t_unset *unset);
+void		remove_valid_args(t_shell *shell, t_unset *unset);
 
 /* unset_utils_plus.c */
 void		add_unique_to_array(t_unset *unset);
