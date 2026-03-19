@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/19 17:36:44 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/19 18:40:51 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ typedef struct s_cd
 {
 	char	*old_pwd;
 	char	*new_pwd;
+	int		path_check;
 	int		arg_count;
 	int		parent;
 }	t_cd;

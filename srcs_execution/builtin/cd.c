@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 17:08:30 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/19 17:39:10 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/19 19:03:51 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,10 @@ static void	update_old_pwd(t_cd *cd, t_shell *shell)
 		if (!shell->envp[i])
 			perror_cd("cd: memory allocation fail", cd, shell, 0);
 	}
-	/*if (shell->envp[i] != NULL)
-	{   
-		while (shell->envp[i] != NULL)
-			i++;*/
-	append_shell_envp(shell, cd->old_pwd);
+	else
+		append_shell_envp(shell, cd->old_pwd);
 	if (!shell->envp)
 		perror_cd("cd new_envp allocation fail", cd, shell, 0);
-	/*}*/
 	return ;
 }
 
@@ -72,7 +68,8 @@ static void	update_new_pwd(t_cd *cd, t_shell *shell)
 		if (!shell->envp[i])
 			perror_cd("cd: memory allocation fail", cd, shell, 0);
 	}
-	append_shell_envp(shell, cd->new_pwd);
+	else
+		append_shell_envp(shell, cd->new_pwd);
 	if (!shell->envp)
 		perror_cd("cd new_envp allocation fail", cd, shell, 0);
 	return ;
@@ -86,18 +83,23 @@ static void	exec_cd(char **cmd_args, t_shell *shell, t_cd *cd)
 		perror_cd("cd: too many arguments", cd, shell, 1);
 	else if (cd->arg_count == 1)
 	{
-		if (!(target = shell_getenv("HOME", shell)))
+		target = shell_getenv("HOME", shell);
+		if (!target)
 			perror_cd("cd: no HOME found", cd, shell, 1);
 	}
 	else if (cd->arg_count == 2)
 		target = cmd_args[1];
 	if (shell_getenv("PWD", shell))
 		cd->old_pwd = ft_strdup(shell_getenv("PWD", shell));
-	if (chdir(target) == -1)
+	if (chdir(target) == 0)
+	{
+		cd->new_pwd = getcwd(NULL, 0);
+		update_old_pwd(cd, shell);
+		update_new_pwd(cd, shell);
+		return ;
+	}
+	else
 		perror_cd("cd", cd, shell, 1);
-	cd->new_pwd = getcwd(NULL, 0);
-	update_old_pwd(cd, shell);
-	update_new_pwd(cd, shell);
 	return ;
 }
 
@@ -107,6 +109,7 @@ int	exec_cd_ctrl(char **cmd_args, t_shell *shell, int parent)
 
 	cd.old_pwd = NULL;
 	cd.new_pwd = NULL;
+	cd.path_check = -1;
 	cd.arg_count = 0;
 	cd.parent = parent;
 	while (cmd_args[cd.arg_count])

@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 16:55:01 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/19 12:27:37 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/19 18:24:57 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	append_shell_envp(t_shell *shell, char *new_line)
 {
 	char	**new_envp;
 
-	new_envp = (char **)malloc(sizeof(char *) * (shell->envp_len + 1));
+	new_envp = (char **)malloc(sizeof(char *) * (shell->envp_len + 2));
 	if (!new_envp)
 		return (1);
 	new_envp = copy_envp(new_envp, shell->envp, 0);
