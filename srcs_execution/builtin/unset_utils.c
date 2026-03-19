@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 16:43:42 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/19 13:46:44 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/19 16:50:27 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,15 @@ static int	finalize_valid_args(t_unset *unset)
 		i++;
 	}
 	if (i == unset->valid_count)
-		return (1);
+		return (0);
 	size = unset->valid_count + 1;
 	free_matrix(unset->valid_args);
 	unset->valid_args = (char **)malloc(sizeof(char *) * (size));
 	if (!unset->valid_args)
-		return (0);
-	add_unique_to_array(unset);
-	return (1);
+		return (1);
+	if (add_unique_to_array(unset))
+		return (1);
+	return (0);
 }
 
 void	resize_unset_envp(t_unset *unset, t_shell *shell)
@@ -78,7 +79,7 @@ void	rm_duplicate_args(t_unset *unset, t_shell *shell)
 	if (!unset->sorted_args)
 		exit_unset(unset, shell, 1);
 	sort_args(unset);
-	if (!finalize_valid_args(unset))
+	if (finalize_valid_args(unset))
 		exit_unset(unset, shell, 1);
 }
 
@@ -93,10 +94,7 @@ void	remove_valid_args(t_shell *shell, t_unset *unset)
 	while (shell->envp[i + skip])
 	{
 		if (ft_strncmp_set(shell->envp[i + skip], unset->valid_args) == 0)
-		{
 			skip++;
-			continue ;
-		}
 		unset->new_envp[i] = ft_strdup(shell->envp[i + skip]);
 		if (!unset->new_envp[i])
 			exit_unset(unset, shell, 1);
@@ -107,34 +105,3 @@ void	remove_valid_args(t_shell *shell, t_unset *unset)
 	shell->envp_len = unset->new_len;
 	unset->new_envp = NULL;
 }
-
-/* UNNECESSARY UPDATE ? 
-
-void	remove_valid_args(t_shell *shell, t_unset *unset)
-{
-	int	i;
-	int	j;
-	int	skip;
-
-	i = 0;
-	skip = 0;
-	while (shell->envp[i + skip])
-	{
-		j = 0;
-		while (unset->valid_args[j])
-		{
-			if (ft_strcmp_set(shell->envp[i + j], unset->valid_args) == 0)
-			{
-				skip++;
-				continue ;
-			}
-			j++;
-		}
-		unset->new_envp[i] = ft_strdup(shell->envp[i + skip]);
-		if (!unset->new_envp[i])
-			exit_unset(unset, shell, 1);
-		i++;
-	}
-	unset->new_envp[i] = NULL;
-	clean_unset(shell, unset);
-}*/

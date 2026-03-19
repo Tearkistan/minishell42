@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 17:08:30 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/17 14:25:00 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/19 17:39:10 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ static void	update_old_pwd(t_cd *cd, t_shell *shell)
 	if (getenv("OLDPWD"))
 	{
 		while (strncmp(shell->envp[i], "OLDPWD=", 7) != 0)
-        		i++;
+			i++;
 		free(shell->envp[i]);
-        shell->envp[i] = ft_strjoin("OLDPWD=", cd->old_pwd);
+		shell->envp[i] = ft_strjoin("OLDPWD=", cd->old_pwd);
 		if (!shell->envp[i])
 			perror_cd("cd: memory allocation fail", cd, shell, 0);
 	}
@@ -51,7 +51,7 @@ static void	update_old_pwd(t_cd *cd, t_shell *shell)
 	{   
 		while (shell->envp[i] != NULL)
 			i++;*/
-    append_shell_envp(shell, cd->old_pwd);
+	append_shell_envp(shell, cd->old_pwd);
 	if (!shell->envp)
 		perror_cd("cd new_envp allocation fail", cd, shell, 0);
 	/*}*/
@@ -63,36 +63,36 @@ static void	update_new_pwd(t_cd *cd, t_shell *shell)
 	int	i;
 
 	i = 0;
-	if (getenv("PWD"))
+	if (shell_getenv("PWD", shell))
 	{
 		while (strncmp(shell->envp[i], "PWD=", 4) != 0)
-        		i++;
+			i++;
 		free(shell->envp[i]);
-        shell->envp[i] = ft_strjoin("PWD=", cd->new_pwd);
+		shell->envp[i] = ft_strjoin("PWD=", cd->new_pwd);
 		if (!shell->envp[i])
 			perror_cd("cd: memory allocation fail", cd, shell, 0);
 	}
-    append_shell_envp(shell, cd->new_pwd);
+	append_shell_envp(shell, cd->new_pwd);
 	if (!shell->envp)
-			perror_cd("cd new_envp allocation fail", cd, shell, 0);
+		perror_cd("cd new_envp allocation fail", cd, shell, 0);
 	return ;
 }
 
 static void	exec_cd(char **cmd_args, t_shell *shell, t_cd *cd)
 {
-	char    *target;
+	char	*target;
 
 	if (cd->arg_count > 2)
 		perror_cd("cd: too many arguments", cd, shell, 1);
 	else if (cd->arg_count == 1)
 	{
-		if (!(target = getenv("HOME")))
+		if (!(target = shell_getenv("HOME", shell)))
 			perror_cd("cd: no HOME found", cd, shell, 1);
 	}
 	else if (cd->arg_count == 2)
 		target = cmd_args[1];
-	if (getenv("PWD"))
-        	cd->old_pwd = ft_strdup(getenv("PWD"));
+	if (shell_getenv("PWD", shell))
+		cd->old_pwd = ft_strdup(shell_getenv("PWD", shell));
 	if (chdir(target) == -1)
 		perror_cd("cd", cd, shell, 1);
 	cd->new_pwd = getcwd(NULL, 0);
@@ -116,34 +116,3 @@ int	exec_cd_ctrl(char **cmd_args, t_shell *shell, int parent)
 	free(cd.new_pwd);
 	return (0);
 }
-
-/* Universal start but malloc allocation / freeing heavy / incomplete freeing
-static int	update_env_line(char *env_label, char *nl, t_shell *sh, t_cd cd)
-{
-	int	i;
-	char	**new_envp;
-    char    *search;
-
-	i = 0;
-	if (getenv(env_label))
-	{
-		search = ft_strjoin(env_label, "=");
-        if (!search)
-            perror_exit("cd: memory allocation fail");
-        while (strncmp(shell->envp[i], "OLDPWD=", 7) != 0)
-        		i++;
-		free(shell->envp[i]);
-        shell->envp[i] = ft_strjoin("OLDPWD=", nl);
-		if (!shell->envp[i])
-			perror_exit("cd: memory allocation fail");
-	}
-	if (shell->envp[i] != NULL)
-	{   
-		while (shell->envp[i] != NULL)
-			i++;
-        new_envp = append_shell_envp(shell, i, nl);
-		if (!new_envp)
-			perror_exit("cd new_envp allocation fail");
-	}
-	return (0);
-}*/

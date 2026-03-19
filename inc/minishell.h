@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/19 12:32:54 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/19 17:36:44 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,6 +265,9 @@ int			ft_strncmp_set(char *str, char **set);
 char		**copy_array(char **set);
 int			builtin_exec(char **cmd_args, t_shell *shell, int parent);
 
+/* builtin_utils.c */
+char		*shell_getenv(char *key, t_shell *sh);
+
 /* exec_echo.c */
 int			exec_echo(char **cmd_args);
 
@@ -291,7 +294,7 @@ void		rm_duplicate_args(t_unset *unset, t_shell *shell);
 void		remove_valid_args(t_shell *shell, t_unset *unset);
 
 /* unset_utils_plus.c */
-void		add_unique_to_array(t_unset *unset);
+int			add_unique_to_array(t_unset *unset);
 
 /* export.c */
 void		exit_export(t_export *export, t_shell *shell, int alloc_fail);

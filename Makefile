@@ -37,6 +37,7 @@ SRCS_PARSING := 	create_pipeline/add_arg.c \
 SRCS_EXECUTION_DIR := srcs_execution
 
 SRCS_EXECUTION := 	builtin/builtin.c \
+					builtin/builtin_utils.c \
 					builtin/cd.c \
 					builtin/exec_echo.c \
 					builtin/exec_env.c \

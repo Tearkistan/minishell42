@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:36:30 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/19 12:33:23 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/19 17:40:28 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static int	unset_arg_error(char *cmd_arg)
 {
 	int	i;
 
-	i = 0;
+	i = 1;
 	if (cmd_arg[i] != '_' || !(ft_isalpha(cmd_arg[i])))
 		return (1);
 	i++;
@@ -57,7 +57,7 @@ void	get_valid_args(char **cmd_args, t_unset *unset, t_shell *shell)
 	j = 0;
 	while (cmd_args[i])
 	{
-		if (getenv(cmd_args[i]))
+		if (shell_getenv(cmd_args[i], shell))
 		{
 			unset->valid_args[j] = ft_strdup(cmd_args[i]);
 			if (!unset->valid_args[j])
@@ -79,7 +79,7 @@ static void	exec_unset(char **cmd_args, t_shell *shell, t_unset *unset)
 	{
 		if (unset_arg_error(cmd_args[i]))
 			shell->last_status = 1;
-		if (getenv(cmd_args[i]))
+		if (shell_getenv(cmd_args[i], shell))
 			unset->valid_count++;
 		i++;
 	}
