@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/19 18:40:51 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/20 16:43:55 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ typedef struct s_cd
 {
 	char	*old_pwd;
 	char	*new_pwd;
+	int		else_error;
 	int		path_check;
 	int		arg_count;
 	int		parent;
@@ -280,6 +281,11 @@ int			exec_pwd(char **cmd_args);
 
 /* cd.c */
 int			exec_cd_ctrl(char **cmd_args, t_shell *shell, int parent);
+
+/* cd_utils.c */
+void		error_msg_cd(char *err_msg, t_cd *cd, t_shell *shell, \
+			int running);
+void		perror_cd(char *error_msg, t_cd *cd, t_shell *shell, int running);
 
 /* exit.c */
 int			exec_exit(char **cmd_args, t_shell *shell, int parent);

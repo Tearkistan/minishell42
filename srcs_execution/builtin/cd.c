@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 17:08:30 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/19 19:03:51 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/20 16:41:09 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,6 @@
 if exist replace
 else append 
 using strncmp, strjoin, free */
-
-static void	perror_cd(char *error_msg, t_cd *cd, t_shell *shell, int running)
-{
-	if (cd->old_pwd)
-		free(cd->old_pwd);
-	if (cd->new_pwd)
-		free(cd->new_pwd);
-	perror(error_msg);
-	if (cd->parent)
-	{
-		shell->running = running;
-		shell->last_status = 1;
-	}
-	else
-		exit(1);
-}
 
 static void	update_old_pwd(t_cd *cd, t_shell *shell)
 {
@@ -75,30 +59,37 @@ static void	update_new_pwd(t_cd *cd, t_shell *shell)
 	return ;
 }
 
+static void	chdir_success(t_cd *cd, t_shell *shell)
+{
+	cd->new_pwd = getcwd(NULL, 0);
+	update_old_pwd(cd, shell);
+	update_new_pwd(cd, shell);
+}
+
 static void	exec_cd(char **cmd_args, t_shell *shell, t_cd *cd)
 {
 	char	*target;
 
 	if (cd->arg_count > 2)
-		perror_cd("cd: too many arguments", cd, shell, 1);
+		error_msg_cd("cd: too many arguments", cd, shell, 1);
 	else if (cd->arg_count == 1)
 	{
 		target = shell_getenv("HOME", shell);
 		if (!target)
-			perror_cd("cd: no HOME found", cd, shell, 1);
+			error_msg_cd("cd: no HOME found", cd, shell, 1);
 	}
+	if (cd->else_error)
+		return ;
 	else if (cd->arg_count == 2)
 		target = cmd_args[1];
 	if (shell_getenv("PWD", shell))
 		cd->old_pwd = ft_strdup(shell_getenv("PWD", shell));
 	if (chdir(target) == 0)
 	{
-		cd->new_pwd = getcwd(NULL, 0);
-		update_old_pwd(cd, shell);
-		update_new_pwd(cd, shell);
+		chdir_success(cd, shell);
 		return ;
 	}
-	else
+	if (!cd->else_error)
 		perror_cd("cd", cd, shell, 1);
 	return ;
 }
@@ -109,13 +100,19 @@ int	exec_cd_ctrl(char **cmd_args, t_shell *shell, int parent)
 
 	cd.old_pwd = NULL;
 	cd.new_pwd = NULL;
+	cd.else_error = 0;
 	cd.path_check = -1;
 	cd.arg_count = 0;
 	cd.parent = parent;
 	while (cmd_args[cd.arg_count])
 		cd.arg_count++;
 	exec_cd(cmd_args, shell, &cd);
-	free(cd.old_pwd);
-	free(cd.new_pwd);
+	if (cd.old_pwd)
+	{
+		free(cd.old_pwd);
+		cd.old_pwd = NULL;
+	}
+	if (cd.new_pwd)
+		free(cd.new_pwd);
 	return (0);
 }

@@ -39,6 +39,7 @@ SRCS_EXECUTION_DIR := srcs_execution
 SRCS_EXECUTION := 	builtin/builtin.c \
 					builtin/builtin_utils.c \
 					builtin/cd.c \
+					builtin/cd_utils.c \
 					builtin/exec_echo.c \
 					builtin/exec_env.c \
 					builtin/exec_pwd.c \
