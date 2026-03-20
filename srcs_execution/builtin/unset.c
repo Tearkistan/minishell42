@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:36:30 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/19 17:40:28 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/20 17:09:08 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ void	exit_unset(t_unset *unset, t_shell *shell, int alloc_fail)
 		shell->last_status = 1;
 	}
 	else if (alloc_fail)
+	{
+		error_msg("unset: memory alocation error");
 		exit(1);
+	}
 }
 
 static int	unset_arg_error(char *cmd_arg)

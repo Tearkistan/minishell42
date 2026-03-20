@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_exit.c                                        :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:35:30 by twatson           #+#    #+#             */
-/*   Updated: 2026/02/02 16:36:14 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/20 17:10:28 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,12 @@ int	exec_exit(char **cmd_args, t_shell *shell, int parent)
 	}
 	else if (numeric_check(cmd_args[1]) == 0)
 	{
-		perror("exit: numeric argument required");
+		error_msg("exit: numeric argument required");
 		exit_check(shell, 2, 1);
 	}
 	else if (arg_count > 2)
 	{
-		perror("exit: too many arguments");
+		error_msg("exit: too many arguments");
 		shell->last_status = 1;
 	}
 	return (0);

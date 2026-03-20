@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:37:48 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/17 16:20:37 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/20 17:11:00 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,14 +111,17 @@ void	exit_export(t_export *export, t_shell *shell, int alloc_fail)
 	if (export->value)
 		free(export->value);
 	if (shell->last_status == 1)
-		perror("export: not a valid identifier");
+		error_msg("export: not a valid identifier");
 	if (export->parent && alloc_fail)
 	{
 		shell->running = 0;
 		shell->last_status = 1;
 	}
 	else if (alloc_fail)
+	{
+		error_msg("export: memory allocation error");
 		exit(1);
+	}
 }
 
 /* generous no_eq allocation */

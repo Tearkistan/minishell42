@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 19:46:35 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/17 15:01:11 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/20 16:57:27 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,8 @@ char	*create_line(char *key, char *value)
 	if (value)
 	{
 		temp = ft_strjoin(new_line, value);
+		if (!temp)
+			return (NULL);
 		free(new_line);
 		new_line = temp;
 	}
