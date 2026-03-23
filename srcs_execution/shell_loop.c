@@ -3,14 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   shell_loop.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 12:42:59 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/11 14:19:59 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/23 13:53:31 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+#define RL_RD "\001\033[91m\002"
+#define RL_R "\001\033[0m\002"
 
 static int	print_exists(char *str)
 {
@@ -38,16 +41,24 @@ void	shell_loop(t_shell *shell)
 
 	while (shell->running)
 	{
-		line = readline(RD PROMPT R);
+		set_signals_prompt_mode();
+		line = readline(RL_RD PROMPT RL_R);
+		if (g_sig == SIGINT)
+		{
+			if (line)
+				free(line);
+			resolve_prompt_sigint(shell);
+			continue ;
+		}
 		if (!line)
+		{
 			received_ctrld(shell);
-		else if (line[0] == '\0' || print_exists(line) == 0 || g_sig == SIGINT)
+			continue ;
+		}
+		if (line[0] == '\0' || print_exists(line) == 0)
 		{
 			free(line);
-			if (g_sig == SIGINT)
-				resolve_prompt_sigint(shell);
-			line = "";
-			// continue ;
+			continue ;
 		}
 		add_history(line);
 		pipeline = parse_line(line, *shell);
