@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 15:05:43 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/23 17:35:57 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,14 @@
 # define DQ 34
 # define PIPE 124
 
-# define P "\033[95m" // Purple
-# define G "\033[92m" // Green
-# define Y "\033[93m" // Yellow
-# define RD "\033[91m" // Red
-# define R "\033[0m" // Reset color
+// Wraps ANSI escape sequences with \001 and \002 so GNU Readline
+// treats them as non-printing characters and calculates the prompt
+// length correctly (prevents cursor and line editing issues).
+# define RL_RD "\001\033[91m\002"
+# define RL_R "\001\033[0m\002"
+
+# define Y "\033[93m"
+# define R "\033[0m"
 
 //no input
 # define ERR_MEMORY "Error: memory allocation failed"
@@ -127,12 +130,10 @@ typedef struct s_pipe
 	int		out_fd;
 	int		prev_read_fd;
 	int		pipe_fd[2];
-	int		infile_stop;
 	int		cmd_count;
 	int		n_spawned;
 	pid_t	last_pid;
 	int		*pids;
-	char	**dirs;
 }	t_pipe;
 
 typedef struct s_export
@@ -232,18 +233,15 @@ void		shell_loop(t_shell *shell);
 /* clean.c */
 void		free_matrix(char **dir);
 void		clean_up(t_shell *sh, t_pipeline *pl, char *line, char *err_msg);
-void		clean_exit_child(t_pipe *pipex, t_pipeline *head, t_shell *shell, \
-int exit_code);
+void		clean_exit_child(t_pipe *pipex, t_pipeline *head, t_shell *shell);
 
 /* execute.c */
-void		exec_cmd(char **cmd_args, t_pipeline *head, t_pipe *pipex, t_shell \
-*shell);
+void		exec_cmd(char **cmd_args, char **envp);
 int			execute_line(t_pipeline *pipeline, t_shell *shell);
 
 /* execute_utils.c */
 int			contains_path(char *cmd);
-void		path_check_to_execute(char **cmd_args, t_pipeline *head, t_shell \
-*shell, t_pipe *pipex);
+void		path_check_to_execute(char **cmd_args, char *cmd, char **envp);
 
 /* exec_stateful.c */
 int			exec_stateful_builtin(t_pipeline *pline, t_shell *sh);
@@ -255,8 +253,8 @@ int			exec_pipeline(t_pipeline *pipeline, t_shell *sh, t_pipe *pipex);
 int			pipeline_size(t_pipeline *p);
 
 /* exec_errors.c */
-void		permission_denied_exit(t_pipeline *head, t_shell *shell, t_pipe \
-*pipex);
+void		permission_denied_exit(char **cmd_args);
+void		not_found_exit(char **cmd_args);
 int			perror_int(char *err_msg, int n);
 int			abort_pipeline_parent(t_pipe *pipex, t_shell *shell, int stat_code);
 int			write_pipe_exit(int pipe[2], char *s, int n);
@@ -273,10 +271,8 @@ void		infile_guard(t_pipe *pipex);
 void		close_pipe(int pipe[2]);
 
 /* path.c */
-char		*find_path(char **cmd_args, t_pipeline *head, t_shell *shell, \
-t_pipe *pipex);
-char		*find_cmd(char **cmd_args, t_pipeline *head, t_shell *shell, \
-t_pipe *pipex);
+char		*find_path(char **cmds, char *cmd, char **envp);
+char		*find_cmd(char **dirs, char **cmd_args, char *arg);
 char		*get_env_path(char **envp);
 char		*join_paths(char *dir, char *cmd);
 
@@ -304,7 +300,7 @@ int			exec_cd_ctrl(char **cmd_args, t_shell *shell, int parent);
 
 /* cd_utils.c */
 void		error_msg_cd(char *err_msg, t_cd *cd, t_shell *shell, \
-int running);
+			int running);
 void		perror_cd(char *error_msg, t_cd *cd, t_shell *shell, int running);
 
 /* exit.c */
@@ -347,7 +343,6 @@ void		signint_heredoc(int signo);
 
 /* signals_utils.c */
 void		set_signals_heredoc(void);
-void		resolve_prompt_sigint(t_shell *shell);
 void		resolve_heredoc_sigint(char *line, t_shell *shell, t_pipe *pipex);
 int			status_to_exitcode(int status);
 int			ft_strncmp_set(char *str, char **set);

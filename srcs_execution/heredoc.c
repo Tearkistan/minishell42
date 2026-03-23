@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:18:48 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 09:01:45 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/23 17:49:48 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	init_heredoc_mode(t_pipe *pipex, t_redirects *redir, t_shell *sh)
 		{
 			if (pipe(pipex->hd_pipe) == -1)
 				return (perror_int("heredoc pipe", -1));
-			set_signals_heredoc();
+			set_signals_prompt_mode();
 			if (heredoc_read(curr, pipex, sh) == -1)
 			{
 				set_signals_parent_running();
@@ -103,9 +103,9 @@ int	heredoc_read(t_redirects *redir, t_pipe *pipex, t_shell *shell)
 	line = NULL;
 	while (1)
 	{
+		line = readline(HD_PROMPT);
 		if (g_sig == SIGINT)
 			return (resolve_heredoc_sigint(line, shell, pipex), -1);
-		line = readline(HD_PROMPT);
 		if (heredoc_break_conditions(line, redir->target))
 			break ;
 		line = expand_line(&line, *shell, redir->quote_delim);

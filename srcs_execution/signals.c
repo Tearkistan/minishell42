@@ -6,13 +6,23 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 15:16:57 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 08:05:01 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/23 17:52:24 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 volatile sig_atomic_t	g_sig = 0;
+
+static int	prompt_event_hook(void)
+{
+	if (g_sig != SIGINT)
+		return (0);
+	ft_putstr_fd("^C", 1);
+	rl_replace_line("", 0);
+	rl_done = 1;
+	return (0);
+}
 
 /*	Core - Prompt - Children
 	
@@ -31,9 +41,7 @@ volatile sig_atomic_t	g_sig = 0;
 
 static void	signint_prompt(int signo)
 {
-	(void)signo;
-	g_sig = SIGINT;
-	write(1, "\n", 1);
+	g_sig = signo;
 }
 
 /* Signal can have 3 dipositions:
@@ -50,6 +58,7 @@ void	set_signals_prompt_mode(void)
 	sa.sa_flags = 0;
 	sigaction(SIGINT, &sa, NULL);
 	signal(SIGQUIT, SIG_IGN);
+	rl_event_hook = prompt_event_hook;
 	return ;
 }
 
@@ -63,11 +72,4 @@ void	set_signals_parent_running(void)
 {
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
-}
-
-void	signint_heredoc(int signo)
-{
-	(void)signo;
-	g_sig = SIGINT;
-	write(1, "\nMINIsHELL$> ", 13);
 }

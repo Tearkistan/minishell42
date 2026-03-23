@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_loop.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 12:42:59 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/11 14:19:59 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/23 17:35:45 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ static int	print_exists(char *str)
 	return (0);
 }
 
+static void	resolve_prompt_sigint(t_shell *shell)
+{
+	g_sig = 0;
+	shell->last_status = 130;
+}
+
 static void	received_ctrld(t_shell *shell)
 {
 	shell->running = 0;
@@ -38,24 +44,21 @@ void	shell_loop(t_shell *shell)
 
 	while (shell->running)
 	{
-		line = readline(RD PROMPT R);
-		if (!line)
+		line = readline(RL_RD PROMPT RL_R);
+		if (g_sig == SIGINT)
+			resolve_prompt_sigint(shell);
+		else if (!line)
 			received_ctrld(shell);
-		else if (line[0] == '\0' || print_exists(line) == 0 || g_sig == SIGINT)
+		else if (!(line[0] == '\0' || print_exists(line) == 0))
 		{
-			free(line);
-			if (g_sig == SIGINT)
-				resolve_prompt_sigint(shell);
-			line = "";
-			// continue ;
+			add_history(line);
+			pipeline = parse_line(line, *shell);
+			if (!pipeline)
+				shell->last_status = 2;
+			else
+				execute_line(pipeline, shell);
+			free_pipeline(pipeline);
 		}
-		add_history(line);
-		pipeline = parse_line(line, *shell);
 		free(line);
-		if (!pipeline)
-			shell->last_status = 2;
-		else
-			execute_line(pipeline, shell);
-		free_pipeline(pipeline);
 	}
 }
