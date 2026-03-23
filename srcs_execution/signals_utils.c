@@ -6,22 +6,11 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 16:32:37 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 17:35:34 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/23 17:45:18 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	set_signals_heredoc(void)
-{
-	struct sigaction	sa;
-
-	sa.sa_handler = signint_heredoc;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sigaction(SIGINT, &sa, NULL);
-	signal(SIGQUIT, SIG_IGN);
-}
 
 void	resolve_heredoc_sigint(char *line, t_shell *shell, t_pipe *pipex)
 {
