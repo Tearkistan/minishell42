@@ -30,9 +30,7 @@ SRCS_PARSING := 	create_pipeline/add_arg.c \
 					tokenize_line/check_token_syntax.c \
 					tokenize_line/tokenize_line.c \
 					parse_line.c \
-					free_parsing.c \
-					debug-print.c
-# 					parsing_main.c \
+					free_parsing.c
 
 SRCS_EXECUTION_DIR := srcs_execution
 
