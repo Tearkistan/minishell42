@@ -1,3 +1,5 @@
 .envp_default
 abort/
 vgcore.*
+minishell
+libft/libft.a
