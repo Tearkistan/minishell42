@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_word.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 13:05:31 by psmolich          #+#    #+#             */
-/*   Updated: 2026/03/17 14:00:33 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/23 08:55:28 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ char	*parse_word(char *line, t_shell shell, int expand)
 
 	word = ft_strdup("");
 	if (!word)
-		return (error_msg(ERR_MEMORY), NULL);
+		return (error_msg(ERR_MEMORY, NULL), NULL);
 	i = 0;
 	while (line[i] && !ft_isspace(line[i]) && !is_special(line[i]))
 	{
@@ -120,10 +120,10 @@ char	*parse_word(char *line, t_shell shell, int expand)
 		else
 			temp = char_to_str(line[i++]);
 		if (!temp)
-			return (error_msg(ERR_MEMORY), free(word), NULL);
+			return (error_msg(ERR_MEMORY, NULL), free(word), NULL);
 		word = ft_strjoin_free(word, temp);
 		if (!word)
-			return (error_msg(ERR_MEMORY), NULL);
+			return (error_msg(ERR_MEMORY, NULL), NULL);
 	}
 	return (word);
 }

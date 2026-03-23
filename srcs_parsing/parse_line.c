@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_line.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 12:40:13 by psmolich          #+#    #+#             */
-/*   Updated: 2026/03/17 13:58:54 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/23 08:54:48 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,6 @@ t_pipeline	*parse_line(char *line, t_shell shell)
 		return (free_tokens(tokens), NULL);
 	head = create_pipeline_from_tokens(tokens, shell);
 	if (!head)
-		return (error_msg(ERR_MEMORY), free_tokens(tokens), NULL);
+		return (error_msg(ERR_MEMORY, NULL), free_tokens(tokens), NULL);
 	return (free_tokens(tokens), head);
 }

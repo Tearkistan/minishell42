@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_echo.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 14:01:36 by psmolich          #+#    #+#             */
-/*   Updated: 2026/02/26 15:42:59 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/23 08:42:15 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	exec_echo(char **cmd_args)
 	if (!cmd_args)
 		return (FAILURE);
 	if (!cmd_args[0] || ft_strcmp(cmd_args[0], "echo") != 0)
-		return (error_msg("not the echo command"), EXIT_FAILURE);
+		return (error_msg(ERR_NOT_CMD, "echo"), EXIT_FAILURE);
 	if (!cmd_args[1])
 		return (ft_putstr_fd("\n", STDOUT_FILENO), EXIT_SUCCESS);
 	newline = TRUE;

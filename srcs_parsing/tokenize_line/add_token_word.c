@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 08:52:17 by psmolich          #+#    #+#             */
-/*   Updated: 2026/02/16 11:36:59 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/23 08:56:19 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char	*word_token_value(char *line, int *index)
 	unclosed_quote = FALSE;
 	value = ft_strdup("");
 	if (!value)
-		return (error_msg(ERR_MEMORY), NULL);
+		return (error_msg(ERR_MEMORY, NULL), NULL);
 	while (line[*index] && !ft_isspace(line[*index])
 		&& !is_special(line[*index]))
 	{
@@ -50,12 +50,12 @@ static char	*word_token_value(char *line, int *index)
 		else
 			temp = char_to_str(line[(*index)++]);
 		if (unclosed_quote)
-			return (error_msg(ERR_UNCLOSED_QUOTE), free(value), NULL);
+			return (error_msg(ERR_UNCLOSED_QUOTE, NULL), free(value), NULL);
 		if (!temp)
-			return (error_msg(ERR_MEMORY), free(value), NULL);
+			return (error_msg(ERR_MEMORY, NULL), free(value), NULL);
 		value = ft_strjoin_free(value, temp);
 		if (!value)
-			return (error_msg(ERR_MEMORY), NULL);
+			return (error_msg(ERR_MEMORY, NULL), NULL);
 	}
 	return (value);
 }
@@ -66,7 +66,7 @@ int	add_token_word(t_token **tokens, char *line, int *index)
 
 	new_token = malloc(sizeof(t_token));
 	if (!new_token)
-		return (error_msg(ERR_MEMORY), FAILURE);
+		return (error_msg(ERR_MEMORY, NULL), FAILURE);
 	new_token->value = word_token_value(line, index);
 	if (!new_token->value)
 		return (free(new_token), FAILURE);

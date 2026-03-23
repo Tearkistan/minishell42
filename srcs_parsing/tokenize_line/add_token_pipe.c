@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/15 08:51:07 by psmolich          #+#    #+#             */
-/*   Updated: 2026/02/16 11:36:46 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/23 08:55:37 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	add_token_pipe(t_token **tokens)
 
 	new_token = malloc(sizeof(t_token));
 	if (!new_token)
-		return (error_msg(ERR_MEMORY), FAILURE);
+		return (error_msg(ERR_MEMORY, NULL), FAILURE);
 	new_token->value = NULL;
 	new_token->type = TOKEN_PIPE;
 	new_token->next = NULL;

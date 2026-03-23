@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:35:30 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 08:02:12 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/23 08:59:25 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,12 @@ int	exec_exit(char **cmd_args, t_shell *shell, int parent)
 	}
 	else if (numeric_check(cmd_args[1]) == 0)
 	{
-		error_msg("exit: numeric argument required");
+		error_msg(ERR_NUM_ARGS, "exit");
 		exit_check(shell, 2, 1);
 	}
 	else if (arg_count > 2)
 	{
-		error_msg("exit: too many arguments");
+		error_msg(ERR_TOO_MANY_ARGS, "exit");
 		shell->last_status = 1;
 	}
 	return (0);

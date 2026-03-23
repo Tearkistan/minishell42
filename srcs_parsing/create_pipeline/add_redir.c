@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 19:23:50 by psmolich          #+#    #+#             */
-/*   Updated: 2026/02/16 11:37:56 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/23 08:55:12 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	add_redir(t_pipeline *current, t_token **token, t_shell shell)
 
 	redir = malloc(sizeof(t_redirects));
 	if (!redir)
-		return (error_msg(ERR_MEMORY), FAILURE);
+		return (error_msg(ERR_MEMORY, NULL), FAILURE);
 	if (ft_strcmp((*token)->value, ">") == 0)
 		redir->type = REDIR_OUT;
 	else if (ft_strcmp((*token)->value, "<") == 0)

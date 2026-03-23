@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 19:21:35 by psmolich          #+#    #+#             */
-/*   Updated: 2026/02/16 11:37:53 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/23 08:55:08 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	add_pipe(t_pipeline **current)
 		return (FAILURE);
 	(*current)->next = empty_pipeline();
 	if (!(*current)->next)
-		return (error_msg(ERR_MEMORY), FAILURE);
+		return (error_msg(ERR_MEMORY, NULL), FAILURE);
 	*current = (*current)->next;
 	return (SUCCESS);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:18:48 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/17 14:04:32 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/23 09:01:45 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,19 @@ int	init_heredoc_mode(t_pipe *pipex, t_redirects *redir, t_shell *sh)
 		{
 			if (pipe(pipex->hd_pipe) == -1)
 				return (perror_int("heredoc pipe", -1));
+			set_signals_heredoc();
 			if (heredoc_read(curr, pipex, sh) == -1)
 			{
-				close(pipex->hd_pipe[0]);
-				close(pipex->hd_pipe[1]);
+				set_signals_parent_running();
+				if (pipex->hd_pipe[0] >= 0)
+					close(pipex->hd_pipe[0]);
+				if (pipex->hd_pipe[1] >= 0)
+					close(pipex->hd_pipe[1]);
 				return (-1);
 			}
 			else
 				close(pipex->hd_pipe[1]);
+			set_signals_parent_running();
 			pipex->hd_fd = pipex->hd_pipe[0];
 		}
 		curr = curr->next;
@@ -54,31 +59,62 @@ int	init_heredoc_mode(t_pipe *pipex, t_redirects *redir, t_shell *sh)
 	return (0);
 }
 
-//static char	*check_expansion();
+static char	*expand_line(char **line, t_shell shell, int quote_delim)
+{
+	int		i;
+	char	*word;
+	char	*temp;
+
+	if (quote_delim == TRUE)
+		return (*line);
+	word = ft_strdup("");
+	if (!word)
+		return (NULL);
+	i = 0;
+	while ((*line)[i])
+	{
+		if ((*line)[i] == '$')
+			temp = expand_env(*line, &i, shell);
+		else
+			temp = char_to_str((*line)[i++]);
+		if (!temp)
+			return (free(word), NULL);
+		word = ft_strjoin_free(word, temp);
+		if (!word)
+			return (NULL);
+	}
+	free(*line);
+	return (word);
+}
+
+static int	heredoc_break_conditions(char *line, char *target)
+{
+	if (!line)
+		return (error_msg(HD_EOF, target), TRUE);
+	else if (ft_strcmp(line, target) == 0)
+		return (free(line), TRUE);
+	return (FALSE);
+}
 
 int	heredoc_read(t_redirects *redir, t_pipe *pipex, t_shell *shell)
 {
 	char	*line;
 
+	line = NULL;
 	while (1)
 	{
 		if (g_sig == SIGINT)
-		{
-			resolve_heredoc_sigint(line, shell, pipex);
-			return (-1);
-		}
-		line = readline("> ");
-		if (!line)
-			return (perror_int("heredoc line allocation fail", -1));
-		if (ft_strncmp(line, redir->target, ft_strlen(redir->target)) == 0)
-		{
-			free(line);
+			return (resolve_heredoc_sigint(line, shell, pipex), -1);
+		line = readline(HD_PROMPT);
+		if (heredoc_break_conditions(line, redir->target))
 			break ;
-		}
-		if (redir->quote_delim == 1)
-			/* INSERT */ (void)shell; /*ft_printf(check_expansion())*/
-		if (write(pipex->hd_pipe[1], line, ft_strlen(line)) == -1)
-			return (write_pipe_exit(pipex->hd_pipe, "write heredoc fail", -1));
+		line = expand_line(&line, *shell, redir->quote_delim);
+		if (!line)
+			return (perror_int(ERR_MEMORY, -1));
+		if (write(pipex->hd_pipe[1], line, ft_strlen(line)) == -1
+			|| write(pipex->hd_pipe[1], "\n", 1) == -1)
+			return (close(pipex->hd_pipe[0]), close(pipex->hd_pipe[1]),
+				error_msg(ERR_WRITE, "here-document"), -1);
 		free(line);
 	}
 	return (0);

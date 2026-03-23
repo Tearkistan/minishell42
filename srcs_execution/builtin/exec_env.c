@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 15:13:33 by psmolich          #+#    #+#             */
-/*   Updated: 2026/02/26 15:42:26 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/23 08:43:32 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ int	exec_env(char **cmd_args, char **envp)
 	if (!cmd_args)
 		return (EXIT_FAILURE);
 	if (!cmd_args[0] || ft_strcmp(cmd_args[0], "env") != 0)
-		return (error_msg("not the env command"), EXIT_FAILURE);
+		return (error_msg(ERR_NOT_CMD, "env"), EXIT_FAILURE);
 	if (cmd_args[1])
-		return (error_msg("env: shouldn't have any arguments"), EXIT_FAILURE);
+		return (error_msg(ERR_ENV_ARGS, NULL), EXIT_FAILURE);
 	i = 0;
 	while (envp[i])
 		ft_putendl_fd(envp[i++], STDOUT_FILENO);

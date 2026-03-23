@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/14 13:57:45 by psmolich          #+#    #+#             */
-/*   Updated: 2026/02/16 11:37:07 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/23 08:58:52 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	first_pipe(t_token *tokens)
 {
 	if (tokens->type == TOKEN_PIPE)
 	{
-		error_msg("Syntax error: near unexpected token `|'\n");
+		error_msg(ERR_UNEXPECTED_TOKEN, "|");
 		return (TRUE);
 	}
 	return (FALSE);
@@ -31,7 +31,7 @@ static int	pipe_followed_by_pipe(t_token *tokens)
 		{
 			if (!tokens->next || tokens->next->type == TOKEN_PIPE)
 			{
-				error_msg("Syntax error: near unexpected token `|'\n");
+				error_msg(ERR_UNEXPECTED_TOKEN, "|");
 				return (TRUE);
 			}
 		}
@@ -49,14 +49,12 @@ static int	redir_not_followed_by_word(t_token *tokens)
 		{
 			if (!tokens->next)
 			{
-				error_msg("Syntax error: near unexpected token `newline'\n");
+				error_msg(ERR_UNEXPECTED_TOKEN, "newline");
 				return (TRUE);
 			}
 			else if (tokens->next->type != TOKEN_WORD)
 			{
-				error_msg("Syntax error: near unexpected token `");
-				error_msg(&(tokens->next->value[0]));
-				error_msg("'\n");
+				error_msg(ERR_UNEXPECTED_TOKEN, tokens->next->value);
 				return (TRUE);
 			}
 		}
@@ -72,7 +70,7 @@ static int	word_without_value(t_token *tokens)
 	{
 		if (tokens->type == TOKEN_WORD && (!tokens->value))
 		{
-			error_msg("Syntax error: empty word token\n");
+			error_msg(ERR_EMPTY_WORD, NULL);
 			return (TRUE);
 		}
 		tokens = tokens->next;

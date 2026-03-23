@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:36:30 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 08:00:31 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/23 08:54:36 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	exit_unset(t_unset *unset, t_shell *shell, int alloc_fail)
 	}
 	else if (alloc_fail)
 	{
-		error_msg("unset: memory alocation error");
+		error_msg(ERR_MEMORY, NULL);
 		exit(1);
 	}
 }

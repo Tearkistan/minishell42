@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/20 16:43:55 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/23 08:58:29 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include "libft.h"
 
 # define PROMPT "MINIsHELL$> "
+# define HD_PROMPT "> "
 
 # define TRUE 1
 # define FALSE 0
@@ -47,8 +48,20 @@
 # define RD "\033[91m" // Red
 # define R "\033[0m" // Reset color
 
-# define ERR_MEMORY "Error: memory allocation failed\n"
-# define ERR_UNCLOSED_QUOTE "Syntax error: unclosed quote\n"
+//no input
+# define ERR_MEMORY "Error: memory allocation failed"
+# define ERR_UNCLOSED_QUOTE "Syntax error: unclosed quote"
+
+// with input
+# define ERR_UNEXPECTED_TOKEN "Syntax error: near unexpected token `@'"
+# define ERR_EMPTY_WORD "Syntax error: empty word token"
+# define ERR_WRITE "Error: @ write failed"
+# define ERR_NOT_CMD "Error: not the @ command"
+# define ERR_ENV_ARGS "env: shouldn't have any arguments"
+# define ERR_TOO_MANY_ARGS "@: too many arguments"
+# define ERR_NUM_ARGS "@: numeric argument required"
+# define ERR_NOT_VALID_ID "@: not a valid identifier"
+# define HD_EOF "Warning: here-document delimited by end-of-file (wanted `@')"
 
 typedef enum e_token_type
 {
@@ -169,7 +182,7 @@ void		print_tokens(t_token *tokens);
 void		print_pipeline(t_pipeline *pipeline);
 
 // ERROR.c
-void		error_msg(char *message);
+void		error_msg(char *message, char *input);
 
 // parsing utils
 char		*char_to_str(char c);

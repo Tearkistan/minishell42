@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/20 15:56:12 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 08:03:06 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/23 08:40:50 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	error_msg_cd(char *err_msg, t_cd *cd, t_shell *shell, int running)
 		free(cd->new_pwd);
 	if (!cd->else_error)
 	{
-		error_msg(err_msg);
+		error_msg(err_msg, NULL);
 		cd->else_error = 1;
 	}
 	if (cd->parent)
