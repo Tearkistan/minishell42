@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 19:46:35 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/20 16:57:27 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/23 08:02:51 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,10 @@ char	*create_line(char *key, char *value)
 	return (new_line);
 }
 
-/* dirty allocation and premptive check for = sign presence to ensure NULL for value if
-no = sign present; already separate check for early exit if incorrect format / order */
+/* dirty allocation and premptive check for = sign presence
+to ensure NULL for value if
+no = sign present; already separate check for early exit
+if incorrect format / order */
 
 void	alloc_key_value(char *arg, t_export *export, t_shell *shell)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 15:16:57 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/11 14:07:48 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/23 08:05:01 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ volatile sig_atomic_t	g_sig = 0;
 	Heredoc Mode - ctrl-C abort heredoc, not shell
 */
 
-static void signint_prompt(int signo)
+static void	signint_prompt(int signo)
 {
 	(void)signo;
 	g_sig = SIGINT;
@@ -71,4 +71,3 @@ void	signint_heredoc(int signo)
 	g_sig = SIGINT;
 	write(1, "\nMINIsHELL$> ", 13);
 }
-

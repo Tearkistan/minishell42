@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipeline.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 14:24:43 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/11 13:47:01 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/23 08:05:16 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ static void	parent(t_pipeline *pline, t_pipe *pipex, pid_t pid)
 	}
 }
 
-static int	cmd_stage(t_pipeline *curr, t_pipeline *head, t_shell *shell, t_pipe *pipex)
+static int	cmd_stage(t_pipeline *curr, t_pipeline *head,
+	t_shell *shell, t_pipe *pipex)
 {
 	pid_t	pid;
 

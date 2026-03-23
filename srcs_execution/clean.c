@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 13:43:32 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/11 13:47:59 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/23 07:51:57 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	free_matrix(char **dir)
 	free(dir);
 }
 
-static void free_shell(t_shell *shell)
+static void	free_shell(t_shell *shell)
 {
 	int	i;
 
@@ -71,6 +71,7 @@ void	clean_up(t_shell *sh, t_pipeline *pl, char *line, char *err_msg)
 		perror_exit(err_msg);
 	return ;
 }
+
 void	clean_exit_child(t_pipe *pipex, t_pipeline *head, t_shell *shell)
 {
 	if (pipex)

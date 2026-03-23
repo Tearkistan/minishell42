@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:36:30 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/20 17:09:08 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/23 08:00:31 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* removes one or more environment variables. Must start with letter or '_' and
-otherwise can only include digits. if any argument is invalid in composition return 1.
+/* removes one or more environment variables.
+Must start with letter or '_' and otherwise can only include digits.
+if any argument is invalid in composition return 1.
 No argument or arguments not exist leads to no change but also no error,  */
 
 void	exit_unset(t_unset *unset, t_shell *shell, int alloc_fail)

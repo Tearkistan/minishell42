@@ -3,17 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:35:30 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/20 17:10:28 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/23 08:02:12 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* if 1st argument cmd_args[1] determines if cmd_args > 2 returns must be numeric 
-or too many arguments error when. When exit occurs in parent, actually exits shell, 
+/* if 1st argument cmd_args[1] determines
+if cmd_args > 2 returns must be numeric
+or too many arguments error when. When exit occurs in parent,
+actually exits shell, 
 else only exits the child */
 
 static int	numeric_check(char *code)
@@ -32,7 +34,7 @@ static int	numeric_check(char *code)
 	return (1);
 }
 
-static void exit_check(t_shell *shell, int code, int parent)
+static void	exit_check(t_shell *shell, int code, int parent)
 {
 	if (parent)
 	{

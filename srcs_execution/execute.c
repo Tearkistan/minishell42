@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 15:19:50 by twatson           #+#    #+#             */
-/*   Updated: 2026/02/22 14:07:14 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/23 08:03:28 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static void	init_pipex(t_pipe *pipex, t_pipeline *pipeline, t_shell *shell)
 	return ;
 }
 
-int execute_line(t_pipeline *pipeline, t_shell *shell)
+int	execute_line(t_pipeline *pipeline, t_shell *shell)
 {
 	t_pipe		pipex;
 
