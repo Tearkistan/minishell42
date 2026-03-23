@@ -3,28 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 15:19:50 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 08:03:28 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/23 15:07:40 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	exec_cmd(char **cmd_args, char **envp)
+void	exec_cmd(char **cmd_args, t_pipeline *head, t_pipe *pipex, t_shell \
+*shell)
 {
 	char	*path;
 
+	if (pipex->infile_stop)
+		clean_exit_child(pipex, head, shell, 1);
 	if (contains_path(cmd_args[0]))
-		path_check_to_execute(cmd_args, cmd_args[0], envp);
-	path = find_path(cmd_args, cmd_args[0], envp);
+		path_check_to_execute(cmd_args, head, shell, pipex);
+	path = find_path(cmd_args, head, shell, pipex);
 	if (!path)
-		not_found_exit(cmd_args);
-	if (execve(path, cmd_args, envp) == -1)
+	{
+		error_msg("Command not found\n", NULL);
+		clean_exit_child(pipex, head, shell, 127);
+	}
+	if (execve(path, cmd_args, shell->envp) == -1)
 	{
 		free(path);
-		perror_exit("execve");
+		perror("execve");
+		clean_exit_child(pipex, head, shell, 1);
 	}
 	free(path);
 }
@@ -56,6 +63,7 @@ int	is_nonstateful(char *cmd)
 static void	init_pipex(t_pipe *pipex, t_pipeline *pipeline, t_shell *shell)
 {
 	pipex->last_pid = -1;
+	pipex->infile_stop = 0;
 	pipex->prev_read_fd = STDIN_FILENO;
 	pipex->pipe_fd[0] = -1;
 	pipex->pipe_fd[1] = -1;
@@ -64,6 +72,7 @@ static void	init_pipex(t_pipe *pipex, t_pipeline *pipeline, t_shell *shell)
 	pipex->pids = (int *)malloc(sizeof(int) * (pipex->cmd_count));
 	if (!pipex->pids)
 		clean_up(shell, pipeline, NULL, "pids array - memory allocation fail");
+	pipex->dirs = NULL;
 	return ;
 }
 

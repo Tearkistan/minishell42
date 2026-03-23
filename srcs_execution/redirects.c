@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/22 10:56:08 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 08:06:22 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/23 15:08:53 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,13 +80,12 @@ void	set_out_fd(t_redirects *redir, t_pipe *pipex)
 
 void	infile_guard(t_pipe *pipex)
 {
-	if (pipex->cmd_count != 1)
+	if (pipex->in_fd >= 0)
 		return ;
-	if (pipex->prev_read_fd >= 0)
-		return ;
-	pipex->prev_read_fd = open("/dev/null", O_RDONLY);
-	if (pipex->prev_read_fd < 0)
+	pipex->in_fd = open("/dev/null", O_RDONLY);
+	if (pipex->in_fd < 0)
 		perror_exit("open /dev/null");
+	pipex->infile_stop = 1;
 }
 
 void	close_pipe(int pipe[2])

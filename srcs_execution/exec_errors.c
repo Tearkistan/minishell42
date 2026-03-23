@@ -3,27 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   exec_errors.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 16:25:36 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 08:36:44 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/23 15:03:48 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	permission_denied_exit(char **cmd_args)
+void	permission_denied_exit(t_pipeline *head, t_shell *shell, t_pipe *pipex)
 {
 	error_msg("Permission denied", NULL);
-	free_matrix(cmd_args);
-	exit(126);
-}
-
-void	not_found_exit(char **cmd_args)
-{
-	error_msg("Command not found\n", NULL);
-	free_matrix(cmd_args);
-	exit(127);
+	clean_exit_child(pipex, head, shell, 126);
 }
 
 int	perror_int(char *err_msg, int n)

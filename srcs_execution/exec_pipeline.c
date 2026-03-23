@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipeline.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 14:24:43 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 08:05:16 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/23 13:57:18 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,10 @@ static void	child(t_pipeline *curr, t_pipeline *head, t_shell *shell,
 	if (is_builtin(curr->cmd.args[0]))
 	{
 		builtin_exec(curr->cmd.args, shell, 0);
-		clean_exit_child(pipex, head, shell);
+		clean_exit_child(pipex, head, shell, 0);
 	}
 	else
-		exec_cmd(curr->cmd.args, shell->envp);
+		exec_cmd(curr->cmd.args, head, pipex, shell);
 }
 
 static void	parent(t_pipeline *pline, t_pipe *pipex, pid_t pid)
