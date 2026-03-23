@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 15:16:57 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 13:57:20 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/23 14:08:15 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,7 @@ static int	prompt_event_hook(void)
 
 static void	signint_prompt(int signo)
 {
-	(void)signo;
-	g_sig = SIGINT;
-	// write(1, "\n", 1);
+	g_sig = signo;
 }
 
 /* Signal can have 3 dipositions:

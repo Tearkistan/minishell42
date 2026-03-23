@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 08:58:29 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/23 17:35:57 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,14 @@
 # define DQ 34
 # define PIPE 124
 
-# define P "\033[95m" // Purple
-# define G "\033[92m" // Green
-# define Y "\033[93m" // Yellow
-# define RD "\033[91m" // Red
-# define R "\033[0m" // Reset color
+// Wraps ANSI escape sequences with \001 and \002 so GNU Readline
+// treats them as non-printing characters and calculates the prompt
+// length correctly (prevents cursor and line editing issues).
+# define RL_RD "\001\033[91m\002"
+# define RL_R "\001\033[0m\002"
+
+# define Y "\033[93m"
+# define R "\033[0m"
 
 //no input
 # define ERR_MEMORY "Error: memory allocation failed"
@@ -340,7 +343,6 @@ void		signint_heredoc(int signo);
 
 /* signals_utils.c */
 void		set_signals_heredoc(void);
-void		resolve_prompt_sigint(t_shell *shell);
 void		resolve_heredoc_sigint(char *line, t_shell *shell, t_pipe *pipex);
 int			status_to_exitcode(int status);
 int			ft_strncmp_set(char *str, char **set);

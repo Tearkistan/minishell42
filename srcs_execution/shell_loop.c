@@ -6,14 +6,11 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 12:42:59 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 13:53:31 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/23 17:35:45 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-#define RL_RD "\001\033[91m\002"
-#define RL_R "\001\033[0m\002"
 
 static int	print_exists(char *str)
 {
@@ -26,6 +23,12 @@ static int	print_exists(char *str)
 		str++;
 	}
 	return (0);
+}
+
+static void	resolve_prompt_sigint(t_shell *shell)
+{
+	g_sig = 0;
+	shell->last_status = 130;
 }
 
 static void	received_ctrld(t_shell *shell)
@@ -41,32 +44,21 @@ void	shell_loop(t_shell *shell)
 
 	while (shell->running)
 	{
-		set_signals_prompt_mode();
 		line = readline(RL_RD PROMPT RL_R);
 		if (g_sig == SIGINT)
-		{
-			if (line)
-				free(line);
 			resolve_prompt_sigint(shell);
-			continue ;
-		}
-		if (!line)
-		{
+		else if (!line)
 			received_ctrld(shell);
-			continue ;
-		}
-		if (line[0] == '\0' || print_exists(line) == 0)
+		else if (!(line[0] == '\0' || print_exists(line) == 0))
 		{
-			free(line);
-			continue ;
+			add_history(line);
+			pipeline = parse_line(line, *shell);
+			if (!pipeline)
+				shell->last_status = 2;
+			else
+				execute_line(pipeline, shell);
+			free_pipeline(pipeline);
 		}
-		add_history(line);
-		pipeline = parse_line(line, *shell);
 		free(line);
-		if (!pipeline)
-			shell->last_status = 2;
-		else
-			execute_line(pipeline, shell);
-		free_pipeline(pipeline);
 	}
 }

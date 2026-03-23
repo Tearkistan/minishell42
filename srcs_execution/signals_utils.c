@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 16:32:37 by twatson           #+#    #+#             */
-/*   Updated: 2026/01/16 16:37:33 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/23 17:35:34 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,6 @@ void	set_signals_heredoc(void)
 	sa.sa_flags = 0;
 	sigaction(SIGINT, &sa, NULL);
 	signal(SIGQUIT, SIG_IGN);
-}
-
-void	resolve_prompt_sigint(t_shell *shell)
-{
-	g_sig = 0;
-	shell->last_status = 130;
-	return ;
 }
 
 void	resolve_heredoc_sigint(char *line, t_shell *shell, t_pipe *pipex)
