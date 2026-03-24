@@ -6,7 +6,7 @@
 #    By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/23 17:19:41 by psmolich          #+#    #+#              #
-#    Updated: 2026/03/23 17:21:43 by psmolich         ###   ########.fr        #
+#    Updated: 2026/03/24 06:13:28 by psmolich         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ LIBFT_DIR=libft
 LIBFT=$(LIBFT_DIR)/libft.a
 READLINE_LIBS = -lreadline -lhistory -lncurses
 
-CC=cc -g # -g flag needs to be removed for submission!
+CC=cc
 CFLAGS=-Wall -Wextra -Werror -I$(LIBFT_DIR) -I$(INC_DIR) 
 
 SRCS_PARSING_DIR := srcs_parsing
@@ -62,7 +62,9 @@ SRCS_EXECUTION := 	builtin/builtin.c \
 					builtin/unset.c \
 					builtin/unset_utils.c \
 					builtin/unset_utils_plus.c \
-					heredoc.c \
+					heredoc/heredoc.c \
+					heredoc/init_heredoc_mode.c \
+					heredoc/count_heredoc.c \
 					clean.c \
 					main.c \
 					error_msg.c \

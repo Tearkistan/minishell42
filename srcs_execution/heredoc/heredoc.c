@@ -6,58 +6,11 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:18:48 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 17:49:48 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/24 06:13:51 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	count_heredoc(t_redirects *redir)
-{
-	int			count;
-	t_redirects	*curr;
-
-	curr = redir;
-	count = 0;
-	while (curr)
-	{
-		if (curr->type == HEREDOC)
-			count++;
-		curr = curr->next;
-	}
-	return (count);
-}
-
-int	init_heredoc_mode(t_pipe *pipex, t_redirects *redir, t_shell *sh)
-{
-	t_redirects	*curr;
-
-	curr = redir;
-	while (curr)
-	{
-		if (curr->type == HEREDOC)
-		{
-			if (pipe(pipex->hd_pipe) == -1)
-				return (perror_int("heredoc pipe", -1));
-			set_signals_prompt_mode();
-			if (heredoc_read(curr, pipex, sh) == -1)
-			{
-				set_signals_parent_running();
-				if (pipex->hd_pipe[0] >= 0)
-					close(pipex->hd_pipe[0]);
-				if (pipex->hd_pipe[1] >= 0)
-					close(pipex->hd_pipe[1]);
-				return (-1);
-			}
-			else
-				close(pipex->hd_pipe[1]);
-			set_signals_parent_running();
-			pipex->hd_fd = pipex->hd_pipe[0];
-		}
-		curr = curr->next;
-	}
-	return (0);
-}
 
 static char	*expand_line(char **line, t_shell shell, int quote_delim)
 {
@@ -110,7 +63,7 @@ int	heredoc_read(t_redirects *redir, t_pipe *pipex, t_shell *shell)
 			break ;
 		line = expand_line(&line, *shell, redir->quote_delim);
 		if (!line)
-			return (perror_int(ERR_MEMORY, -1));
+			return (error_msg(ERR_MEMORY, NULL), -1);
 		if (write(pipex->hd_pipe[1], line, ft_strlen(line)) == -1
 			|| write(pipex->hd_pipe[1], "\n", 1) == -1)
 			return (close(pipex->hd_pipe[0]), close(pipex->hd_pipe[1]),
