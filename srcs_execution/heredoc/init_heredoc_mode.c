@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_heredoc_mode.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 06:01:11 by psmolich          #+#    #+#             */
-/*   Updated: 2026/03/24 06:28:32 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/25 15:40:39 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	init_heredoc_mode(t_pipe *pipex, t_redirects *redir, t_shell *sh)
 					perror(Y "MINIsHELL:" R);
 				return (-1);
 			}
-			else if (close(pipex->hd_pipe[1]) == -1)
+			else if (pipex->hd_pipe[1] && close(pipex->hd_pipe[1]) == -1)
 				perror(Y "MINIsHELL:" R);
 			set_signals_parent_running();
 			pipex->hd_fd = pipex->hd_pipe[0];

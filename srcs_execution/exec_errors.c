@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_errors.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 16:25:36 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/24 05:39:16 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/25 15:28:32 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ int	abort_pipeline_parent(t_pipe *pipex, t_shell *shell, int stat_code)
 	return (-1);
 }
 
-int	write_pipe_exit(int pipe[2], char *s, int n)
+/*int	write_pipe_exit(int pipe[2], char *s, int n)
 {
 	close(pipe[0]);
 	close(pipe[1]);
 	return (perror_int(s, n));
-}
+}*/

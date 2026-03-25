@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/22 10:56:08 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/24 06:37:29 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/25 16:08:19 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,13 @@ static void	set_default_out_fd(t_pipe *pipex)
 	return ;
 }
 
-void	set_out_fd(t_redirects *redir, t_pipe *pipex)
+void	set_out_fd(t_redirects *redir, t_pipe *pipex, t_pipeline *head,
+			t_shell *shell)
 {
 	t_redirects	*curr;
 
+	(void) head;
+	(void) shell;
 	set_default_out_fd(pipex);
 	curr = redir;
 	while (curr)
@@ -71,7 +74,7 @@ void	set_out_fd(t_redirects *redir, t_pipe *pipex)
 			if (pipex->out_fd != STDOUT_FILENO)
 				close(pipex->out_fd);
 			pipex->out_fd = open(redir->target, O_CREAT | O_WRONLY | O_APPEND,
-				0644);
+					0644);
 			if (pipex->out_fd < 0)
 				perror_exit("openning APPEND out_fd");
 		}

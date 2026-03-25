@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/24 05:36:35 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/25 16:00:05 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,7 +262,6 @@ void		permission_denied_exit(t_pipeline *head, t_shell *shell,
 void		not_found_exit(char **cmd_args);
 int			perror_int(char *err_msg, int n);
 int			abort_pipeline_parent(t_pipe *pipex, t_shell *shell, int stat_code);
-int			write_pipe_exit(int pipe[2], char *s, int n);
 
 /* heredoc */
 int			count_heredoc(t_redirects *redir);
@@ -271,7 +270,8 @@ int			heredoc_read(t_redirects *redir, t_pipe *pipex, t_shell *shell);
 
 /* redirects.c */
 void		set_in_fd(t_redirects *redir, t_pipe *pipex);
-void		set_out_fd(t_redirects *redir, t_pipe *pipex);
+void		set_out_fd(t_redirects *redir, t_pipe *pipex, t_pipeline *head,
+				t_shell *shell);
 void		infile_guard(t_pipe *pipex);
 void		close_pipe(int pipe[2]);
 

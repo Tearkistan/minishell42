@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 15:19:50 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 15:07:40 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/25 14:45:29 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,9 @@ static void	init_pipex(t_pipe *pipex, t_pipeline *pipeline, t_shell *shell)
 	pipex->prev_read_fd = STDIN_FILENO;
 	pipex->pipe_fd[0] = -1;
 	pipex->pipe_fd[1] = -1;
+	pipex->hd_fd = -1;
+	pipex->hd_pipe[0] = -1;
+	pipex->hd_pipe[1] = -1;
 	pipex->cmd_count = pipeline_size(pipeline);
 	pipex->n_spawned = 0;
 	pipex->pids = (int *)malloc(sizeof(int) * (pipex->cmd_count));
