@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/25 16:00:05 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/26 11:22:02 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -262,6 +262,8 @@ void		permission_denied_exit(t_pipeline *head, t_shell *shell,
 void		not_found_exit(char **cmd_args);
 int			perror_int(char *err_msg, int n);
 int			abort_pipeline_parent(t_pipe *pipex, t_shell *shell, int stat_code);
+void		perror_child_exit(t_pipe *pipex, t_pipeline *head, t_shell *shell,
+				char *err_msg);
 
 /* heredoc */
 int			count_heredoc(t_redirects *redir);

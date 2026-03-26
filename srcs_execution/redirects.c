@@ -6,11 +6,20 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/22 10:56:08 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/25 16:08:19 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/26 11:24:58 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	set_default_out_fd(t_pipe *pipex)
+{
+	if (pipex->n_spawned == pipex->cmd_count)
+		pipex->out_fd = STDOUT_FILENO;
+	else
+		pipex->out_fd = pipex->pipe_fd[1];
+	return ;
+}
 
 void	set_in_fd(t_redirects *redir, t_pipe *pipex)
 {
@@ -37,15 +46,7 @@ void	set_in_fd(t_redirects *redir, t_pipe *pipex)
 		curr = curr->next;
 	}
 	infile_guard(pipex);
-	return ;
-}
-
-static void	set_default_out_fd(t_pipe *pipex)
-{
-	if (pipex->n_spawned == pipex->cmd_count)
-		pipex->out_fd = STDOUT_FILENO;
-	else
-		pipex->out_fd = pipex->pipe_fd[1];
+	set_default_out_fd(pipex);
 	return ;
 }
 
@@ -54,9 +55,6 @@ void	set_out_fd(t_redirects *redir, t_pipe *pipex, t_pipeline *head,
 {
 	t_redirects	*curr;
 
-	(void) head;
-	(void) shell;
-	set_default_out_fd(pipex);
 	curr = redir;
 	while (curr)
 	{
@@ -67,7 +65,7 @@ void	set_out_fd(t_redirects *redir, t_pipe *pipex, t_pipeline *head,
 			pipex->out_fd = open(redir->target, O_CREAT | O_WRONLY | O_TRUNC,
 					0644);
 			if (pipex->out_fd < 0)
-				perror_exit("openning OUT out_fd");
+				perror_child_exit(pipex, head, shell, "openning OUT out_fd");
 		}
 		else if (redir->type == REDIR_APP)
 		{
@@ -76,7 +74,7 @@ void	set_out_fd(t_redirects *redir, t_pipe *pipex, t_pipeline *head,
 			pipex->out_fd = open(redir->target, O_CREAT | O_WRONLY | O_APPEND,
 					0644);
 			if (pipex->out_fd < 0)
-				perror_exit("openning APPEND out_fd");
+				perror_child_exit(pipex, head, shell, "openning APPEND out_fd");
 		}
 		curr = curr->next;
 	}

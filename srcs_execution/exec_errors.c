@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 16:25:36 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/25 15:28:32 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/26 11:24:18 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,13 @@ int	abort_pipeline_parent(t_pipe *pipex, t_shell *shell, int stat_code)
 	}
 	shell->last_status = stat_code;
 	return (-1);
+}
+
+void	perror_child_exit(t_pipe *pipex, t_pipeline *head, t_shell *shell,
+			char *err_msg)
+{
+	perror(err_msg);
+	clean_exit_child(pipex, head, shell, 1);
 }
 
 /*int	write_pipe_exit(int pipe[2], char *s, int n)
