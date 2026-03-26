@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 06:01:11 by psmolich          #+#    #+#             */
-/*   Updated: 2026/03/24 06:28:32 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/25 14:53:34 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,17 @@
 static int	close_hd_pipes(t_pipe *pipex)
 {
 	if (pipex->hd_pipe[0] >= 0)
+	{
 		if (close(pipex->hd_pipe[0]) == -1)
 			return (FAILURE);
+		pipex->hd_pipe[0] = -1;
+	}
 	if (pipex->hd_pipe[1] >= 0)
+	{
 		if (close(pipex->hd_pipe[1]) == -1)
 			return (FAILURE);
+		pipex->hd_pipe[1] = -1;
+	}
 	return (SUCCESS);
 }
 
@@ -46,6 +52,8 @@ int	init_heredoc_mode(t_pipe *pipex, t_redirects *redir, t_shell *sh)
 			}
 			else if (close(pipex->hd_pipe[1]) == -1)
 				perror(Y "MINIsHELL:" R);
+			else
+				pipex->hd_pipe[1] = -1;
 			set_signals_parent_running();
 			pipex->hd_fd = pipex->hd_pipe[0];
 		}

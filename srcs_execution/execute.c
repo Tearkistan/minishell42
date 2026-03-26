@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 15:19:50 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 15:07:40 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/25 14:50:34 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,11 @@ int	is_nonstateful(char *cmd)
 
 static void	init_pipex(t_pipe *pipex, t_pipeline *pipeline, t_shell *shell)
 {
+	pipex->hd_fd = -1;
+	pipex->hd_pipe[0] = -1;
+	pipex->hd_pipe[1] = -1;
+	pipex->in_fd = STDIN_FILENO;
+	pipex->out_fd = STDOUT_FILENO;
 	pipex->last_pid = -1;
 	pipex->infile_stop = 0;
 	pipex->prev_read_fd = STDIN_FILENO;

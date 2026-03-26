@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 16:32:37 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 17:45:18 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/26 06:27:56 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,11 @@ void	resolve_heredoc_sigint(char *line, t_shell *shell, t_pipe *pipex)
 {
 	g_sig = 0;
 	free(line);
-	close(pipex->pipe_fd[1]);
+	if (pipex->hd_pipe[1] >= 0)
+	{
+		close(pipex->hd_pipe[1]);
+		pipex->hd_pipe[1] = -1;
+	}
 	shell->last_status = 130;
 }
 

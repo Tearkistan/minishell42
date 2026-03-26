@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/22 10:56:08 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/24 06:37:29 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/25 14:56:24 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,14 @@ void	infile_guard(t_pipe *pipex)
 
 void	close_pipe(int pipe[2])
 {
-	close(pipe[0]);
-	close(pipe[1]);
+	if (pipe[0] >= 0)
+	{
+		close(pipe[0]);
+		pipe[0] = -1;
+	}
+	if (pipe[1] >= 0)
+	{
+		close(pipe[1]);
+		pipe[1] = -1;
+	}
 }

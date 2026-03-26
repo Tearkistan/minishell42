@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipeline.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 14:24:43 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 13:57:18 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/25 14:56:24 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,17 @@ static void	child(t_pipeline *curr, t_pipeline *head, t_shell *shell,
 		if (dup2(pipex->in_fd, 0) == -1)
 			perror_exit("dup2 in_fd->stdin");
 		close(pipex->in_fd);
+		pipex->in_fd = -1;
 	}
 	if (pipex->out_fd != STDOUT_FILENO)
 	{
 		if (dup2(pipex->out_fd, 1) == -1)
 			perror_exit("dup2 out_fd->stdout");
 		if (!curr->next)
+		{
 			close(pipex->out_fd);
+			pipex->out_fd = -1;
+		}
 	}
 	if (curr->next)
 		close_pipe(pipex->pipe_fd);
@@ -48,15 +52,20 @@ static void	parent(t_pipeline *pline, t_pipe *pipex, pid_t pid)
 	if (pline->next)
 	{
 		close(pipex->pipe_fd[1]);
+		pipex->pipe_fd[1] = -1;
 		if (pipex->prev_read_fd >= 0 && pipex->prev_read_fd != STDIN_FILENO)
 			close(pipex->prev_read_fd);
 		pipex->prev_read_fd = pipex->pipe_fd[0];
+		pipex->pipe_fd[0] = -1;
 	}
 	else
 	{
 		pipex->last_pid = pid;
 		if (pipex->prev_read_fd >= 0 && pipex->prev_read_fd != STDIN_FILENO)
+		{
 			close(pipex->prev_read_fd);
+			pipex->prev_read_fd = -1;
+		}
 	}
 }
 
