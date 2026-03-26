@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 15:19:50 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/25 14:45:29 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/26 14:51:48 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void	exec_cmd(char **cmd_args, t_pipeline *head, t_pipe *pipex, t_shell \
 
 int	is_stateful(char *cmd)
 {
+	if (!cmd)
+		return (0);
 	if (!ft_strcmp(cmd, "cd"))
 		return (1);
 	if (!ft_strcmp(cmd, "exit"))
@@ -70,6 +72,7 @@ static void	init_pipex(t_pipe *pipex, t_pipeline *pipeline, t_shell *shell)
 	pipex->hd_fd = -1;
 	pipex->hd_pipe[0] = -1;
 	pipex->hd_pipe[1] = -1;
+	pipex->in_error_switch = 0;
 	pipex->cmd_count = pipeline_size(pipeline);
 	pipex->n_spawned = 0;
 	pipex->pids = (int *)malloc(sizeof(int) * (pipex->cmd_count));
@@ -83,7 +86,8 @@ int	execute_line(t_pipeline *pipeline, t_shell *shell)
 {
 	t_pipe		pipex;
 
-	if (!pipeline->next && is_stateful(pipeline->cmd.args[0]))
+	if (!pipeline->next && pipeline->cmd.args
+		&& is_stateful(pipeline->cmd.args[0]))
 		exec_stateful_builtin(pipeline, shell);
 	else
 	{

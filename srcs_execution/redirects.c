@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/22 10:56:08 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/26 11:24:58 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/26 15:19:52 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,12 @@ static void	set_default_out_fd(t_pipe *pipex)
 	if (pipex->n_spawned == pipex->cmd_count)
 		pipex->out_fd = STDOUT_FILENO;
 	else
-		pipex->out_fd = pipex->pipe_fd[1];
+	{
+		if (pipex->pipe_fd[1] >= 0)
+			pipex->out_fd = pipex->pipe_fd[1];
+		else
+			pipex->out_fd = STDOUT_FILENO;
+	}
 	return ;
 }
 
@@ -35,7 +40,7 @@ void	set_in_fd(t_redirects *redir, t_pipe *pipex)
 				close(pipex->in_fd);
 			pipex->in_fd = open(curr->target, O_RDONLY);
 			if (pipex->in_fd < 0)
-				perror("setting IN in_fd");
+				perror_in_fd("setting IN in_fd", pipex);
 		}
 		else if (curr->type == HEREDOC)
 		{
@@ -58,20 +63,20 @@ void	set_out_fd(t_redirects *redir, t_pipe *pipex, t_pipeline *head,
 	curr = redir;
 	while (curr)
 	{
-		if (redir->type == REDIR_OUT)
+		if (curr->type == REDIR_OUT)
 		{
 			if (pipex->out_fd != STDOUT_FILENO)
 				close(pipex->out_fd);
-			pipex->out_fd = open(redir->target, O_CREAT | O_WRONLY | O_TRUNC,
+			pipex->out_fd = open(curr->target, O_CREAT | O_WRONLY | O_TRUNC,
 					0644);
 			if (pipex->out_fd < 0)
 				perror_child_exit(pipex, head, shell, "openning OUT out_fd");
 		}
-		else if (redir->type == REDIR_APP)
+		else if (curr->type == REDIR_APP)
 		{
 			if (pipex->out_fd != STDOUT_FILENO)
 				close(pipex->out_fd);
-			pipex->out_fd = open(redir->target, O_CREAT | O_WRONLY | O_APPEND,
+			pipex->out_fd = open(curr->target, O_CREAT | O_WRONLY | O_APPEND,
 					0644);
 			if (pipex->out_fd < 0)
 				perror_child_exit(pipex, head, shell, "openning APPEND out_fd");
