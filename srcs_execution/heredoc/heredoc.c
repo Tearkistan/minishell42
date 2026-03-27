@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:18:48 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/24 06:13:51 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/25 15:43:14 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,7 @@ int	heredoc_read(t_redirects *redir, t_pipe *pipex, t_shell *shell)
 			return (error_msg(ERR_MEMORY, NULL), -1);
 		if (write(pipex->hd_pipe[1], line, ft_strlen(line)) == -1
 			|| write(pipex->hd_pipe[1], "\n", 1) == -1)
-			return (close(pipex->hd_pipe[0]), close(pipex->hd_pipe[1]),
-				error_msg(ERR_WRITE, "here-document"), -1);
+			return (error_msg(ERR_WRITE, "here-document"), -1);
 		free(line);
 	}
 	return (0);

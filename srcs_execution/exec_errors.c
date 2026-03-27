@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_errors.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 16:25:36 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/24 05:39:16 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/26 14:56:07 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,23 @@ int	abort_pipeline_parent(t_pipe *pipex, t_shell *shell, int stat_code)
 	return (-1);
 }
 
-int	write_pipe_exit(int pipe[2], char *s, int n)
+void	perror_child_exit(t_pipe *pipex, t_pipeline *head, t_shell *shell,
+			char *err_msg)
+{
+	perror(err_msg);
+	clean_exit_child(pipex, head, shell, 1);
+}
+
+void	perror_in_fd(char *err_msg, t_pipe *pipex)
+{
+	if (!pipex->in_error_switch)
+		perror(err_msg);
+	pipex->in_error_switch = 1;
+}
+
+/*int	write_pipe_exit(int pipe[2], char *s, int n)
 {
 	close(pipe[0]);
 	close(pipe[1]);
 	return (perror_int(s, n));
-}
+}*/

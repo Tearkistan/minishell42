@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/24 05:36:35 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/27 15:38:34 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ typedef struct s_pipe
 	int		hd_pipe[2];
 	int		in_fd;
 	int		out_fd;
+	int		in_error_switch;
 	int		prev_read_fd;
 	int		pipe_fd[2];
 	int		infile_stop;
@@ -259,21 +260,27 @@ int			pipeline_size(t_pipeline *p);
 /* exec_errors.c */
 void		permission_denied_exit(t_pipeline *head, t_shell *shell,
 				t_pipe *pipex);
-void		not_found_exit(char **cmd_args);
 int			perror_int(char *err_msg, int n);
 int			abort_pipeline_parent(t_pipe *pipex, t_shell *shell, int stat_code);
-int			write_pipe_exit(int pipe[2], char *s, int n);
+void		perror_child_exit(t_pipe *pipex, t_pipeline *head, t_shell *shell,
+				char *err_msg);
+void		perror_in_fd(char *err_msg, t_pipe *pipex);
 
 /* heredoc */
 int			count_heredoc(t_redirects *redir);
 int			init_heredoc_mode(t_pipe *pipex, t_redirects *redir, t_shell *sh);
 int			heredoc_read(t_redirects *redir, t_pipe *pipex, t_shell *shell);
+int			close_fd(int *fd);
 
 /* redirects.c */
 void		set_in_fd(t_redirects *redir, t_pipe *pipex);
-void		set_out_fd(t_redirects *redir, t_pipe *pipex);
+void		set_out_fd(t_redirects *redir, t_pipe *pipex, t_pipeline *head,
+				t_shell *shell);
 void		infile_guard(t_pipe *pipex);
 void		close_pipe(int pipe[2]);
+
+/* redirects_utils.c */
+t_redirects	*last_in_finder(t_redirects *redir);
 
 /* path.c */
 char		*find_path(char **cmd_args, t_pipeline *head, t_shell *shell,

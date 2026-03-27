@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 14:24:43 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 13:57:18 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/27 14:48:05 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,17 @@ static void	child(t_pipeline *curr, t_pipeline *head, t_shell *shell,
 {
 	set_signals_child();
 	set_in_fd(curr->cmd.redirects, pipex);
-	set_out_fd(curr->cmd.redirects, pipex);
+	set_out_fd(curr->cmd.redirects, pipex, head, shell);
 	if (pipex->in_fd != STDIN_FILENO)
 	{
 		if (dup2(pipex->in_fd, 0) == -1)
-			perror_exit("dup2 in_fd->stdin");
+			perror_child_exit(pipex, head, shell, Y "dup2 in_fd->stdin" R);
 		close(pipex->in_fd);
 	}
 	if (pipex->out_fd != STDOUT_FILENO)
 	{
 		if (dup2(pipex->out_fd, 1) == -1)
-			perror_exit("dup2 out_fd->stdout");
+			perror_child_exit(pipex, head, shell, Y "dup2 out_fd->stdout" R);
 		if (!curr->next)
 			close(pipex->out_fd);
 	}
@@ -45,6 +45,11 @@ static void	child(t_pipeline *curr, t_pipeline *head, t_shell *shell,
 static void	parent(t_pipeline *pline, t_pipe *pipex, pid_t pid)
 {
 	pipex->pids[pipex->n_spawned - 1] = pid;
+	if (pipex->hd_fd >= 0)
+	{
+		close(pipex->hd_fd);
+		pipex->hd_fd = -1;
+	}
 	if (pline->next)
 	{
 		close(pipex->pipe_fd[1]);

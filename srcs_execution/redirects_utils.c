@@ -1,37 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals_utils.c                                    :+:      :+:    :+:   */
+/*   redirects_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/16 16:32:37 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/26 12:09:43 by twatson          ###   ########.fr       */
+/*   Created: 2026/03/27 15:18:21 by twatson           #+#    #+#             */
+/*   Updated: 2026/03/27 15:58:12 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	resolve_heredoc_sigint(char *line, t_shell *shell, t_pipe *pipex)
+t_redirects	*last_in_finder(t_redirects *redir)
 {
-	g_sig = 0;
-	free(line);
-	if (pipex->hd_pipe[1])
+	t_redirects	*last_in;
+	t_redirects	*curr;
+
+	last_in = NULL;
+	curr = redir;
+	while (curr)
 	{
-		close(pipex->hd_pipe[1]);
-		pipex->hd_pipe[1] = -1;
+		if (curr->type == REDIR_IN || curr->type == HEREDOC)
+			last_in = curr;
+		curr = curr->next;
 	}
-	shell->last_status = 130;
+	return (last_in);
 }
 
-int	status_to_exitcode(int status)
-{
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-	{
-		write(1, "\n", 1);
-		return (130);
-	}
-	return (1);
-}

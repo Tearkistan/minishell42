@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_heredoc_mode.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 06:01:11 by psmolich          #+#    #+#             */
-/*   Updated: 2026/03/24 06:28:32 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/27 15:38:10 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,28 @@
 static int	close_hd_pipes(t_pipe *pipex)
 {
 	if (pipex->hd_pipe[0] >= 0)
+	{
 		if (close(pipex->hd_pipe[0]) == -1)
 			return (FAILURE);
+		pipex->hd_pipe[0] = -1;
+	}
 	if (pipex->hd_pipe[1] >= 0)
+	{
 		if (close(pipex->hd_pipe[1]) == -1)
 			return (FAILURE);
+		pipex->hd_pipe[1] = -1;
+	}
+	return (SUCCESS);
+}
+
+int	close_fd(int *fd)
+{
+	if (*fd >= 0)
+	{
+		if (close(*fd) == -1)
+			return (FAILURE);
+		*fd = -1;
+	}
 	return (SUCCESS);
 }
 
@@ -44,7 +61,7 @@ int	init_heredoc_mode(t_pipe *pipex, t_redirects *redir, t_shell *sh)
 					perror(Y "MINIsHELL:" R);
 				return (-1);
 			}
-			else if (close(pipex->hd_pipe[1]) == -1)
+			else if (pipex->hd_pipe[1] && close_fd(&pipex->hd_pipe[1]) == -1)
 				perror(Y "MINIsHELL:" R);
 			set_signals_parent_running();
 			pipex->hd_fd = pipex->hd_pipe[0];

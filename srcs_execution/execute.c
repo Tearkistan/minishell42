@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 15:19:50 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 15:07:40 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/27 15:58:50 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	exec_cmd(char **cmd_args, t_pipeline *head, t_pipe *pipex, t_shell \
 	path = find_path(cmd_args, head, shell, pipex);
 	if (!path)
 	{
-		error_msg("Command not found\n", NULL);
+		error_msg("Command not found", NULL);
 		clean_exit_child(pipex, head, shell, 127);
 	}
 	if (execve(path, cmd_args, shell->envp) == -1)
@@ -38,6 +38,8 @@ void	exec_cmd(char **cmd_args, t_pipeline *head, t_pipe *pipex, t_shell \
 
 int	is_stateful(char *cmd)
 {
+	if (!cmd)
+		return (0);
 	if (!ft_strcmp(cmd, "cd"))
 		return (1);
 	if (!ft_strcmp(cmd, "exit"))
@@ -67,6 +69,10 @@ static void	init_pipex(t_pipe *pipex, t_pipeline *pipeline, t_shell *shell)
 	pipex->prev_read_fd = STDIN_FILENO;
 	pipex->pipe_fd[0] = -1;
 	pipex->pipe_fd[1] = -1;
+	pipex->hd_fd = -1;
+	pipex->hd_pipe[0] = -1;
+	pipex->hd_pipe[1] = -1;
+	pipex->in_error_switch = 0;
 	pipex->cmd_count = pipeline_size(pipeline);
 	pipex->n_spawned = 0;
 	pipex->pids = (int *)malloc(sizeof(int) * (pipex->cmd_count));
@@ -80,7 +86,8 @@ int	execute_line(t_pipeline *pipeline, t_shell *shell)
 {
 	t_pipe		pipex;
 
-	if (!pipeline->next && is_stateful(pipeline->cmd.args[0]))
+	if (!pipeline->next && pipeline->cmd.args
+		&& is_stateful(pipeline->cmd.args[0]))
 		exec_stateful_builtin(pipeline, shell);
 	else
 	{
