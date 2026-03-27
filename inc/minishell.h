@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/26 14:56:04 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/27 15:38:34 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,6 +270,7 @@ void		perror_in_fd(char *err_msg, t_pipe *pipex);
 int			count_heredoc(t_redirects *redir);
 int			init_heredoc_mode(t_pipe *pipex, t_redirects *redir, t_shell *sh);
 int			heredoc_read(t_redirects *redir, t_pipe *pipex, t_shell *shell);
+int			close_fd(int *fd);
 
 /* redirects.c */
 void		set_in_fd(t_redirects *redir, t_pipe *pipex);
@@ -277,6 +278,9 @@ void		set_out_fd(t_redirects *redir, t_pipe *pipex, t_pipeline *head,
 				t_shell *shell);
 void		infile_guard(t_pipe *pipex);
 void		close_pipe(int pipe[2]);
+
+/* redirects_utils.c */
+t_redirects	*last_in_finder(t_redirects *redir);
 
 /* path.c */
 char		*find_path(char **cmd_args, t_pipeline *head, t_shell *shell,

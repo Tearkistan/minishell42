@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/22 10:56:08 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/26 15:19:52 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/27 15:57:43 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,33 @@ static void	set_default_out_fd(t_pipe *pipex)
 }
 
 void	set_in_fd(t_redirects *redir, t_pipe *pipex)
+{
+	t_redirects	*last_in;
+
+	pipex->in_fd = pipex->prev_read_fd;
+	last_in = last_in_finder(redir);
+	if (last_in == NULL || last_in->type == REDIR_IN)
+		close_fd(&pipex->hd_fd);
+	if (last_in && last_in->type == REDIR_IN)
+	{
+		if (pipex->in_fd != STDIN_FILENO)
+			close(pipex->in_fd);
+		pipex->in_fd = open(last_in->target, O_RDONLY);
+		if (pipex->in_fd < 0)
+			perror_in_fd("setting IN in_fd", pipex);
+	}
+	else if (last_in && last_in->type == HEREDOC)
+	{
+		if (pipex->in_fd != STDIN_FILENO)
+			close(pipex->in_fd);
+		pipex->in_fd = pipex->hd_fd;
+	}
+	infile_guard(pipex);
+	set_default_out_fd(pipex);
+	return ;
+}
+
+/*void	set_in_fd(t_redirects *redir, t_pipe *pipex)
 {
 	t_redirects	*curr;
 	int			selected_heredoc;
@@ -62,7 +89,7 @@ void	set_in_fd(t_redirects *redir, t_pipe *pipex)
 	infile_guard(pipex);
 	set_default_out_fd(pipex);
 	return ;
-}
+}*/
 
 void	set_out_fd(t_redirects *redir, t_pipe *pipex, t_pipeline *head,
 			t_shell *shell)

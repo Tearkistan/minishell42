@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 15:19:50 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/26 14:51:48 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/27 15:58:50 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	exec_cmd(char **cmd_args, t_pipeline *head, t_pipe *pipex, t_shell \
 	path = find_path(cmd_args, head, shell, pipex);
 	if (!path)
 	{
-		error_msg("Command not found\n", NULL);
+		error_msg("Command not found", NULL);
 		clean_exit_child(pipex, head, shell, 127);
 	}
 	if (execve(path, cmd_args, shell->envp) == -1)

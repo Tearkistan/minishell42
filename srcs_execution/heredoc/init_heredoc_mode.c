@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/24 06:01:11 by psmolich          #+#    #+#             */
-/*   Updated: 2026/03/26 12:39:23 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/27 15:38:10 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	close_hd_pipes(t_pipe *pipex)
 	return (SUCCESS);
 }
 
-static int	close_fd(int *fd)
+int	close_fd(int *fd)
 {
 	if (*fd >= 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 14:24:43 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/26 12:43:21 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/27 14:48:05 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void	child(t_pipeline *curr, t_pipeline *head, t_shell *shell,
 	if (pipex->out_fd != STDOUT_FILENO)
 	{
 		if (dup2(pipex->out_fd, 1) == -1)
-			perror_child_exit(pipex, head, shell,Y "dup2 out_fd->stdout" R);
+			perror_child_exit(pipex, head, shell, Y "dup2 out_fd->stdout" R);
 		if (!curr->next)
 			close(pipex->out_fd);
 	}

@@ -6,7 +6,7 @@
 #    By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/23 17:19:41 by psmolich          #+#    #+#              #
-#    Updated: 2026/03/25 15:02:49 by twatson          ###   ########.fr        #
+#    Updated: 2026/03/27 15:21:24 by twatson          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,6 +72,7 @@ SRCS_EXECUTION := 	builtin/builtin.c \
 					path.c \
 					exec_errors.c \
 					redirects.c \
+					redirects_utils.c \
 					exec_pipeline.c \
 					shell_init.c \
 					exec_stateful.c \
