@@ -76,21 +76,21 @@ You get a prompt. Type commands like you would in bash. `exit` or `Ctrl-D` to qu
 ### Example usage
 
 ```
-minishell$ echo hello world
+MINIsHELL$> echo hello world
 hello world
-minishell$ echo hello | cat -e
+MINIsHELL$> echo hello | cat -e
 hello$
-minishell$ cat < infile > outfile
-minishell$ export FOO=bar
-minishell$ echo $FOO
+MINIsHELL$> cat < infile > outfile
+MINIsHELL$> export FOO=bar
+MINIsHELL$> echo $FOO
 bar
-minishell$ cat << EOF
+MINIsHELL$> cat << EOF
 > line one
 > line two
 > EOF
 line one
 line two
-minishell$ exit
+MINIsHELL$> exit
 ```
 
 ## Technical notes
