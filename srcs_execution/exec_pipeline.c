@@ -45,6 +45,11 @@ static void	child(t_pipeline *curr, t_pipeline *head, t_shell *shell,
 static void	parent(t_pipeline *pline, t_pipe *pipex, pid_t pid)
 {
 	pipex->pids[pipex->n_spawned - 1] = pid;
+	if (pipex->hd_fd >= 0)
+	{
+		close(pipex->hd_fd);
+		pipex->hd_fd = -1;
+	}
 	if (pline->next)
 	{
 		close(pipex->pipe_fd[1]);

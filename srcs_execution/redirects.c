@@ -29,26 +29,35 @@ static void	set_default_out_fd(t_pipe *pipex)
 void	set_in_fd(t_redirects *redir, t_pipe *pipex)
 {
 	t_redirects	*curr;
+	int			selected_heredoc;
 
 	pipex->in_fd = pipex->prev_read_fd;
+	selected_heredoc = 0;
 	curr = redir;
 	while (curr)
 	{
 		if (curr->type == REDIR_IN)
 		{
-			if (pipex->in_fd != STDIN_FILENO)
+			if (pipex->in_fd != STDIN_FILENO && pipex->in_fd != pipex->hd_fd)
 				close(pipex->in_fd);
 			pipex->in_fd = open(curr->target, O_RDONLY);
+			selected_heredoc = 0;
 			if (pipex->in_fd < 0)
 				perror_in_fd("setting IN in_fd", pipex);
 		}
 		else if (curr->type == HEREDOC)
 		{
-			if (pipex->in_fd != STDIN_FILENO)
+			if (pipex->in_fd != STDIN_FILENO && pipex->in_fd != pipex->hd_fd)
 				close(pipex->in_fd);
 			pipex->in_fd = pipex->hd_fd;
+			selected_heredoc = 1;
 		}
 		curr = curr->next;
+	}
+	if (!selected_heredoc && pipex->hd_fd >= 0)
+	{
+		close(pipex->hd_fd);
+		pipex->hd_fd = -1;
 	}
 	infile_guard(pipex);
 	set_default_out_fd(pipex);
