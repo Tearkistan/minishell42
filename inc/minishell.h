@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/27 15:38:34 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/30 12:26:30 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,7 +264,6 @@ int			perror_int(char *err_msg, int n);
 int			abort_pipeline_parent(t_pipe *pipex, t_shell *shell, int stat_code);
 void		perror_child_exit(t_pipe *pipex, t_pipeline *head, t_shell *shell,
 				char *err_msg);
-void		perror_in_fd(char *err_msg, t_pipe *pipex);
 
 /* heredoc */
 int			count_heredoc(t_redirects *redir);
@@ -273,14 +272,17 @@ int			heredoc_read(t_redirects *redir, t_pipe *pipex, t_shell *shell);
 int			close_fd(int *fd);
 
 /* redirects.c */
-void		set_in_fd(t_redirects *redir, t_pipe *pipex);
+void		set_in_fd(t_redirects *redir, t_pipe *pipex, t_pipeline *head,
+				t_shell *shell);
 void		set_out_fd(t_redirects *redir, t_pipe *pipex, t_pipeline *head,
 				t_shell *shell);
 void		infile_guard(t_pipe *pipex);
 void		close_pipe(int pipe[2]);
 
 /* redirects_utils.c */
+int			in_fail(t_redirects *redir, t_pipe *pipex);
 t_redirects	*last_in_finder(t_redirects *redir);
+
 
 /* path.c */
 char		*find_path(char **cmd_args, t_pipeline *head, t_shell *shell,

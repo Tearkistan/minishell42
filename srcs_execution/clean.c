@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 13:43:32 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 14:55:01 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/30 12:19:29 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,17 @@ int exit_code)
 		free_pipeline(head);
 	if (shell)
 		free_shell(shell);
+	if (pipex->hd_fd >= 0)
+		close_fd(&pipex->hd_fd);
+	if (pipex->hd_pipe[0] >= 0)
+		close_fd(&pipex->hd_pipe[0]);
+	if (pipex->hd_pipe[1] >= 0)
+		close_fd(&pipex->hd_pipe[1]);
+	if (pipex->pipe_fd[0] >= 0)
+		close_fd(&pipex->pipe_fd[0]);
+	if (pipex->pipe_fd[1] >= 0)
+		close_fd(&pipex->pipe_fd[1]);
+	if (pipex->prev_read_fd >= 0 && pipex->prev_read_fd != STDIN_FILENO)
+		close_fd(&pipex->prev_read_fd);
 	exit(exit_code);
 }

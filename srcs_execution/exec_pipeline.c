@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 14:24:43 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/27 14:48:05 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/30 12:41:06 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,29 @@ static void	child(t_pipeline *curr, t_pipeline *head, t_shell *shell,
 	t_pipe *pipex)
 {
 	set_signals_child();
-	set_in_fd(curr->cmd.redirects, pipex);
+	set_in_fd(curr->cmd.redirects, pipex, head, shell);
 	set_out_fd(curr->cmd.redirects, pipex, head, shell);
 	if (pipex->in_fd != STDIN_FILENO)
 	{
 		if (dup2(pipex->in_fd, 0) == -1)
 			perror_child_exit(pipex, head, shell, Y "dup2 in_fd->stdin" R);
-		close(pipex->in_fd);
+		close_fd(&pipex->in_fd);
 	}
 	if (pipex->out_fd != STDOUT_FILENO)
 	{
 		if (dup2(pipex->out_fd, 1) == -1)
 			perror_child_exit(pipex, head, shell, Y "dup2 out_fd->stdout" R);
 		if (!curr->next)
-			close(pipex->out_fd);
+			close_fd(&pipex->out_fd);
 	}
 	if (curr->next)
 		close_pipe(pipex->pipe_fd);
-	if (is_builtin(curr->cmd.args[0]))
+	if (curr->cmd.args && is_builtin(curr->cmd.args[0]))
 	{
 		builtin_exec(curr->cmd.args, shell, 0);
 		clean_exit_child(pipex, head, shell, 0);
 	}
-	else
+	else if (curr->cmd.args)
 		exec_cmd(curr->cmd.args, head, pipex, shell);
 }
 
@@ -47,21 +47,21 @@ static void	parent(t_pipeline *pline, t_pipe *pipex, pid_t pid)
 	pipex->pids[pipex->n_spawned - 1] = pid;
 	if (pipex->hd_fd >= 0)
 	{
-		close(pipex->hd_fd);
+		close_fd(&pipex->hd_fd);
 		pipex->hd_fd = -1;
 	}
 	if (pline->next)
 	{
-		close(pipex->pipe_fd[1]);
+		close_fd(&pipex->pipe_fd[1]);
 		if (pipex->prev_read_fd >= 0 && pipex->prev_read_fd != STDIN_FILENO)
-			close(pipex->prev_read_fd);
+			close_fd(&pipex->prev_read_fd);
 		pipex->prev_read_fd = pipex->pipe_fd[0];
 	}
 	else
 	{
 		pipex->last_pid = pid;
 		if (pipex->prev_read_fd >= 0 && pipex->prev_read_fd != STDIN_FILENO)
-			close(pipex->prev_read_fd);
+			close_fd(&pipex->prev_read_fd);
 	}
 }
 
