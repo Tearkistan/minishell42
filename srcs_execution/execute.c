@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 15:19:50 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/27 15:58:50 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/30 13:22:23 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static void	init_pipex(t_pipe *pipex, t_pipeline *pipeline, t_shell *shell)
 	pipex->n_spawned = 0;
 	pipex->pids = (int *)malloc(sizeof(int) * (pipex->cmd_count));
 	if (!pipex->pids)
-		clean_up(shell, pipeline, NULL, "pids array - memory allocation fail");
+		clean_up(shell, pipeline, "pids array - memory allocation fail");
 	pipex->dirs = NULL;
 	return ;
 }

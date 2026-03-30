@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 14:41:17 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/24 05:50:40 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/30 13:22:30 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,6 @@ int	main(int argc, char **argv, char **envp)
 	(void) argv;
 	shell_init(&shell, envp);
 	shell_loop(&shell);
-	clean_up(&shell, NULL, NULL, NULL);
+	clean_up(&shell, NULL, NULL);
 	return (0);
 }

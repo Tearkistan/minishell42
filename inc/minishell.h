@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/30 12:26:30 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/30 13:21:50 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,7 +235,7 @@ void		shell_loop(t_shell *shell);
 
 /* clean.c */
 void		free_matrix(char **dir);
-void		clean_up(t_shell *sh, t_pipeline *pl, char *line, char *err_msg);
+void		clean_up(t_shell *sh, t_pipeline *pl, char *err_msg);
 void		clean_exit_child(t_pipe *pipex, t_pipeline *head, t_shell *shell,
 				int exit_code);
 
