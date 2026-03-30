@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/30 13:21:50 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/30 13:49:27 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,7 +283,6 @@ void		close_pipe(int pipe[2]);
 int			in_fail(t_redirects *redir, t_pipe *pipex);
 t_redirects	*last_in_finder(t_redirects *redir);
 
-
 /* path.c */
 char		*find_path(char **cmd_args, t_pipeline *head, t_shell *shell,
 				t_pipe *pipex);
@@ -354,11 +353,9 @@ void		finish_export_arg(t_shell *shell, t_export *export, int index);
 void		set_signals_prompt_mode(void);
 void		set_signals_child(void);
 void		set_signals_parent_running(void);
-void		signint_heredoc(int signo);
 
 /* signals_utils.c */
 void		set_signals_heredoc(void);
-void		resolve_heredoc_sigint(char *line, t_shell *shell, t_pipe *pipex);
 int			status_to_exitcode(int status);
 int			ft_strncmp_set(char *str, char **set);
 

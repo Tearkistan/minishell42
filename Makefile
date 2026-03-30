@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+         #
+#    By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/23 17:19:41 by psmolich          #+#    #+#              #
-#    Updated: 2026/03/30 12:43:56 by twatson          ###   ########.fr        #
+#    Updated: 2026/03/30 13:46:21 by psmolich         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ LIBFT=$(LIBFT_DIR)/libft.a
 READLINE_LIBS = -lreadline -lhistory -lncurses
 
 CC=cc
-CFLAGS=-Wall -Wextra -Werror -I$(LIBFT_DIR) -I$(INC_DIR) 
+CFLAGS=-Wall -Wextra -Werror -I$(LIBFT_DIR) -I$(INC_DIR)
 
 SRCS_PARSING_DIR := srcs_parsing
 
@@ -62,25 +62,26 @@ SRCS_EXECUTION := 	builtin/builtin.c \
 					builtin/unset.c \
 					builtin/unset_utils.c \
 					builtin/unset_utils_plus.c \
-					heredoc/heredoc.c \
-					heredoc/init_heredoc_mode.c \
-					heredoc/count_heredoc.c \
 					clean.c \
-					main.c \
 					error_msg.c \
 					errors_main.c \
-					path.c \
 					exec_errors.c \
+					exec_pipeline.c \
+					exec_stateful.c \
+					execute.c \
+					execute_utils.c \
+					heredoc/count_heredoc.c \
+					heredoc/heredoc.c \
+					heredoc/init_heredoc_mode.c \
+					main.c \
+					path.c \
 					redirects.c \
 					redirects_utils.c \
-					exec_pipeline.c \
 					shell_init.c \
-					exec_stateful.c \
 					shell_loop.c \
-					execute.c \
-					signals.c \
-					execute_utils.c \
-					signals_utils.c
+					signals/signals_child_and_parent.c \
+					signals/signals_prompt_mode.c \
+					signals/status_to_exitcode.c
 
 SRCS= 	$(addprefix $(SRCS_EXECUTION_DIR)/,$(SRCS_EXECUTION)) \
 		$(addprefix $(SRCS_PARSING_DIR)/,$(SRCS_PARSING))

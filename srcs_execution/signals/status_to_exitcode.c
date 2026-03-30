@@ -3,26 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   signals_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/16 16:32:37 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/26 12:09:43 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/30 13:38:17 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	resolve_heredoc_sigint(char *line, t_shell *shell, t_pipe *pipex)
-{
-	g_sig = 0;
-	free(line);
-	if (pipex->hd_pipe[1])
-	{
-		close(pipex->hd_pipe[1]);
-		pipex->hd_pipe[1] = -1;
-	}
-	shell->last_status = 130;
-}
 
 int	status_to_exitcode(int status)
 {
