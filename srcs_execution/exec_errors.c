@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 16:25:36 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/31 13:21:26 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/31 13:42:27 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,6 @@ int	perror_parent_exit(t_shell *shell, t_pipe *pipex, char *err_msg,
 {
 	perror(err_msg);
 	abort_pipeline_parent(pipex, shell, stat_code);
+	shell->running = 0;
 	return (stat_code);
 }
