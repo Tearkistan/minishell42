@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 19:46:35 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/30 15:42:51 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/31 22:31:07 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,22 +60,24 @@ int	export_arg_error(char *cmd_arg, t_export *export)
 	return (0);
 }
 
-int	find_var_in_env(char **envp, char *key)
+int	find_var_in_env(t_shell *shell, t_export *export)
 {
 	int	i;
 	int	len;
 
 	i = 0;
-	while (envp[i])
+	while (shell->envp[i])
 	{
-		len = ft_strlen(envp[i]);
-		if (ft_strncmp(envp[i], key, len) == 0)
+		len = ft_strlen(export->key);
+		if (ft_strncmp(shell->envp[i], export->key, len) == 0)
 		{
-			if (envp[i][len] == '=' || envp[i][len] == '\0')
+			if (shell->envp[i][len] == '=')
 				return (i);
 		}
 		i++;
 	}
+	if (export->eq)
+		remove_if_no_eq(shell, export);
 	return (-1);
 }
 

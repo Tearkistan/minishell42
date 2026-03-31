@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/31 13:30:46 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/31 21:50:46 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -350,13 +350,14 @@ int			exec_export_ctrl(char **cmd_args, t_shell *shell, int parent);
 /* export_utils.c */
 void		print_export(char **envp, char **no_eq);
 int			export_arg_error(char *cmd_arg, t_export *export);
-int			find_var_in_env(char **envp, char *key);
+int			find_var_in_env(t_shell *shell, t_export *export);
 char		*create_line(char *key, char *value);
 void		alloc_key_value(char *arg, t_export *export, t_shell *shell);
 
 /* export_utils_plus.c */
 int			is_no_eq(char *var, char **no_eq);
 void		add_no_equal_key(t_export *export, t_shell *shell);
+void		remove_if_no_eq(t_shell *shell, t_export *export);
 void		finish_export_arg(t_shell *shell, t_export *export, int index);
 
 /* signals.c */

@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:37:48 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/30 16:22:04 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/31 22:55:52 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int	parse_export_arg(char *arg, t_export *export)
 		i++;
 	i++;
 	j = 0;
-	while (arg[i] == '\0')
+	while (arg[i] != '\0')
 		export->value[j++] = arg[i++];
 	export->value[j] = '\0';
 	return (0);
@@ -89,12 +89,15 @@ static void	exec_export(char **cmd_args, t_shell *shell, t_export *export)
 			i++;
 			continue ;
 		}
-		if (export->eq == 0)
+		if (!export->eq)
 			add_no_equal_key(export, shell);
-		export->new_line = create_line(export->key, export->value);
-		if (!export->new_line)
-			exit_export(export, shell, 1);
-		index = find_var_in_env(shell->envp, export->key);
+		else
+		{
+			export->new_line = create_line(export->key, export->value);
+			if (!export->new_line)
+				exit_export(export, shell, 1);
+		}
+		index = find_var_in_env(shell, export);
 		finish_export_arg(shell, export, index);
 		i++;
 	}
@@ -129,7 +132,6 @@ int	exec_export_ctrl(char **cmd_args, t_shell *shell, int parent)
 {
 	t_export	export;
 
-	export.temp_envp = NULL;
 	export.temp_envp = copy_envp(export.temp_envp, shell->envp, 1);
 	export.new_line = NULL;
 	export.key = NULL;
