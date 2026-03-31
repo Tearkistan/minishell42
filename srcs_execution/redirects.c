@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/22 10:56:08 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/31 11:05:07 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/31 20:20:38 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,35 +52,31 @@ void	set_in_fd(t_redirects *redir, t_pipe *pipex, t_pipeline *head,
 		pipex->in_fd = pipex->hd_fd;
 	}
 	infile_guard(pipex);
-	set_default_out_fd(pipex);
 	return ;
 }
 
 void	set_out_fd(t_redirects *redir, t_pipe *pipex, t_pipeline *head,
 			t_shell *shell)
 {
+	int			flags;
 	t_redirects	*curr;
 
+	set_default_out_fd(pipex);
 	curr = redir;
 	while (curr)
 	{
-		if (curr->type == REDIR_OUT)
+		if (curr->type == REDIR_OUT || curr->type == REDIR_APP)
 		{
 			if (pipex->out_fd != STDOUT_FILENO)
 				close_fd(&pipex->out_fd);
-			pipex->out_fd = open(curr->target, O_CREAT | O_WRONLY | O_TRUNC,
-					0644);
+			flags = O_CREAT | O_WRONLY;
+			if (curr->type == REDIR_APP)
+				flags |= O_APPEND;
+			else
+				flags |= O_TRUNC;
+			pipex->out_fd = open(curr->target, flags, 0644);
 			if (pipex->out_fd < 0)
-				perror_child_exit(pipex, head, shell, "openning OUT out_fd");
-		}
-		else if (curr->type == REDIR_APP)
-		{
-			if (pipex->out_fd != STDOUT_FILENO)
-				close_fd(&pipex->out_fd);
-			pipex->out_fd = open(curr->target, O_CREAT | O_WRONLY | O_APPEND,
-					0644);
-			if (pipex->out_fd < 0)
-				perror_child_exit(pipex, head, shell, "openning APPEND out_fd");
+				perror_child_exit(pipex, head, shell, "openning out_fd");
 		}
 		curr = curr->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 15:18:21 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/31 13:27:45 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/31 20:20:39 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ int	search_builtin_in_fd(t_pipeline *pipeline, t_pipe *pipex)
 		pipex->in_fd = pipex->hd_fd;
 	}
 	infile_guard(pipex);
-	set_default_out_fd(pipex);
 	return (0);
 }
 
@@ -89,10 +88,11 @@ int	search_builtin_out_fd(t_pipeline *pipeline, t_pipe *pipex)
 	t_redirects	*curr;
 	int			flags;
 
+	set_default_out_fd(pipex);
 	curr = pipeline->cmd.redirects;
 	while (curr)
 	{
-		if (curr->type == REDIR_OUT || STDOUT_FILENO)
+		if (curr->type == REDIR_OUT || curr->type == REDIR_APP)
 		{
 			if (pipex->out_fd != STDOUT_FILENO)
 				close_fd(&pipex->out_fd);
