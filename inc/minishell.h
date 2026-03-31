@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/30 13:49:27 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/31 12:13:25 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,7 @@ char		*ft_strjoin_free(char *s1, char *s2);
 int			has_quotes(const char *str);
 int			is_redir(char c);
 int			is_special(char c);
+int			is_valid_var_char(char c);
 char		skip_whitespaces(char *line, int *index);
 
 // parse_line.c
