@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 13:05:31 by psmolich          #+#    #+#             */
-/*   Updated: 2026/03/23 08:55:28 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/31 12:09:16 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,6 @@ static char	*parse_single_quote(char *line, int *index)
 	word = ft_substr(line, start, *index - start);
 	(*index)++;
 	return (word);
-}
-
-// Checks if the character is valid for variable names
-// (alphanumeric or underscore).
-static int	is_valid_var_char(char c)
-{
-	return (ft_isalnum(c) || c == '_');
 }
 
 // The function extracts the variable name following the "$" sign,
