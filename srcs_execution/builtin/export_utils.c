@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 19:46:35 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 08:02:51 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/30 15:42:51 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ int	export_arg_error(char *cmd_arg, t_export *export)
 	int	i;
 
 	i = 0;
-	if (cmd_arg[i] != '_' || !(ft_isalpha(cmd_arg[i])))
+	if (cmd_arg[i] != '_' && !(ft_isalpha(cmd_arg[i])))
 		return (1);
 	i++;
 	while (cmd_arg[i] != '+' && cmd_arg[i] != '=' && cmd_arg[i] != '\0')
 	{
-		if (cmd_arg[i] != '_' || !(ft_isalnum(cmd_arg[i])))
+		if (cmd_arg[i] != '_' && !(ft_isalnum(cmd_arg[i])))
 			return (1);
 		i++;
 	}

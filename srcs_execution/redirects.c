@@ -6,13 +6,13 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/22 10:56:08 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/30 12:42:07 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/31 11:05:07 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	set_default_out_fd(t_pipe *pipex)
+void	set_default_out_fd(t_pipe *pipex)
 {
 	if (pipex->n_spawned == pipex->cmd_count)
 		pipex->out_fd = STDOUT_FILENO;

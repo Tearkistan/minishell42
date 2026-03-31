@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 16:25:36 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/30 12:42:20 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/31 13:21:26 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ int	abort_pipeline_parent(t_pipe *pipex, t_shell *shell, int stat_code)
 	i = 0;
 	while (i < pipex->n_spawned)
 	{
-		if (pipex->pids[i] > 0)
+		if (pipex->pids && pipex->pids[i] > 0)
 			waitpid(pipex->pids[i], NULL, 0);
 		i++;
 	}
 	shell->last_status = stat_code;
-	return (-1);
+	return (stat_code);
 }
 
 void	perror_child_exit(t_pipe *pipex, t_pipeline *head, t_shell *shell,
@@ -56,4 +56,12 @@ void	perror_child_exit(t_pipe *pipex, t_pipeline *head, t_shell *shell,
 {
 	perror(err_msg);
 	clean_exit_child(pipex, head, shell, 1);
+}
+
+int	perror_parent_exit(t_shell *shell, t_pipe *pipex, char *err_msg,
+		int stat_code)
+{
+	perror(err_msg);
+	abort_pipeline_parent(pipex, shell, stat_code);
+	return (stat_code);
 }
