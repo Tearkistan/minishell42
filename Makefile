@@ -6,7 +6,7 @@
 #    By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/23 17:19:41 by psmolich          #+#    #+#              #
-#    Updated: 2026/03/30 13:46:21 by psmolich         ###   ########.fr        #
+#    Updated: 2026/03/31 12:11:43 by psmolich         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ SRCS_PARSING := 	create_pipeline/add_arg.c \
 					parsing_utils/has_quotes.c \
 					parsing_utils/is_redir.c \
 					parsing_utils/is_special.c \
+					parsing_utils/is_valid_var_char.c \
 					parsing_utils/skip_whitespaces.c \
 					tokenize_line/add_token_back.c \
 					tokenize_line/add_token_pipe.c \
