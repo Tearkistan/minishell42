@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   redirects_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 15:18:21 by twatson           #+#    #+#             */
 /*   Updated: 2026/03/31 20:20:39 by twatson          ###   ########.fr       */

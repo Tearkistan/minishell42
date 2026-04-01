@@ -1,25 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   is_valid_var_char.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/09 14:41:17 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/30 13:22:30 by psmolich         ###   ########.fr       */
+/*   Created: 2026/03/31 12:09:32 by psmolich          #+#    #+#             */
+/*   Updated: 2026/03/31 12:09:45 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+// Checks if the character is valid for variable names
+// (alphanumeric or underscore).
+int	is_valid_var_char(char c)
 {
-	t_shell	shell;
-
-	(void) argc;
-	(void) argv;
-	shell_init(&shell, envp);
-	shell_loop(&shell);
-	clean_up(&shell, NULL, NULL);
-	return (0);
+	return (ft_isalnum(c) || c == '_');
 }

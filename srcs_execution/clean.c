@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 13:43:32 by twatson           #+#    #+#             */
 /*   Updated: 2026/04/01 13:37:24 by twatson          ###   ########.fr       */
@@ -49,8 +49,7 @@ static void	free_shell(t_shell *shell)
 }
 
 /* leveraged for ctrl-d and exit on parent (single command) call */
-
-void	clean_up(t_shell *sh, t_pipeline *pl, char *line, char *err_msg)
+void	clean_up(t_shell *sh, t_pipeline *pl, char *err_msg)
 {
 	int	code;
 
@@ -60,8 +59,6 @@ void	clean_up(t_shell *sh, t_pipeline *pl, char *line, char *err_msg)
 		free_shell(sh);
 	if (pl)
 		free_pipeline(pl);
-	if (line)
-		free(line);
 	if (err_msg && ft_strncmp(err_msg, "exit", 5) == 0)
 	{
 		ft_printf("exit\n");

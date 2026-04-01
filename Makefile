@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+         #
+#    By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/23 17:19:41 by psmolich          #+#    #+#              #
-#    Updated: 2026/03/30 14:47:39 by twatson          ###   ########.fr        #
+#    Updated: 2026/03/31 12:11:43 by psmolich         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,8 @@ LIBFT_DIR=libft
 LIBFT=$(LIBFT_DIR)/libft.a
 READLINE_LIBS = -lreadline -lhistory -lncurses
 
-CC=cc -g
-CFLAGS=-Wall -Wextra -Werror -I$(LIBFT_DIR) -I$(INC_DIR) 
+CC=cc
+CFLAGS=-Wall -Wextra -Werror -I$(LIBFT_DIR) -I$(INC_DIR)
 
 SRCS_PARSING_DIR := srcs_parsing
 
@@ -36,6 +36,7 @@ SRCS_PARSING := 	create_pipeline/add_arg.c \
 					parsing_utils/has_quotes.c \
 					parsing_utils/is_redir.c \
 					parsing_utils/is_special.c \
+					parsing_utils/is_valid_var_char.c \
 					parsing_utils/skip_whitespaces.c \
 					tokenize_line/add_token_back.c \
 					tokenize_line/add_token_pipe.c \
@@ -62,25 +63,26 @@ SRCS_EXECUTION := 	builtin/builtin.c \
 					builtin/unset.c \
 					builtin/unset_utils.c \
 					builtin/unset_utils_plus.c \
-					heredoc/heredoc.c \
-					heredoc/init_heredoc_mode.c \
-					heredoc/count_heredoc.c \
 					clean.c \
-					main.c \
 					error_msg.c \
 					errors_main.c \
-					path.c \
 					exec_errors.c \
+					exec_pipeline.c \
+					exec_stateful.c \
+					execute.c \
+					execute_utils.c \
+					heredoc/count_heredoc.c \
+					heredoc/heredoc.c \
+					heredoc/init_heredoc_mode.c \
+					main.c \
+					path.c \
 					redirects.c \
 					redirects_utils.c \
-					exec_pipeline.c \
 					shell_init.c \
-					exec_stateful.c \
 					shell_loop.c \
-					execute.c \
-					signals.c \
-					execute_utils.c \
-					signals_utils.c
+					signals/signals_child_and_parent.c \
+					signals/signals_prompt_mode.c \
+					signals/status_to_exitcode.c
 
 SRCS= 	$(addprefix $(SRCS_EXECUTION_DIR)/,$(SRCS_EXECUTION)) \
 		$(addprefix $(SRCS_PARSING_DIR)/,$(SRCS_PARSING))

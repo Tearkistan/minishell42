@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
 /*   Updated: 2026/04/01 13:47:28 by twatson          ###   ########.fr       */
@@ -198,6 +198,7 @@ char		*ft_strjoin_free(char *s1, char *s2);
 int			has_quotes(const char *str);
 int			is_redir(char c);
 int			is_special(char c);
+int			is_valid_var_char(char c);
 char		skip_whitespaces(char *line, int *index);
 
 // parse_line.c
@@ -237,7 +238,7 @@ void		shell_loop(t_shell *shell);
 
 /* clean.c */
 void		free_matrix(char **dir);
-void		clean_up(t_shell *sh, t_pipeline *pl, char *line, char *err_msg);
+void		clean_up(t_shell *sh, t_pipeline *pl, char *err_msg);
 void		clean_exit_child(t_pipe *pipex, t_pipeline *head, t_shell *shell,
 				int exit_code);
 
@@ -294,7 +295,6 @@ int			in_fail(t_redirects *redir, t_pipe *pipex);
 t_redirects	*last_in_finder(t_redirects *redir);
 int			search_builtin_in_fd(t_pipeline *pipeline, t_pipe *pipex);
 int			search_builtin_out_fd(t_pipeline *pipeline, t_pipe *pipex);
-
 
 /* path.c */
 char		*find_path(char **cmd_args, t_pipeline *head, t_shell *shell,
@@ -367,11 +367,9 @@ void		finish_export_arg(t_shell *shell, t_export *export, int index);
 void		set_signals_prompt_mode(void);
 void		set_signals_child(void);
 void		set_signals_parent_running(void);
-void		signint_heredoc(int signo);
 
 /* signals_utils.c */
 void		set_signals_heredoc(void);
-void		resolve_heredoc_sigint(char *line, t_shell *shell, t_pipe *pipex);
 int			status_to_exitcode(int status);
 int			ft_strncmp_set(char *str, char **set);
 

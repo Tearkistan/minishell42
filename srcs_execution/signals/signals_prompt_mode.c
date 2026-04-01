@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 15:16:57 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 17:52:24 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/30 13:34:14 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,30 +24,10 @@ static int	prompt_event_hook(void)
 	return (0);
 }
 
-/*	Core - Prompt - Children
-	
-		Before readline - set_signals_prompt();
-   
-    	before launching pipeline (parent) - set_signals_parent_running();
-
-    	in each child just before exec - set_signals_child();
-
-   		after waitpid - set_signals_prompt();
-	
-	Turning wait status into $?
-
-	Heredoc Mode - ctrl-C abort heredoc, not shell
-*/
-
 static void	signint_prompt(int signo)
 {
 	g_sig = signo;
 }
-
-/* Signal can have 3 dipositions:
-	SIG_DFL - kernel default behaviour
-	SIG_IGN - kernel discards the signal
-	Custom handler - own function called */
 
 void	set_signals_prompt_mode(void)
 {
@@ -60,16 +40,4 @@ void	set_signals_prompt_mode(void)
 	signal(SIGQUIT, SIG_IGN);
 	rl_event_hook = prompt_event_hook;
 	return ;
-}
-
-void	set_signals_child(void)
-{
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
-}
-
-void	set_signals_parent_running(void)
-{
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
 }

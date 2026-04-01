@@ -63,7 +63,7 @@ int	exec_stateful_builtin(t_pipeline *pline, t_shell *shell, t_pipe *pipex)
 	close_fd(&saved_stdin);
 	close_fd(&saved_stdout);
 	if (ft_strncmp(pline->cmd.args[0], "exit", 5) == 0)
-		clean_up(shell, pline, NULL, "42");
+		clean_up(sh, pline, "42");
 	return (0);
 }
 

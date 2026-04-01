@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:18:48 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/25 15:43:14 by twatson          ###   ########.fr       */
+/*   Updated: 2026/03/30 13:38:27 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,18 @@ static char	*expand_line(char **line, t_shell shell, int quote_delim)
 	}
 	free(*line);
 	return (word);
+}
+
+static void	resolve_heredoc_sigint(char *line, t_shell *shell, t_pipe *pipex)
+{
+	g_sig = 0;
+	free(line);
+	if (pipex->hd_pipe[1])
+	{
+		close(pipex->hd_pipe[1]);
+		pipex->hd_pipe[1] = -1;
+	}
+	shell->last_status = 130;
 }
 
 static int	heredoc_break_conditions(char *line, char *target)

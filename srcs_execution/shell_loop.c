@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 12:42:59 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 17:35:45 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/30 13:22:35 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	resolve_prompt_sigint(t_shell *shell)
 static void	received_ctrld(t_shell *shell)
 {
 	shell->running = 0;
-	clean_up(shell, NULL, NULL, "exit");
+	clean_up(shell, NULL, "exit");
 }
 
 void	shell_loop(t_shell *shell)
