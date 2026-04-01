@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 15:19:50 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/30 13:22:23 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/03/31 13:33:35 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ int	is_nonstateful(char *cmd)
 	return (0);
 }
 
-static void	init_pipex(t_pipe *pipex, t_pipeline *pipeline, t_shell *shell)
+void	init_pipex(t_pipe *pipex, t_pipeline *pipeline, t_shell *shell,
+			int alloc)
 {
 	pipex->last_pid = -1;
 	pipex->infile_stop = 0;
@@ -75,9 +76,14 @@ static void	init_pipex(t_pipe *pipex, t_pipeline *pipeline, t_shell *shell)
 	pipex->in_error_switch = 0;
 	pipex->cmd_count = pipeline_size(pipeline);
 	pipex->n_spawned = 0;
-	pipex->pids = (int *)malloc(sizeof(int) * (pipex->cmd_count));
-	if (!pipex->pids)
-		clean_up(shell, pipeline, "pids array - memory allocation fail");
+	if (alloc)
+	{
+		pipex->pids = (int *)malloc(sizeof(int) * (pipex->cmd_count));
+		if (!pipex->pids)
+			clean_up(shell, pipeline, "pids array - memory allocation fail");
+	}
+	else
+		pipex->pids = NULL;
 	pipex->dirs = NULL;
 	return ;
 }
@@ -88,10 +94,13 @@ int	execute_line(t_pipeline *pipeline, t_shell *shell)
 
 	if (!pipeline->next && pipeline->cmd.args
 		&& is_stateful(pipeline->cmd.args[0]))
-		exec_stateful_builtin(pipeline, shell);
+	{
+		init_pipex(&pipex, pipeline, shell, 0);
+		exec_stateful_builtin(pipeline, shell, &pipex);
+	}
 	else
 	{
-		init_pipex(&pipex, pipeline, shell);
+		init_pipex(&pipex, pipeline, shell, 1);
 		exec_pipeline(pipeline, shell, &pipex);
 	}
 	set_signals_prompt_mode();

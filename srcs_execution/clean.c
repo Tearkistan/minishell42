@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 13:43:32 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/30 13:22:04 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/04/01 13:37:24 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,21 @@ static void	free_shell(t_shell *shell)
 	int	i;
 
 	i = 0;
-	while (shell->envp[i])
+	while (shell->envp && shell->envp[i])
 	{
 		free(shell->envp[i]);
 		i++;
 	}
-	free(shell->envp);
+	if (shell->envp)
+		free(shell->envp);
 	i = 0;
-	while (shell->no_eq[i])
+	while (shell->no_eq && shell->no_eq[i])
 	{
 		free(shell->no_eq[i]);
 		i++;
 	}
-	free(shell->no_eq);
+	if (shell->no_eq)
+		free(shell->no_eq);
 	return ;
 }
 
@@ -75,7 +77,7 @@ int exit_code)
 	if (pipex->pids)
 		free(pipex->pids);
 	if (pipex->dirs)
-		free(pipex->dirs);
+		free_matrix(pipex->dirs);
 	if (head)
 		free_pipeline(head);
 	if (shell)

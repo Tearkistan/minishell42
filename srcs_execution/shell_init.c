@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 12:42:22 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 17:36:11 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/04/01 13:10:48 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,10 +106,10 @@ void	shell_init(t_shell *shell, char **envp)
 	shell->last_status = 0;
 	shell->running = 1;
 	shell->envp_len = 0;
+	shell->no_eq_len = 0;
 	while (shell->envp[shell->envp_len])
 		shell->envp_len++;
-	shell->no_eq = (char **)malloc(sizeof(char *) * (shell->envp_len + 420));
-	shell->no_eq[0] = NULL;
+	shell->no_eq = NULL;
 	rl_catch_signals = 0;
 	set_signals_prompt_mode();
 	return ;

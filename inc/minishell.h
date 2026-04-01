@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/31 12:13:25 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/04/01 13:47:28 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ typedef struct s_shell
 	int		running;
 	int		envp_len;
 	char	**no_eq;
+	int		no_eq_len;
 }	t_shell;
 
 /* Pipex struct for execution */
@@ -150,6 +151,7 @@ typedef struct s_export
 	int		append;
 	int		eq;
 	int		close_quote;
+	int		valid;
 }	t_export;
 
 typedef struct s_unset
@@ -243,6 +245,8 @@ void		clean_exit_child(t_pipe *pipex, t_pipeline *head, t_shell *shell,
 /* execute.c */
 void		exec_cmd(char **cmd_args, t_pipeline *head, t_pipe *pipex,
 				t_shell *shell);
+void		init_pipex(t_pipe *pipex, t_pipeline *pipeline, t_shell *shell,
+				int alloc);
 int			execute_line(t_pipeline *pipeline, t_shell *shell);
 
 /* execute_utils.c */
@@ -250,7 +254,10 @@ int			contains_path(char *cmd);
 void		path_check_to_execute(char **cmd_args, t_pipeline *head,
 				t_shell *shell, t_pipe *pipex);
 /* exec_stateful.c */
-int			exec_stateful_builtin(t_pipeline *pline, t_shell *sh);
+int			exec_stateful_builtin(t_pipeline *pline, t_shell *shell,
+				t_pipe *pipex);
+int			fill_array(char **dst, char **src, int start);
+char		**join_envp_no_eq(t_shell *shell);
 
 /* exec_pipeline.c */
 int			is_stateful(char *cmd);
@@ -265,6 +272,8 @@ int			perror_int(char *err_msg, int n);
 int			abort_pipeline_parent(t_pipe *pipex, t_shell *shell, int stat_code);
 void		perror_child_exit(t_pipe *pipex, t_pipeline *head, t_shell *shell,
 				char *err_msg);
+int			perror_parent_exit(t_shell *shell, t_pipe *pipex, char *err_msg,
+				int stat_code);
 
 /* heredoc */
 int			count_heredoc(t_redirects *redir);
@@ -273,6 +282,7 @@ int			heredoc_read(t_redirects *redir, t_pipe *pipex, t_shell *shell);
 int			close_fd(int *fd);
 
 /* redirects.c */
+void		set_default_out_fd(t_pipe *pipex);
 void		set_in_fd(t_redirects *redir, t_pipe *pipex, t_pipeline *head,
 				t_shell *shell);
 void		set_out_fd(t_redirects *redir, t_pipe *pipex, t_pipeline *head,
@@ -283,6 +293,8 @@ void		close_pipe(int pipe[2]);
 /* redirects_utils.c */
 int			in_fail(t_redirects *redir, t_pipe *pipex);
 t_redirects	*last_in_finder(t_redirects *redir);
+int			search_builtin_in_fd(t_pipeline *pipeline, t_pipe *pipex);
+int			search_builtin_out_fd(t_pipeline *pipeline, t_pipe *pipex);
 
 /* path.c */
 char		*find_path(char **cmd_args, t_pipeline *head, t_shell *shell,
@@ -341,13 +353,14 @@ int			exec_export_ctrl(char **cmd_args, t_shell *shell, int parent);
 /* export_utils.c */
 void		print_export(char **envp, char **no_eq);
 int			export_arg_error(char *cmd_arg, t_export *export);
-int			find_var_in_env(char **envp, char *key);
+int			find_var_in_env(t_shell *shell, t_export *export);
 char		*create_line(char *key, char *value);
 void		alloc_key_value(char *arg, t_export *export, t_shell *shell);
 
 /* export_utils_plus.c */
 int			is_no_eq(char *var, char **no_eq);
 void		add_no_equal_key(t_export *export, t_shell *shell);
+void		remove_if_no_eq(t_shell *shell, t_export *export);
 void		finish_export_arg(t_shell *shell, t_export *export, int index);
 
 /* signals.c */
