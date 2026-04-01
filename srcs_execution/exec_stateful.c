@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 14:23:44 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/31 20:21:53 by twatson          ###   ########.fr       */
+/*   Updated: 2026/04/01 13:47:01 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,3 +66,43 @@ int	exec_stateful_builtin(t_pipeline *pline, t_shell *shell, t_pipe *pipex)
 		clean_up(shell, pline, NULL, "42");
 	return (0);
 }
+
+int	fill_array(char **dst, char **src, int start)
+{
+	int	i;
+
+	i = 0;
+	while (src && src[i])
+	{
+		dst[start] = ft_strdup(src[i]);
+		if (!dst[start])
+			return (-1);
+		start++;
+		i++;
+	}
+	return (start);
+}
+
+char	**join_envp_no_eq(t_shell *shell)
+{
+	char	**joined;
+	int		i;
+
+	i = 0;
+	while (shell->no_eq && shell->no_eq[i])
+		i++;
+	i += shell->envp_len;
+	joined = (char **)malloc(sizeof(char *) * (i + 1));
+	if (!joined)
+		return (NULL);
+	i = 0;
+	i = fill_array(joined, shell->no_eq, i);
+	if (i == -1)
+		return (NULL);
+	i = fill_array(joined, shell->envp, i);
+	if (i == -1)
+		return (NULL);
+	joined[i] = NULL;
+	return (joined);
+}
+

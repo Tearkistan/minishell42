@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:37:48 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/31 22:55:52 by twatson          ###   ########.fr       */
+/*   Updated: 2026/04/01 13:36:06 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,14 @@ static void	sort_to_print(t_shell *shell, t_export *export)
 {
 	int	i;
 	int	j;
+	int	sort_len;
 
 	i = 0;
-	while (i < shell->envp_len)
+	sort_len = shell->envp_len + shell->no_eq_len;
+	while (i < sort_len)
 	{
 		j = 0;
-		while (j < (shell->envp_len - i - 1))
+		while (j < (sort_len - i - 1))
 		{
 			if (ft_strcmp(export->temp_envp[j], export->temp_envp[j + 1]) > 0)
 			{
@@ -132,7 +134,9 @@ int	exec_export_ctrl(char **cmd_args, t_shell *shell, int parent)
 {
 	t_export	export;
 
-	export.temp_envp = copy_envp(export.temp_envp, shell->envp, 1);
+	export.temp_envp = join_envp_no_eq(shell);
+	if (!export.temp_envp)
+		exit_export(&export, shell, 1);
 	export.new_line = NULL;
 	export.key = NULL;
 	export.value = NULL;

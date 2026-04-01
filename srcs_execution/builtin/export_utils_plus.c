@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 21:21:40 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/31 22:46:51 by twatson          ###   ########.fr       */
+/*   Updated: 2026/04/01 13:50:07 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ void	add_no_equal_key(t_export *export, t_shell *shell)
 	int		i;
 	char	**new_no_eq;
 
+	if (find_var_in_env(shell, export) >= 0)
+		return ;
 	i = 0;
 	while (shell->no_eq && shell->no_eq[i])
 		i++;
@@ -38,11 +40,7 @@ void	add_no_equal_key(t_export *export, t_shell *shell)
 	if (!new_no_eq)
 		exit_export(export, shell, 1);
 	i = 0;
-	while (shell->no_eq && shell->no_eq[i])
-	{
-		new_no_eq[i] = shell->no_eq[i];
-		i++;
-	}
+	i = fill_array(new_no_eq, shell->no_eq, i);
 	new_no_eq[i] = ft_strdup(export->key);
 	if (!new_no_eq[i])
 		exit_export(export, shell, 1);
@@ -52,6 +50,7 @@ void	add_no_equal_key(t_export *export, t_shell *shell)
 	if (shell->no_eq)
 		free(shell->no_eq);
 	shell->no_eq = new_no_eq;
+	shell->no_eq_len += 1;
 }
 
 static void	renew_no_eq(t_shell *shell, t_export *export, int index, int len)
@@ -65,15 +64,15 @@ static void	renew_no_eq(t_shell *shell, t_export *export, int index, int len)
 	new_no_eq = (char **)malloc(sizeof(char *) * len);
 	if (!new_no_eq)
 		exit_export(export, shell, 1);
-	new_no_eq[len] = NULL;
-	while (shell->no_eq[i])
+	new_no_eq[len - 1] = NULL;
+	while (shell->no_eq && shell->no_eq[i])
 	{
-		if (i == index)
-			i++;
-		new_no_eq[j] = shell->no_eq[i];
+		if (i != index)
+			new_no_eq[j++] = shell->no_eq[i];
 		i++;
-		j++;
 	}
+	free(shell->no_eq[index]);
+	shell->no_eq[index] = NULL;
 	free(shell->no_eq);
 	shell->no_eq = new_no_eq;
 }
@@ -85,14 +84,17 @@ void	remove_if_no_eq(t_shell *shell, t_export *export)
 
 	index = -1;
 	len = 0;
-	while (shell->no_eq[len])
+	while (shell->no_eq && shell->no_eq[len])
 	{
-		if (shell->no_eq[len] == export->key)
+		if (ft_strcmp(shell->no_eq[len], export->key) == 0)
 			index = len;
 		len++;
 	}
 	if (index >= 0)
+	{
 		renew_no_eq(shell, export, index, len);
+		shell->no_eq_len -= 1;
+	}
 }
 
 void	finish_export_arg(t_shell *shell, t_export *export, int index)
@@ -118,6 +120,4 @@ void	finish_export_arg(t_shell *shell, t_export *export, int index)
 		shell->envp[index] = export->new_line;
 	}
 	export->new_line = NULL;
-	if (shell->no_eq && shell->no_eq[0])
-		ft_printf(shell->no_eq[0]);
 }

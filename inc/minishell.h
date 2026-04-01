@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/31 21:50:46 by twatson          ###   ########.fr       */
+/*   Updated: 2026/04/01 13:47:28 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ typedef struct s_shell
 	int		running;
 	int		envp_len;
 	char	**no_eq;
+	int		no_eq_len;
 }	t_shell;
 
 /* Pipex struct for execution */
@@ -254,6 +255,8 @@ void		path_check_to_execute(char **cmd_args, t_pipeline *head,
 /* exec_stateful.c */
 int			exec_stateful_builtin(t_pipeline *pline, t_shell *shell,
 				t_pipe *pipex);
+int			fill_array(char **dst, char **src, int start);
+char		**join_envp_no_eq(t_shell *shell);
 
 /* exec_pipeline.c */
 int			is_stateful(char *cmd);
