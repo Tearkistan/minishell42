@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:36:30 by twatson           #+#    #+#             */
-/*   Updated: 2026/04/07 14:50:17 by twatson          ###   ########.fr       */
+/*   Updated: 2026/04/07 20:26:34 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	exit_unset(t_unset *unset, t_shell *shell, int alloc_fail)
 		free_matrix(unset->new_no_eq);
 	if (unset->valid_args)
 		free_matrix(unset->valid_args);
+	if (unset->sorted_args)
+		free_matrix(unset->sorted_args);
 	if (unset->parent && alloc_fail)
 	{
 		shell->running = 0;
@@ -72,8 +74,22 @@ static void	remove_valid_args(t_shell *shell, t_unset *unset)
 	resize_unset_no_eq(unset, shell);
 	if (unset->new_envp)
 		skip_valid_args_envp(unset, shell);
+	else
+	{
+		if (shell->envp)
+			free_matrix(shell->envp);
+		shell->envp = NULL;
+		shell->envp_len = 0;
+	}
 	if (unset->new_no_eq)
 		skip_valid_args_no_eq(unset, shell);
+	else
+	{
+		if (shell->no_eq)
+			free_matrix(shell->no_eq);
+		shell->no_eq = NULL;
+		shell->no_eq_len = 0;
+	}
 }
 
 static void	exec_unset(char **cmd_args, t_shell *shell, t_unset *unset)

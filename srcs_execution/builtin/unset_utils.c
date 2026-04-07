@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 16:43:42 by twatson           #+#    #+#             */
-/*   Updated: 2026/04/07 14:50:18 by twatson          ###   ########.fr       */
+/*   Updated: 2026/04/07 20:07:33 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	resize_unset_no_eq(t_unset *unset, t_shell *shell)
 
 	size = shell->no_eq_len - unset->valid_no_eq_count + 1;
 	unset->new_no_eq_len = size - 1;
-	if (unset->new_no_eq_len)
+	if (!unset->new_no_eq_len)
 	{
 		unset->new_no_eq = NULL;
 		return ;
