@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+         #
+#    By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/23 17:19:41 by psmolich          #+#    #+#              #
-#    Updated: 2026/03/31 12:11:43 by psmolich         ###   ########.fr        #
+#    Updated: 2026/04/07 12:19:41 by twatson          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ LIBFT_DIR=libft
 LIBFT=$(LIBFT_DIR)/libft.a
 READLINE_LIBS = -lreadline -lhistory -lncurses
 
-CC=cc
+CC=cc -g
 CFLAGS=-Wall -Wextra -Werror -I$(LIBFT_DIR) -I$(INC_DIR)
 
 SRCS_PARSING_DIR := srcs_parsing

@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/04/07 12:12:37 by twatson          ###   ########.fr       */
+/*   Updated: 2026/04/07 14:34:51 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,13 +157,16 @@ typedef struct s_export
 typedef struct s_unset
 {
 	char	**new_envp;
-	int		new_len;
+	char	**new_no_eq;
+	int		new_envp_len;
+	int		new_no_eq_len;
 	char	**valid_args;
 	char	**sorted_args;
 	int		arg_count;
 	int		valid_count;
+	int		valid_envp_count;
+	int		valid_no_eq_count;
 	int		parent;
-	int		valid;
 }	t_unset;
 
 typedef struct s_cd
@@ -314,6 +317,7 @@ int			builtin_exec(char **cmd_args, t_shell *shell, int parent);
 
 /* builtin_utils.c */
 char		*shell_getenv(char *key, t_shell *sh);
+int			shell_check_no_eq(char *key, t_shell *sh);
 
 /* exec_echo.c */
 int			exec_echo(char **cmd_args);
@@ -340,12 +344,14 @@ void		get_valid_args(char **cmd_args, t_unset *unset, t_shell *shell);
 int			exec_unset_ctrl(char **cmd_args, t_shell *shell, int parent);
 
 /* unset_utils.c */
-void		resize_unset_envp(t_unset *unset, t_shell *shell);
 void		rm_duplicate_args(t_unset *unset, t_shell *shell);
-void		remove_valid_args(t_shell *shell, t_unset *unset);
+void		resize_unset_envp(t_unset *unset, t_shell *shell);
+void		resize_unset_no_eq(t_unset *unset, t_shell *shell);
 
 /* unset_utils_plus.c */
 int			add_unique_to_array(t_unset *unset);
+void		skip_valid_args_envp(t_unset *unset, t_shell *shell);
+void		skip_valid_args_no_eq(t_unset *unset, t_shell *shell);
 
 /* export.c */
 void		exit_export(t_export *export, t_shell *shell, int alloc_fail);

@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/17 16:43:42 by twatson           #+#    #+#             */
-/*   Updated: 2026/04/01 11:36:43 by twatson          ###   ########.fr       */
+/*   Updated: 2026/04/07 14:50:18 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,6 @@ static int	finalize_valid_args(t_unset *unset)
 	return (0);
 }
 
-void	resize_unset_envp(t_unset *unset, t_shell *shell)
-{
-	int	size;
-
-	size = shell->envp_len - unset->valid_count + 1;
-	unset->new_envp = (char **)malloc(sizeof(char *) * size);
-	if (!unset->new_envp)
-		return (exit_unset(unset, shell, 1));
-	unset->new_len = size - 1;
-	unset->new_envp[unset->new_len] = NULL;
-}
-
 void	rm_duplicate_args(t_unset *unset, t_shell *shell)
 {
 	unset->sorted_args = copy_array(unset->valid_args);
@@ -83,25 +71,36 @@ void	rm_duplicate_args(t_unset *unset, t_shell *shell)
 		exit_unset(unset, shell, 1);
 }
 
-void	remove_valid_args(t_shell *shell, t_unset *unset)
+void	resize_unset_envp(t_unset *unset, t_shell *shell)
 {
-	int	i;
-	int	skip;
+	int	size;
 
-	resize_unset_envp(unset, shell);
-	i = 0;
-	skip = 0;
-	while (shell->envp[i + skip])
+	size = shell->envp_len - unset->valid_envp_count + 1;
+	unset->new_envp_len = size - 1;
+	if (!unset->new_envp_len)
 	{
-		if (ft_strncmp_set(shell->envp[i + skip], unset->valid_args) == 0)
-			skip++;
-		unset->new_envp[i] = ft_strdup(shell->envp[i + skip]);
-		if (!unset->new_envp[i])
-			exit_unset(unset, shell, 1);
-		i++;
+		unset->new_envp = NULL;
+		return ;
 	}
-	free_matrix(shell->envp);
-	shell->envp = unset->new_envp;
-	shell->envp_len = unset->new_len;
-	unset->new_envp = NULL;
+	unset->new_envp = (char **)malloc(sizeof(char *) * size);
+	if (!unset->new_envp)
+		return (exit_unset(unset, shell, 1));
+	unset->new_envp[unset->new_envp_len] = NULL;
+}
+
+void	resize_unset_no_eq(t_unset *unset, t_shell *shell)
+{
+	int	size;
+
+	size = shell->no_eq_len - unset->valid_no_eq_count + 1;
+	unset->new_no_eq_len = size - 1;
+	if (unset->new_no_eq_len)
+	{
+		unset->new_no_eq = NULL;
+		return ;
+	}
+	unset->new_no_eq = (char **)malloc(sizeof(char *) * size);
+	if (!unset->new_no_eq)
+		return (exit_unset(unset, shell, 1));
+	unset->new_no_eq[unset->new_no_eq_len] = NULL;
 }

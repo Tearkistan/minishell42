@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/19 17:02:17 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 07:59:56 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/04/07 14:35:56 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*shell_getenv(char *key, t_shell *sh)
 
 	i = 0;
 	len = ft_strlen(key);
-	while (sh->envp[i])
+	while (sh->envp && sh->envp[i])
 	{
 		if (ft_strncmp(key, sh->envp[i], len) == 0 && sh->envp[i][len] == '=')
 		{
@@ -31,4 +31,21 @@ char	*shell_getenv(char *key, t_shell *sh)
 		i++;
 	}
 	return (NULL);
+}
+
+/* NOT allocated / return value never to be freed! */
+int	shell_check_no_eq(char *key, t_shell *sh)
+{
+	int		i;
+	int		len;
+
+	i = 0;
+	len = ft_strlen(key);
+	while (sh->no_eq && sh->no_eq[i])
+	{
+		if (ft_strncmp(key, sh->no_eq[i], len) == 0)
+			return (1);
+		i++;
+	}
+	return (0);
 }
