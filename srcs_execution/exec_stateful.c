@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 14:23:44 by twatson           #+#    #+#             */
-/*   Updated: 2026/04/01 13:47:01 by twatson          ###   ########.fr       */
+/*   Updated: 2026/04/07 12:15:18 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	exec_stateful_builtin(t_pipeline *pline, t_shell *shell, t_pipe *pipex)
 	close_fd(&saved_stdin);
 	close_fd(&saved_stdout);
 	if (ft_strncmp(pline->cmd.args[0], "exit", 5) == 0)
-		clean_up(sh, pline, "42");
+		clean_up(shell, pline, "42");
 	return (0);
 }
 

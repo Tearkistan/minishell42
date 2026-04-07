@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:37:48 by twatson           #+#    #+#             */
-/*   Updated: 2026/04/01 13:36:06 by twatson          ###   ########.fr       */
+/*   Updated: 2026/04/07 12:11:36 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void	exit_export(t_export *export, t_shell *shell, int alloc_fail)
 		free(export->key);
 	if (export->value)
 		free(export->value);
-	if (shell->last_status == 1)
+	if (!alloc_fail && shell->last_status == 1)
 		error_msg(ERR_NOT_VALID_ID, "export");
 	if (export->parent && alloc_fail)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:36:30 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/23 08:54:36 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/04/07 12:14:23 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,22 @@ No argument or arguments not exist leads to no change but also no error,  */
 
 void	exit_unset(t_unset *unset, t_shell *shell, int alloc_fail)
 {
+	if (alloc_fail)
+		perror("unset");
+	shell->last_status = !unset->valid;
 	if (unset->new_envp)
 		free_matrix(unset->new_envp);
 	if (unset->valid_args)
 		free_matrix(unset->valid_args);
+	if (!alloc_fail && shell->last_status == 1)
+		error_msg(ERR_NOT_VALID_ID, "unset");
 	if (unset->parent && alloc_fail)
 	{
 		shell->running = 0;
 		shell->last_status = 1;
 	}
 	else if (alloc_fail)
-	{
-		error_msg(ERR_MEMORY, NULL);
 		exit(1);
-	}
 }
 
 static int	unset_arg_error(char *cmd_arg)
@@ -40,12 +42,12 @@ static int	unset_arg_error(char *cmd_arg)
 	int	i;
 
 	i = 1;
-	if (cmd_arg[i] != '_' || !(ft_isalpha(cmd_arg[i])))
+	if (cmd_arg[i] != '_' && !(ft_isalpha(cmd_arg[i])))
 		return (1);
 	i++;
 	while (cmd_arg[i])
 	{
-		if (cmd_arg[i] != '_' || !(ft_isalnum(cmd_arg[i])))
+		if (cmd_arg[i] != '_' && !(ft_isalnum(cmd_arg[i])))
 			return (1);
 		i++;
 	}
@@ -82,7 +84,7 @@ static void	exec_unset(char **cmd_args, t_shell *shell, t_unset *unset)
 	while (cmd_args[i])
 	{
 		if (unset_arg_error(cmd_args[i]))
-			shell->last_status = 1;
+			unset->valid = 0;
 		if (shell_getenv(cmd_args[i], shell))
 			unset->valid_count++;
 		i++;
@@ -109,6 +111,7 @@ int	exec_unset_ctrl(char **cmd_args, t_shell *shell, int parent)
 	unset.arg_count = 0;
 	unset.valid_count = 0;
 	unset.parent = parent;
+	unset.valid = 1;
 	while (cmd_args[unset.arg_count])
 		unset.arg_count++;
 	if (unset.arg_count == 1)

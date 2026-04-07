@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/04/01 13:47:28 by twatson          ###   ########.fr       */
+/*   Updated: 2026/04/07 12:12:37 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,7 @@ typedef struct s_unset
 	int		arg_count;
 	int		valid_count;
 	int		parent;
+	int		valid;
 }	t_unset;
 
 typedef struct s_cd
