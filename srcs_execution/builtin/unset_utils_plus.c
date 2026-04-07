@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/18 19:51:08 by twatson           #+#    #+#             */
-/*   Updated: 2026/04/07 14:50:20 by twatson          ###   ########.fr       */
+/*   Updated: 2026/04/07 21:26:40 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,10 @@ void	skip_valid_args_envp(t_unset *unset, t_shell *shell)
 
 	i = 0;
 	skip = 0;
-	while (shell->envp && shell->envp[i + skip])
+	while (i < unset->new_envp_len)
 	{
-		if (ft_strncmp_set(shell->envp[i + skip], unset->valid_args) == 0)
+		while (shell->envp[i + skip] && ft_strncmp_set(shell->envp[i + skip],
+				unset->valid_args) == 0)
 			skip++;
 		unset->new_envp[i] = ft_strdup(shell->envp[i + skip]);
 		if (!unset->new_envp[i])
@@ -64,9 +65,10 @@ void	skip_valid_args_no_eq(t_unset *unset, t_shell *shell)
 
 	i = 0;
 	skip = 0;
-	while (shell->no_eq && shell->no_eq[i + skip])
+	while (i < unset->new_no_eq_len)
 	{
-		if (ft_strncmp_set(shell->no_eq[i + skip], unset->valid_args) == 0)
+		while (shell->no_eq[i + skip] && ft_strncmp_set(shell->no_eq[i + skip],
+				unset->valid_args) == 0)
 			skip++;
 		unset->new_no_eq[i] = ft_strdup(shell->no_eq[i + skip]);
 		if (!unset->new_no_eq[i])
