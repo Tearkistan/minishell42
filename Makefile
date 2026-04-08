@@ -6,7 +6,7 @@
 #    By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/23 17:19:41 by psmolich          #+#    #+#              #
-#    Updated: 2026/04/08 19:11:40 by twatson          ###   ########.fr        #
+#    Updated: 2026/04/08 19:24:10 by twatson          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,12 +19,12 @@ INC_DIR=inc
 LIBFT_DIR=libft
 
 LIBFT=$(LIBFT_DIR)/libft.a
-READLINE_LIBS = -lreadline -lhistory -lncurses
+READLINE_LIBS=-lreadline -lhistory -lncurses
 
 CC=cc
 CFLAGS=-Wall -Wextra -Werror -I$(LIBFT_DIR) -I$(INC_DIR)
 
-SRCS_PARSING_DIR := srcs_parsing
+SRCS_PARSING_DIR :=	srcs_parsing
 
 SRCS_PARSING := 	create_pipeline/add_arg.c \
 					create_pipeline/add_pipe.c \
@@ -47,7 +47,7 @@ SRCS_PARSING := 	create_pipeline/add_arg.c \
 					parse_line.c \
 					free_parsing.c
 
-SRCS_EXECUTION_DIR := srcs_execution
+SRCS_EXECUTION_DIR :=	srcs_execution
 
 SRCS_EXECUTION := 	builtin/builtin.c \
 					builtin/builtin_utils.c \
@@ -98,7 +98,6 @@ $(LIBFT):
 
 clean:
 	$(MAKE) -C $(LIBFT_DIR) clean
-	rm -rf $(OBJ_DIR)
 
 fclean: clean
 	$(MAKE) -C $(LIBFT_DIR) fclean
