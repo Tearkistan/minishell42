@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 19:46:35 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/31 22:31:07 by twatson          ###   ########.fr       */
+/*   Updated: 2026/04/08 13:42:04 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,22 +109,21 @@ void	alloc_key_value(char *arg, t_export *export, t_shell *shell)
 {
 	int	size;
 	int	equal_check;
-	int	i;
 
+	if (export->key)
+	{
+		free(export->key);
+		export->key = NULL;
+	}
 	size = ft_strlen(arg) + 1;
 	export->key = (char *)malloc(sizeof(char) * size);
 	if (!export->key)
 		exit_export(export, shell, 1);
-	equal_check = 0;
-	i = 0;
-	while (arg[i])
+	equal_check = includes_equal(arg);
+	if (export->value)
 	{
-		if (arg[i] == '=')
-		{
-			equal_check = 1;
-			break ;
-		}
-		i++;
+		free(export->value);
+		export->value = NULL;
 	}
 	if (equal_check)
 	{

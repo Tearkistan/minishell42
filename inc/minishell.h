@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/04/07 14:34:51 by twatson          ###   ########.fr       */
+/*   Updated: 2026/04/08 13:39:01 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -369,6 +369,9 @@ int			is_no_eq(char *var, char **no_eq);
 void		add_no_equal_key(t_export *export, t_shell *shell);
 void		remove_if_no_eq(t_shell *shell, t_export *export);
 void		finish_export_arg(t_shell *shell, t_export *export, int index);
+
+/* export_utils_end.c */
+int			includes_equal(char *arg);
 
 /* signals.c */
 void		set_signals_prompt_mode(void);

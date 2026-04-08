@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 21:21:40 by twatson           #+#    #+#             */
-/*   Updated: 2026/04/01 13:50:07 by twatson          ###   ########.fr       */
+/*   Updated: 2026/04/08 14:09:54 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	add_no_equal_key(t_export *export, t_shell *shell)
 	i++;
 	new_no_eq[i] = NULL;
 	if (shell->no_eq)
-		free(shell->no_eq);
+		free_matrix(shell->no_eq);
 	shell->no_eq = new_no_eq;
 	shell->no_eq_len += 1;
 }
@@ -119,5 +119,6 @@ void	finish_export_arg(t_shell *shell, t_export *export, int index)
 		free(shell->envp[index]);
 		shell->envp[index] = export->new_line;
 	}
+	else if (export->new_line)
 	export->new_line = NULL;
 }

@@ -6,7 +6,7 @@
 #    By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/23 17:19:41 by psmolich          #+#    #+#              #
-#    Updated: 2026/04/07 12:19:41 by twatson          ###   ########.fr        #
+#    Updated: 2026/04/08 13:42:38 by twatson          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,6 +60,7 @@ SRCS_EXECUTION := 	builtin/builtin.c \
 					builtin/export.c \
 					builtin/export_utils.c \
 					builtin/export_utils_plus.c \
+					builtin/export_utils_end.c \
 					builtin/unset.c \
 					builtin/unset_utils.c \
 					builtin/unset_utils_plus.c \
