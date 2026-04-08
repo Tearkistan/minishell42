@@ -6,7 +6,7 @@
 #    By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/23 17:19:41 by psmolich          #+#    #+#              #
-#    Updated: 2026/04/08 13:42:38 by twatson          ###   ########.fr        #
+#    Updated: 2026/04/08 19:11:40 by twatson          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ LIBFT_DIR=libft
 LIBFT=$(LIBFT_DIR)/libft.a
 READLINE_LIBS = -lreadline -lhistory -lncurses
 
-CC=cc -g
+CC=cc
 CFLAGS=-Wall -Wextra -Werror -I$(LIBFT_DIR) -I$(INC_DIR)
 
 SRCS_PARSING_DIR := srcs_parsing
