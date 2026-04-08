@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 14:23:44 by twatson           #+#    #+#             */
-/*   Updated: 2026/04/08 13:19:05 by twatson          ###   ########.fr       */
+/*   Updated: 2026/04/08 18:29:04 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,4 +105,3 @@ char	**join_envp_no_eq(t_shell *shell)
 	joined[i] = NULL;
 	return (joined);
 }
-

@@ -6,7 +6,7 @@
 /*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 21:21:40 by twatson           #+#    #+#             */
-/*   Updated: 2026/04/08 14:09:54 by twatson          ###   ########.fr       */
+/*   Updated: 2026/04/08 18:29:28 by twatson          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,5 +120,5 @@ void	finish_export_arg(t_shell *shell, t_export *export, int index)
 		shell->envp[index] = export->new_line;
 	}
 	else if (export->new_line)
-	export->new_line = NULL;
+		export->new_line = NULL;
 }
