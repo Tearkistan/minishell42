@@ -125,4 +125,84 @@ We used ChatGPT (OpenAI) and Claude (Anthropic) as learning aids:
 - *Debugging guidance:* when stuck on issues (segfaults, fd leaks, unexpected behavior), we described the symptoms and discussed possible causes to narrow down where to look — especially around memory management and child process cleanup.
 - *Documentation:* AI was used to help summarize and organize our joint planning notes and sources into this README.
 
+**Valgrind supression file for readline:**
 
+readline.supp
+```
+{
+   readline_reachable_1
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   fun:readline
+}
+
+{
+   readline_reachable_2
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   fun:rl_initialize
+}
+
+{
+   readline_reachable_3
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   fun:rl_set_prompt
+}
+
+{
+   readline_reachable_4
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   fun:rl_expand_prompt
+}
+
+{
+   readline_history_reachable
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   fun:add_history
+}
+
+{
+   readline_history_list
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   fun:history_list
+}
+
+{
+   readline_tinfo_reachable
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   obj:*libtinfo*
+}
+
+{
+   readline_ncurses_reachable
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   obj:*libncurses*
+}
+
+{
+   readline_lib_reachable
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   obj:*libreadline*
+}
+```
+
+Run with: 
+```
+valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp -s ./minishell
+```
