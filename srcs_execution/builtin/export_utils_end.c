@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils_end.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/08 13:35:31 by twatson           #+#    #+#             */
-/*   Updated: 2026/04/08 13:39:55 by twatson          ###   ########.fr       */
+/*   Updated: 2026/04/10 14:42:20 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,18 @@ int	includes_equal(char *arg)
 		i++;
 	}
 	return (0);
+}
+
+void	reset_exec_loop(char *cmd_arg, t_shell *shell, t_export *export)
+{
+	export->eq = 1;
+	export->append = 0;
+	alloc_key_value(cmd_arg, export, shell);
+}
+
+void	update_index(t_export *export, t_shell *shell, int index)
+{
+	free(shell->envp[index]);
+	shell->envp[index] = export->new_line;
+	export->new_line = NULL;
 }

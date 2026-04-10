@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:37:48 by twatson           #+#    #+#             */
-/*   Updated: 2026/04/10 13:41:27 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/04/10 14:32:59 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static void	exec_export(char **cmd_args, t_shell *shell, t_export *export)
 	i = 1;
 	while (cmd_args[i])
 	{
-		alloc_key_value(cmd_args[i], export, shell);
+		reset_exec_loop(cmd_args[i], shell, export);
 		if (parse_export_arg(cmd_args[i], export) == -1)
 		{
 			export->valid = 0;

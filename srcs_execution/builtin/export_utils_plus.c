@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 21:21:40 by twatson           #+#    #+#             */
-/*   Updated: 2026/04/10 13:45:46 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/04/10 14:42:13 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,11 +107,7 @@ void	finish_export_arg(t_shell *shell, t_export *export, int index)
 		export->new_line = NULL;
 	}
 	else if (export->append == 0 && export->eq)
-	{
-		free(shell->envp[index]);
-		shell->envp[index] = export->new_line;
-		export->new_line = NULL;
-	}
+		update_index(export, shell, index);
 	else if (export->append)
 	{
 		free(export->new_line);

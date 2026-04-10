@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/04/10 12:53:51 by psmolich         ###   ########.fr       */
+/*   Updated: 2026/04/10 14:43:08 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -372,6 +372,8 @@ void		finish_export_arg(t_shell *shell, t_export *export, int index);
 
 /* export_utils_end.c */
 int			includes_equal(char *arg);
+void		reset_exec_loop(char *cmd_arg, t_shell *shell, t_export *export);
+void		update_index(t_export *export, t_shell *shell, int index);
 
 /* signals.c */
 void		set_signals_prompt_mode(void);
