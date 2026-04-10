@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils_plus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/16 21:21:40 by twatson           #+#    #+#             */
-/*   Updated: 2026/04/08 18:29:28 by twatson          ###   ########.fr       */
+/*   Updated: 2026/04/10 13:45:46 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,14 @@ void	finish_export_arg(t_shell *shell, t_export *export, int index)
 	{
 		if (append_shell_envp(shell, export->new_line))
 			return (exit_export(export, shell, 1));
+		free(export->new_line);
+		export->new_line = NULL;
 	}
 	else if (export->append == 0 && export->eq)
 	{
 		free(shell->envp[index]);
 		shell->envp[index] = export->new_line;
+		export->new_line = NULL;
 	}
 	else if (export->append)
 	{
@@ -118,6 +121,7 @@ void	finish_export_arg(t_shell *shell, t_export *export, int index)
 		export->value = NULL;
 		free(shell->envp[index]);
 		shell->envp[index] = export->new_line;
+		export->new_line = NULL;
 	}
 	else if (export->new_line)
 		export->new_line = NULL;

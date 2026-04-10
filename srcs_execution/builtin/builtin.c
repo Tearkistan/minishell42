@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 16:55:01 by twatson           #+#    #+#             */
-/*   Updated: 2026/04/01 11:36:46 by twatson          ###   ########.fr       */
+/*   Updated: 2026/04/10 13:28:52 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,12 @@ int	append_shell_envp(t_shell *shell, char *new_line)
 	if (!new_envp)
 		return (1);
 	new_envp = copy_envp(new_envp, shell->envp, 0);
-	new_envp[shell->envp_len] = new_line;
+	new_envp[shell->envp_len] = ft_strdup(new_line);
+	if (!new_envp[shell->envp_len])
+	{
+		free_matrix(new_envp);
+		return (1);
+	}
 	new_envp[shell->envp_len + 1] = NULL;
 	shell->envp_len++;
 	free_matrix(shell->envp);
@@ -46,7 +51,8 @@ int	ft_strncmp_set(char *str, char **set)
 	while (set[i])
 	{
 		n = ft_strlen(set[i]);
-		if (ft_strncmp(str, set[i], n) == 0)
+		if (ft_strncmp(str, set[i], n) == 0
+			&& (str[n] == '\0' || str[n] == '='))
 			return (0);
 		i++;
 	}

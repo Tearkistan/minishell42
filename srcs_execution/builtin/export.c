@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/02 16:37:48 by twatson           #+#    #+#             */
-/*   Updated: 2026/04/07 12:11:36 by twatson          ###   ########.fr       */
+/*   Updated: 2026/04/10 13:41:27 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,6 @@ void	exit_export(t_export *export, t_shell *shell, int alloc_fail)
 	shell->last_status = !export->valid;
 	if (export->temp_envp)
 		free_matrix(export->temp_envp);
-	if (export->new_line)
-		free(export->new_line);
 	if (export->key)
 		free(export->key);
 	if (export->value)
