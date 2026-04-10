@@ -3,21 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipeline.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 14:24:43 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/30 12:41:06 by twatson          ###   ########.fr       */
+/*   Updated: 2026/04/10 12:54:33 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	child(t_pipeline *curr, t_pipeline *head, t_shell *shell,
+static void	set_child(t_pipeline *curr, t_pipeline *head, t_shell *shell,
 	t_pipe *pipex)
 {
 	set_signals_child();
 	set_in_fd(curr->cmd.redirects, pipex, head, shell);
 	set_out_fd(curr->cmd.redirects, pipex, head, shell);
+}
+
+static void	child(t_pipeline *curr, t_pipeline *head, t_shell *shell,
+	t_pipe *pipex)
+{
+	set_child(curr, head, shell, pipex);
 	if (pipex->in_fd != STDIN_FILENO)
 	{
 		if (dup2(pipex->in_fd, 0) == -1)
@@ -40,6 +46,7 @@ static void	child(t_pipeline *curr, t_pipeline *head, t_shell *shell,
 	}
 	else if (curr->cmd.args)
 		exec_cmd(curr->cmd.args, head, pipex, shell);
+	clean_exit_child(pipex, head, shell, 0);
 }
 
 static void	parent(t_pipeline *pline, t_pipe *pipex, pid_t pid)
@@ -119,19 +126,4 @@ int	exec_pipeline(t_pipeline *pipeline, t_shell *shell, t_pipe *pipex)
 	shell->last_status = status_to_exitcode(status);
 	free(pipex->pids);
 	return (0);
-}
-
-int	pipeline_size(t_pipeline *p)
-{
-	int			i;
-	t_pipeline	*curr;
-
-	curr = p;
-	i = 0;
-	while (curr)
-	{
-		i++;
-		curr = curr->next;
-	}
-	return (i);
 }

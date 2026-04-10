@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+        */
+/*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/06 14:16:20 by twatson           #+#    #+#             */
-/*   Updated: 2026/04/08 13:39:01 by twatson          ###   ########.fr       */
+/*   Updated: 2026/04/10 12:53:51 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,10 @@ typedef struct s_token
 
 typedef enum e_redir_type
 {
-	REDIR_IN, //<
-	REDIR_OUT, //>
-	HEREDOC, //<<
-	REDIR_APP, //>>
+	REDIR_IN,
+	REDIR_OUT,
+	HEREDOC,
+	REDIR_APP,
 }	t_redir_type;
 
 /* NULL terminated linked list please */

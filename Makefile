@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: twatson <twatson@student.42berlin.de>      +#+  +:+       +#+         #
+#    By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/03/23 17:19:41 by psmolich          #+#    #+#              #
-#    Updated: 2026/04/08 19:24:10 by twatson          ###   ########.fr        #
+#    Updated: 2026/04/10 12:47:35 by psmolich         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -77,6 +77,7 @@ SRCS_EXECUTION := 	builtin/builtin.c \
 					heredoc/init_heredoc_mode.c \
 					main.c \
 					path.c \
+					pipeline_size.c \
 					redirects.c \
 					redirects_utils.c \
 					shell_init.c \

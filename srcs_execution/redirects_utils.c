@@ -6,7 +6,7 @@
 /*   By: psmolich <psmolich@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/27 15:18:21 by twatson           #+#    #+#             */
-/*   Updated: 2026/03/31 20:20:39 by twatson          ###   ########.fr       */
+/*   Updated: 2026/04/10 12:23:58 by psmolich         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static int	not_last_redir(t_redirects *redir)
 {
+	if (!redir || !redir->next)
+		return (0);
 	if (redir->next->type == REDIR_IN || redir->next->type == HEREDOC)
 		return (1);
 	return (0);
